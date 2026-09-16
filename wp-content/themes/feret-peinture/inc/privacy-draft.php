@@ -1,28 +1,20 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
 <p>Dernière mise à jour : 16 septembre 2026.</p>
-<h2>Responsable du traitement</h2>
-<p>Vos données sont traitées sous la responsabilité de la société CHRISTOPHE FERET, EURL au siège situé 74 T avenue du Maréchal Leclerc, 95440 Écouen, France, représentée par son gérant Christophe Feret. Vous pouvez la contacter à <a href="mailto:contact@feret-peinture.fr">contact@feret-peinture.fr</a> ou par courrier à cette adresse.</p>
-<h2>Utilisation de vos données</h2>
-<p>Le formulaire sert à demander un rendez-vous. Christophe vous recontacte pour convenir d’une visite sur place afin d’évaluer les travaux avant d’établir un devis. L’envoi du formulaire ne constitue ni une réservation confirmée ni une commande.</p>
-<p>Le traitement de votre demande repose sur les mesures précontractuelles prises à votre initiative. Le suivi des travaux repose sur l’exécution du contrat ; la conservation des pièces comptables répond aux obligations légales de l’entreprise. La sécurité, la prévention des envois abusifs et la conservation des pièces nécessaires à la défense des droits reposent sur l’intérêt légitime de l’entreprise. Vos coordonnées ne servent pas à envoyer des offres commerciales.</p>
-<h2>Données recueillies</h2>
-<p>Le nom, la commune ou le code postal du chantier, la description du projet et au moins un moyen de contact (téléphone ou email) sont obligatoires. Sans ces informations, le formulaire ne peut pas transmettre la demande. Le second moyen de contact est facultatif.</p>
-<p>Le formulaire n’accepte pas de pièces jointes. N’indiquez pas de données sensibles ni d’informations inutiles sur d’autres personnes. Les photos utiles peuvent être transmises lors des échanges ultérieurs.</p>
-<p>Le dispositif antispam utilise un identifiant calculé à partir de l’adresse IP, un compteur de tentatives et un identifiant empêchant les doubles envois. Sa table ne contient ni l’adresse IP brute ni le contenu des messages. Des données de connexion peuvent également figurer dans les journaux techniques du serveur.</p>
-<p>La vérification antispam ALTCHA effectue un calcul dans votre navigateur et le vérifie sur le serveur du site, sans transmettre les champs du formulaire à un service de captcha tiers. Les défis expirent après vingt minutes ; les preuves utilisées sont conservées sous forme d’identifiants pendant une heure, puis supprimées par le nettoyage horaire.</p>
-<h2>Destinataires et stockage</h2>
-<p>Christophe Feret consulte les demandes et assure le suivi des clients. Aliant peut accéder ponctuellement aux données pour la maintenance technique. Les prestataires techniques interviennent dans la limite des services fournis.</p>
-<p>Le site est hébergé par netcup GmbH, Emmy-Noether-Straße 10, 76131 Karlsruhe, Allemagne. La messagerie professionnelle est fournie par IONOS. Les devis signés et les factures sont conservés par l’entreprise pour le suivi des prestations et le respect de ses obligations légales.</p>
-<p>Le formulaire transmet les demandes par email sans enregistrer de dossier client dans la base du site. Les messages peuvent être conservés dans la messagerie et les sauvegardes de ses prestataires.</p>
-<h2>Conservation</h2>
-<ul><li>Demandes sans suite : conservation pendant trois ans maximum après le dernier échange. Elles peuvent être supprimées plus tôt lorsqu’elles ne sont plus nécessaires au suivi de la demande.</li>
-<li>Dossiers clients : pendant le suivi des travaux, puis archivage des seules pièces nécessaires aux obligations légales, aux garanties et à la défense des droits. Les factures et pièces comptables sont conservées dix ans à compter de la clôture de l’exercice concerné. Pour les autres pièces, la durée est déterminée par leur nature et les délais de garantie ou de prescription applicables. En cas de litige, les pièces utiles sont conservées jusqu’à son règlement définitif.</li>
-<li>Compteurs antispam : expiration après une heure. Identifiants anti-doublon : expiration après vingt-quatre heures. Le nettoyage des entrées expirées est programmé toutes les heures.</li></ul>
-<h2>Exercer vos droits</h2>
-<p>Vous disposez des droits d’accès, de rectification, d’effacement et de limitation dans les conditions prévues par la réglementation. Vous pouvez vous opposer aux traitements fondés sur l’intérêt légitime pour des raisons tenant à votre situation particulière. La portabilité s’applique aux données que vous avez fournies lorsque leur traitement automatisé repose sur un contrat, dans les conditions du RGPD.</p>
-<p>Adressez votre demande à <a href="mailto:contact@feret-peinture.fr">contact@feret-peinture.fr</a> ou par courrier au siège, en précisant le droit souhaité et les éléments permettant de retrouver vos échanges. Christophe Feret répond personnellement dans un délai maximal d’un mois. Ce délai peut être prolongé de deux mois selon la complexité ou le nombre des demandes ; les motifs vous sont alors communiqués dans le premier mois.</p>
-<p>Un justificatif d’identité n’est demandé qu’en cas de doute raisonnable sur votre identité. L’effacement peut être limité par une obligation légale de conservation ou la nécessité de défendre des droits ; les motifs vous sont alors expliqués.</p>
-<p>Vous pouvez adresser une réclamation à la <a href="https://www.cnil.fr/fr/adresser-une-plainte">Commission nationale de l’informatique et des libertés (CNIL)</a>.</p>
-<h2>Cookies et stockage dans le navigateur</h2>
-<p>Le site n’utilise pas d’outil publicitaire ni de mesure d’audience externe. Les événements des boutons et du formulaire restent locaux à la page, sans envoi à un service d’analyse.</p>
-<p>WordPress peut conserver un test technique d’affichage des emojis dans le stockage de session du navigateur, sous le nom « wpEmojiSettingsSupports ». Cette donnée, liée à la session de navigation, ne contient pas les informations du formulaire et ne sert pas au suivi de navigation. Les cookies d’authentification concernent les personnes qui se connectent à l’administration.</p>
+<h2>Vos données et leur utilisation</h2>
+<p>L’EURL CHRISTOPHE FERET, représentée par Christophe Feret, est responsable de vos données. Son siège est situé 74 T avenue du Maréchal Leclerc, 95440 Écouen.</p>
+<p>Le formulaire permet d’organiser une visite avant devis. Votre nom, la commune du chantier, sa description et un téléphone ou un email sont nécessaires pour transmettre la demande. Le second moyen de contact est facultatif. Aucune pièce jointe n’est demandée.</p>
+<p>Ces informations servent à préparer votre projet à votre demande, puis à exécuter le contrat si les travaux sont acceptés. La conservation comptable répond aux obligations légales ; la sécurité et la défense des droits relèvent de l’intérêt légitime de l’entreprise. Aucun envoi d’offres commerciales n’est prévu.</p>
+<h2>Accès et protection</h2>
+<p>Christophe traite vos demandes. Aliant peut accéder ponctuellement aux données pour la maintenance. Le site est hébergé par netcup et la messagerie par IONOS. Les demandes sont transmises par email, sans création de dossier client dans la base du site ; des copies peuvent subsister dans la messagerie et ses sauvegardes.</p>
+<p>L’antispam utilise des identifiants dérivés de l’adresse IP et des preuves de vérification, sans enregistrer le message dans ses compteurs. ALTCHA fonctionne sur le site, sans service de captcha tiers. Des données de connexion peuvent figurer dans les journaux du serveur.</p>
+<h2>Durées de conservation</h2>
+<ul>
+<li><strong>Demandes sans suite :</strong> trois ans maximum après le dernier échange, avec suppression possible plus tôt si elles ne sont plus utiles.</li>
+<li><strong>Dossiers clients :</strong> pendant les travaux, puis archivage des pièces nécessaires aux obligations légales, garanties et délais de prescription. Les factures sont conservées dix ans après la clôture de l’exercice ; les pièces utiles à un litige, jusqu’à son règlement définitif.</li>
+<li><strong>Antispam :</strong> défis valables vingt minutes, compteurs et preuves utilisés conservés une heure, identifiants anti-doublon vingt-quatre heures. Nettoyage des entrées expirées toutes les heures.</li>
+</ul>
+<h2>Vos droits</h2>
+<p>Vous pouvez demander l’accès, la rectification, l’effacement ou la limitation de vos données. Selon les conditions du RGPD, vous pouvez aussi vous opposer aux traitements fondés sur l’intérêt légitime et demander la portabilité des données fournies pour un traitement automatisé contractuel. L’effacement reste soumis aux obligations de conservation et à la défense des droits.</p>
+<p>Écrivez à <a href="mailto:contact@feret-peinture.fr">contact@feret-peinture.fr</a> ou au siège. Christophe répond sous un mois ; une prolongation motivée de deux mois est possible, annoncée dans le premier mois. Un justificatif d’identité n’est demandé qu’en cas de doute raisonnable. Vous pouvez saisir la <a href="https://www.cnil.fr/fr/adresser-une-plainte">CNIL</a>.</p>
+<h2>Cookies</h2>
+<p>Aucun outil publicitaire ou de mesure d’audience externe n’est utilisé. WordPress peut mémoriser un test d’affichage des emojis pendant la session (« wpEmojiSettingsSupports »), sans suivi publicitaire. Les cookies de connexion concernent l’administration du site.</p>
