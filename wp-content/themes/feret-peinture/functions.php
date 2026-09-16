@@ -109,7 +109,7 @@ add_action('wp_head', function () {
         if ($url) { echo '<link rel="canonical" href="' . esc_url($url) . '">' . "\n"; }
     }
     echo '<meta property="og:title" content="' . esc_attr($data[0]) . '"><meta property="og:description" content="' . esc_attr($data[1]) . '"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR">' . "\n";
-    echo '<meta property="og:image" content="' . esc_url(get_theme_file_uri('/assets/partage.png')) . '"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Feret Peinture — Christophe Feret, peintre en bâtiment à Écouen">' . "\n";
+    echo '<meta property="og:image" content="' . esc_url(get_theme_file_uri('/assets/partage.png')) . '"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Feret Peinture - Christophe Feret, peintre en bâtiment à Écouen">' . "\n";
 }, 3);
 add_action('wp_head', function () { echo '<link rel="icon" href="' . esc_url(get_theme_file_uri('/assets/favicon.svg')) . '" type="image/svg+xml">' . "\n"; }, 3);
 add_filter('wp_robots', function ($robots) { if (is_page('merci') || is_404()) { $robots['noindex'] = true; unset($robots['index']); } return $robots; });

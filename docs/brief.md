@@ -1,4 +1,4 @@
-# Feret Peinture — dossier de référence
+# Feret Peinture : dossier de référence
 
 Version de travail du 16 septembre 2026, heure de Paris (consultation web le 15 septembre 2026 vers 23 h UTC). Le brief fourni est daté du 16 septembre. Ce document distingue les éléments fournis, les contrôles effectivement possibles et les décisions à obtenir. Une donnée d'annuaire n'est pas une validation personnelle de Christophe.
 

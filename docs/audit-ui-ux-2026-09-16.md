@@ -1,6 +1,6 @@
-# Audit UI / UX — Feret Peinture
+# Audit UI / UX : Feret Peinture
 
-16 septembre 2026 — audit du projet local et de sa prévisualisation sur `http://localhost:8080/`.
+16 septembre 2026 : audit du projet local et de sa prévisualisation sur `http://localhost:8080/`.
 
 ## Avis général
 
@@ -45,7 +45,7 @@ Les coordonnées, la date de création et les informations juridiques sont éval
 
 P1 : correction prioritaire ou contenu déterminant pour l’objectif commercial. P2 : amélioration utile. P3 : finition. Ces niveaux expriment une priorité de travail, pas un taux de perte de conversion mesuré.
 
-### 1. P1 — Débordement horizontal de l’accueil à 320 px
+### 1. P1 : Débordement horizontal de l’accueil à 320 px
 
 **Constat observé.** Le document atteint 325 px pour une fenêtre de 320 px ; la zone utile hors barre verticale est d’environ 305 px. Les enfants de `.faq-grid` mesurent environ 307 px et atteignent l’abscisse 325. Une barre de défilement horizontale est visible.
 
@@ -57,7 +57,7 @@ P1 : correction prioritaire ou contenu déterminant pour l’objectif commercial
 
 Références : `wp-content/themes/feret-peinture/front-page.php:13` ; `wp-content/themes/feret-peinture/style.css`, règles `.faq-grid` et `.faq-grid h2 br`.
 
-### 2. P1 — Le premier champ du devis est repoussé sous l’introduction et le téléphone
+### 2. P1 : Le premier champ du devis est repoussé sous l’introduction et le téléphone
 
 **Constat observé.** Début du champ Nom à environ 905 px à 360 px de large, 899 px à 390 px, 897 px à 768 px et 753 px à 1440 px. À 390 × 844, aucun champ de saisie n’est visible dans le premier écran. Le bloc « Vous préférez appeler ? » précède le formulaire sur mobile et tablette.
 
@@ -67,7 +67,7 @@ Références : `wp-content/themes/feret-peinture/front-page.php:13` ; `wp-conten
 
 Référence : `wp-content/themes/feret-peinture/page.php:5` ; `style.css`, `.quote-layout`, `.quote-aside`, `.page-intro`.
 
-### 3. P1 éditorial — L’identité graphique ne remplace pas les preuves de travail
+### 3. P1 éditorial : L’identité graphique ne remplace pas les preuves de travail
 
 **Constat observé.** Aucun chantier affiché, pas de photo métier ni de portrait dans les pages inspectées ; la galerie locale indique son état vide. L’accueil repose sur une composition de nuanciers et un grand monogramme. L’absence de faux chantier respecte parfaitement le brief.
 
@@ -79,7 +79,7 @@ Référence : `wp-content/themes/feret-peinture/page.php:5` ; `style.css`, `.quo
 
 Références : `wp-content/themes/feret-peinture/front-page.php:9` et `:10` ; `single-fp_project.php` ; `archive-fp_project.php`.
 
-### 4. P1 éditorial — Les prestations restent surtout des instructions de prise de contact
+### 4. P1 éditorial : Les prestations restent surtout des instructions de prise de contact
 
 **Constat observé.** Les quatre fiches détaillent les informations à fournir. La peinture extérieure demande de préciser les surfaces sans indiquer clairement quels éléments Christophe accepte effectivement de peindre. Les sols restent formulés de manière large. La préparation, la protection et les finitions sont presque uniquement présentées comme des points à confirmer.
 
@@ -91,7 +91,7 @@ Références : `wp-content/themes/feret-peinture/front-page.php:9` et `:10` ; `s
 
 Référence : `config/pods/services.php`. Les contenus sont initialisés une seule fois : corriger les fiches WordPress existantes, pas seulement leur fichier d’initialisation.
 
-### 5. P2 — Les prestations sont tardives dans la lecture mobile
+### 5. P2 : Les prestations sont tardives dans la lecture mobile
 
 **Constat observé.** À 390 px, la section Prestations commence vers 1 118 px et l’accueil mesure environ 5 781 px dans son état actuel. Après le texte d’introduction vient une illustration haute ; les prestations arrivent ensuite. Les deux contacts principaux sont toutefois accessibles avant l’illustration, ce qui est positif.
 
@@ -101,7 +101,7 @@ Référence : `config/pods/services.php`. Les contenus sont initialisés une seu
 
 Référence : `wp-content/themes/feret-peinture/front-page.php:2` et sections suivantes ; `style.css`, `.hero-art`, `.art-frame`, `.section`.
 
-### 6. P2 — « Préciser le lieu du chantier » ouvre une page informative
+### 6. P2 : « Préciser le lieu du chantier » ouvre une page informative
 
 **Constat observé.** Le lien de l’accueil mène à `/zone-intervention/`, sans champ de commune sur cette page. Un deuxième clic est nécessaire pour rejoindre le devis. Aucune liste de communes confirmées n’est affichée actuellement.
 
@@ -111,7 +111,7 @@ Référence : `wp-content/themes/feret-peinture/front-page.php:2` et sections su
 
 Référence : `wp-content/themes/feret-peinture/front-page.php:12` ; `page.php`, branche `zone-intervention`.
 
-### 7. P2 — Tous les boutons d’une fiche prestation ne conservent pas le contexte
+### 7. P2 : Tous les boutons d’une fiche prestation ne conservent pas le contexte
 
 **Constat vérifié par parcours et code.** « Présenter mon projet » transmet correctement `?prestation=peinture-interieure`. Le bandeau final « Demander un devis » appelle le bouton sans prestation ; son formulaire redemande donc un choix déjà implicite.
 
@@ -121,7 +121,7 @@ Référence : `wp-content/themes/feret-peinture/front-page.php:12` ; `page.php`,
 
 Références : `wp-content/themes/feret-peinture/single-fp_service.php:4` et `:5` ; `functions.php`, `fp_theme_contact_band()`.
 
-### 8. P2 — La règle « téléphone ou email » n’est pas reliée aux deux champs
+### 8. P2 : La règle « téléphone ou email » n’est pas reliée aux deux champs
 
 **Constat observé et code.** La règle existe dans un paragraphe général ; les champs n’y sont pas reliés par `aria-describedby`. Quand les deux sont vides, seule l’entrée téléphone reçoit l’erreur. L’erreur est explicite et le focus sur son résumé fonctionne : il faut préserver ces acquis.
 
@@ -131,7 +131,7 @@ Références : `wp-content/themes/feret-peinture/single-fp_service.php:4` et `:5
 
 Référence : `wp-content/plugins/feret-peinture-core/includes/form.php:227` et définition des champs immédiatement après.
 
-### 9. P2 — Aucun état d’envoi propre au formulaire
+### 9. P2 : Aucun état d’envoi propre au formulaire
 
 **Constat statique.** Le script gère le menu, les événements et le focus d’erreur, mais aucun état après soumission valide. Le serveur prévoit jusqu’à dix secondes d’attente pour le transport email et protège les doubles traitements.
 
@@ -143,7 +143,7 @@ Référence : `wp-content/plugins/feret-peinture-core/includes/form.php:227` et 
 
 Références : `wp-content/themes/feret-peinture/assets/site.js:29` ; `wp-content/plugins/feret-peinture-core/includes/form.php`.
 
-### 10. P2 — La confirmation parle du système d’envoi et invite à revérifier
+### 10. P2 : La confirmation parle du système d’envoi et invite à revérifier
 
 **Constat statique, branche de succès non exécutée.** Le texte est « Votre demande a été transmise au service d’envoi », suivi d’une invitation à téléphoner pour vérifier la réception. C’est prudent techniquement, mais peu naturel pour un particulier et susceptible de susciter des appels de vérification.
 
@@ -151,13 +151,13 @@ Références : `wp-content/themes/feret-peinture/assets/site.js:29` ; `wp-conten
 
 Référence : `wp-content/themes/feret-peinture/page.php:14`.
 
-### 11. P3 — Deux entrées de navigation conduisent au même endroit
+### 11. P3 : Deux entrées de navigation conduisent au même endroit
 
 « Contact » et « Devis » mènent toutes deux à `/devis/`. Ce n’est pas une impasse, mais cela occupe de la place et suggère deux parcours distincts. Conserver un bouton « Demander un devis » et, si utile, un accès direct à l’appel. Le menu actif ne reconnaît par ailleurs pas les fiches individuelles comme appartenant aux prestations : conserver un repère de rubrique approprié sans annoncer faussement l’archive comme la page courante.
 
 Références : `wp-content/themes/feret-peinture/header.php:11` ; `functions.php:40` et `:46`.
 
-### 12. P3 — Présentation des liens partagés incomplète
+### 12. P3 : Présentation des liens partagés incomplète
 
 Le thème fournit un titre et une description Open Graph, mais ne définit pas d’image de partage. Le rendu dans les messageries n’a pas été testé. Prévoir une image sobre et reconnaissable avec le nom et l’activité, puis vérifier un aperçu réel après publication autorisée.
 
@@ -212,19 +212,19 @@ Les événements locaux existants ne constituent pas un tableau de bord persista
 - [Mesures des 24 contrôles responsive](audit-ui-ux/mesures-responsive.json).
 - Captures ci-dessous, réalisées pendant cet audit. Les dimensions indiquent la fenêtre simulée, pas un appareil physique.
 
-### Accueil — 1440 × 900
+### Accueil : 1440 × 900
 
 *Capture conservée localement, exclue du dépôt public car elle peut contenir des coordonnées non validées.*
 
-### Accueil — 390 × 844
+### Accueil : 390 × 844
 
 *Capture conservée localement, exclue du dépôt public car elle peut contenir des coordonnées non validées.*
 
-### Devis — 390 × 844
+### Devis : 390 × 844
 
 *Capture conservée localement, exclue du dépôt public car elle peut contenir des coordonnées non validées.*
 
-### FAQ — 320 × 800
+### FAQ : 320 × 800
 
 *Capture conservée localement, exclue du dépôt public car elle peut contenir des coordonnées non validées.*
 

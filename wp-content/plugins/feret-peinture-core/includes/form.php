@@ -163,7 +163,7 @@ function fp_quote_submit( $input, $ip ) {
 	$reserved = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO $table (counter_key, attempts, expires) VALUES (%s, 1, %d)", $key, time() + DAY_IN_SECONDS ) );
 	if ( 1 !== $reserved ) { $result['errors'] = array( 'form' => 'Cette demande a déjà été traitée ou est en cours. Ne la renvoyez pas immédiatement.' ); return $result; }
 	$type = fp_quote_types()[ $v['type'] ];
-	$subject = 'Demande de devis — ' . $v['town'] . ' — ' . $type;
+	$subject = 'Demande de devis : ' . $v['town'] . ' - ' . $type;
 	$body = "Nouvelle demande de devis\n\nNom : {$v['name']}\nCommune / code postal : {$v['town']}\nTravaux : $type\nTéléphone : {$v['phone']}\nEmail : {$v['email']}\nPériode souhaitée : {$v['period']}\n\nDescription :\n{$v['description']}\n";
 	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
 	if ( '' !== $v['email'] ) { $headers[] = 'Reply-To: ' . $v['email']; }

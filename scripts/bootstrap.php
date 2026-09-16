@@ -2,7 +2,7 @@
 /** Run with `wp eval-file /project/scripts/bootstrap.php`; never serves HTTP. */
 if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) { exit( 1 ); }
 if ( ! function_exists( 'pods' ) || ! function_exists( 'fp_register_pods' ) || 3 !== count( fp_schema() ) ) {
-    WP_CLI::error( 'Activez Pods et Feret Peinture — métier et rendez config/pods/types.php accessible avant le bootstrap.' );
+    WP_CLI::error( 'Activez Pods et Feret Peinture - métier et rendez config/pods/types.php accessible avant le bootstrap.' );
 }
 
 fp_install_roles();
@@ -33,7 +33,7 @@ function fp_seed_post( string $seed_key, array $post ): array {
 
 $pages = [
     'accueil' => 'Peintre en bâtiment à Écouen',
-    'entreprise' => 'Christophe Feret — Peintre à Écouen',
+    'entreprise' => 'Christophe Feret - Peintre à Écouen',
     'zone-intervention' => 'Votre projet et sa localisation',
     'devis' => 'Demander un devis',
     'mentions-legales' => 'Mentions légales',
@@ -64,7 +64,7 @@ if ( $new ) {
 
 if ( ! get_option( 'fp_bootstrap_done' ) ) {
     update_option( 'blogname', 'Feret Peinture' );
-    update_option( 'blogdescription', 'Christophe Feret — Peintre en bâtiment à Écouen' );
+    update_option( 'blogdescription', 'Christophe Feret - Peintre en bâtiment à Écouen' );
     update_option( 'show_on_front', 'page' );
     update_option( 'page_on_front', $front_id );
     update_option( 'permalink_structure', '/%postname%/' );
@@ -84,12 +84,12 @@ if ( filter_var( getenv( 'FP_IMPORT_DEMO' ), FILTER_VALIDATE_BOOLEAN ) ) {
     if ( ! fp_is_preview() ) { WP_CLI::error( 'Les données de démonstration sont interdites en production.' ); }
     [ $demo_id, $new ] = fp_seed_post( 'demo:chantier', [
         'post_type' => 'fp_project', 'post_status' => 'draft', 'post_name' => 'demonstration-chantier',
-        'post_title' => 'DÉMONSTRATION — exemple de fiche chantier',
+        'post_title' => 'DÉMONSTRATION : exemple de fiche chantier',
         'post_content' => '<p>Fiche de démonstration réservée au développement. Elle ne représente pas un chantier de Christophe Feret. Utilisez l’aperçu WordPress pour tester la fiche ; remplacez les données par des travaux authentiques avant toute publication.</p>',
     ] );
     if ( $new ) {
         update_post_meta( $demo_id, '_fp_demo', 1 );
-        pods( 'fp_project', $demo_id )->save( [ 'town' => 'COMMUNE DE TEST', 'short_description' => 'Données de test — aucun chantier réel.', 'publication_authorized' => 0, 'featured' => 0 ] );
+        pods( 'fp_project', $demo_id )->save( [ 'town' => 'COMMUNE DE TEST', 'short_description' => 'Données de test : aucun chantier réel.', 'publication_authorized' => 0, 'featured' => 0 ] );
     }
     WP_CLI::log( 'Brouillon de démonstration disponible dans Mes chantiers. Aucune photographie fictive n’a été ajoutée.' );
 }

@@ -223,7 +223,7 @@ def main():
                 attachment = result["data"]
             check(upload_status == 200 and bool(attachment and attachment.get("id")), "Christophe uploads a real PNG through native authenticated media processing")
 
-        changes = {"post_title": "QA HTTP — chantier temporaire", "content": "Travaux de vérification locale uniquement.", "post_status": "draft", "save": "Enregistrer le brouillon", "pods_meta_town": "QA Écouen", "pods_meta_short_description": "Description HTTP A", "pods_meta_publication_authorized": "0"}
+        changes = {"post_title": "QA HTTP - chantier temporaire", "content": "Travaux de vérification locale uniquement.", "post_status": "draft", "save": "Enregistrer le brouillon", "pods_meta_town": "QA Écouen", "pods_meta_short_description": "Description HTTP A", "pods_meta_publication_authorized": "0"}
         if attachment:
             changes["_thumbnail_id"] = str(attachment["id"])
             changes["pods_meta_gallery[]"] = str(attachment["id"])
@@ -234,7 +234,7 @@ def main():
         check(status == 200 and saved.get("post_title") == changes["post_title"] and saved.get("original_post_status") == "draft", "Native editor saves a draft project")
         check(saved.get("pods_meta_town") == "QA Écouen" and saved.get("pods_meta_short_description") == "Description HTTP A", "Native form persists its real Pods text fields")
 
-        status, source, _ = save_editor(source, {"post_title": "QA HTTP — chantier publié", "pods_meta_short_description": "Description HTTP B", "pods_meta_publication_authorized": "1", "post_status": "publish", "publish": "Publier"})
+        status, source, _ = save_editor(source, {"post_title": "QA HTTP - chantier publié", "pods_meta_short_description": "Description HTTP B", "pods_meta_publication_authorized": "1", "post_status": "publish", "publish": "Publier"})
         saved = EditorHTML(source).values
         if os.getenv("FP_QA_DIAGNOSTIC"):
             print("SAVE_PUBLISH " + json.dumps({"http_status": status, "status": saved.get("original_post_status"), "town": saved.get("pods_meta_town"), "description": saved.get("pods_meta_short_description"), "image": saved.get("_thumbnail_id")}, ensure_ascii=False))

@@ -25,7 +25,7 @@ try {
     foreach ( array( 'mentions-legales', 'confidentialite' ) as $slug ) {
         $page = get_page_by_path( $slug );
         $backup[ $page->ID ] = array( 'content' => $page->post_content, 'status' => $page->post_status, 'approval' => get_post_meta( $page->ID, '_fp_legal_approved', true ) );
-        wp_update_post( array( 'ID' => $page->ID, 'post_status' => 'publish', 'post_content' => '<p>RECETTE SYNTHÉTIQUE — document fictif temporaire. 10 avenue de Recette. ' . str_repeat( 'Texte synthétique uniquement pour valider le contrôle technique. ', 4 ) . '</p>[fp_contact_details]' ) );
+        wp_update_post( array( 'ID' => $page->ID, 'post_status' => 'publish', 'post_content' => '<p>RECETTE SYNTHÉTIQUE : document fictif temporaire. 10 avenue de Recette. ' . str_repeat( 'Texte synthétique uniquement pour valider le contrôle technique. ', 4 ) . '</p>[fp_contact_details]' ) );
         update_post_meta( $page->ID, '_fp_legal_approved', 1 );
     }
     update_option( 'blog_public', 1 );

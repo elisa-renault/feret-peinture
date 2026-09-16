@@ -21,8 +21,8 @@ Deux familles sont servies localement, sans appel à Google Fonts au chargement 
 
 | Police / fichier livré | Auteurs, transformation et licence embarquée | Taille | SHA-256 du fichier livré |
 | --- | --- | --- | --- |
-| Newsreader — `assets/fonts/newsreader.woff2` | Newsreader Project Authors / Production Type ; sous-ensemble converti en WOFF2 ; `OFL-Newsreader.txt`, SIL OFL 1.1 | 175 548 octets | `36491e9d777a0c176acfc6f529685beea26d7296ac68d084c5e38e4d460bdf7f` |
-| Feret Sans — `assets/fonts/feret-sans.woff2` | Dérivé de Source Sans 3 par Adobe ; sous-ensemble converti en WOFF2 et renommé ; `OFL-Source-Sans-3.txt`, SIL OFL 1.1 | 65 668 octets | `b58ccad46210eb7a9f43ea97045f3a83470fd933986e43d22f1c8534e3685ea0` |
+| Newsreader : `assets/fonts/newsreader.woff2` | Newsreader Project Authors / Production Type ; sous-ensemble converti en WOFF2 ; `OFL-Newsreader.txt`, SIL OFL 1.1 | 175 548 octets | `36491e9d777a0c176acfc6f529685beea26d7296ac68d084c5e38e4d460bdf7f` |
+| Feret Sans : `assets/fonts/feret-sans.woff2` | Dérivé de Source Sans 3 par Adobe ; sous-ensemble converti en WOFF2 et renommé ; `OFL-Source-Sans-3.txt`, SIL OFL 1.1 | 65 668 octets | `b58ccad46210eb7a9f43ea97045f3a83470fd933986e43d22f1c8534e3685ea0` |
 
 Les fichiers amont ont été téléchargés le 15 septembre 2026 UTC depuis le dépôt Google Fonts :
 
@@ -62,6 +62,6 @@ Les pages juridiques restent des documents de travail à compléter dans WordPre
 Demander plusieurs chantiers : vue d'ensemble, détails de finition, commune, travaux effectués et, seulement si disponibles, les deux photos avant/après. Portrait de Christophe facultatif. Demander pour chaque ressource : auteur, date approximative, autorisation du photographe et du client/personnes représentées si nécessaire, portée de publication autorisée, éventuelles limites/retrait.
 
 Tenir ce registre dans un espace privé géré par Aliant, associé à l'identifiant de la réalisation. La case d'autorisation dans WordPress signale la validation éditoriale ; elle ne crée pas elle-même des droits. Retirer les métadonnées sensibles des originaux destinés à la publication, notamment la géolocalisation, et examiner les éléments visibles. Ne pas déposer les contrats/consentements ni les données clients dans Git.
-# Complément — image de partage
+# Complément : image de partage
 
 `wp-content/themes/feret-peinture/assets/partage.png` : composition originale créée pour ce projet le 16 septembre 2026, à partir de texte et de trois aplats de la palette du site. Format 1 200 × 630 px. Typographies système Georgia et Arial rendues dans l’image ; aucun fichier de police supplémentaire distribué. Aucun chantier, portrait ou photo tiers utilisé.

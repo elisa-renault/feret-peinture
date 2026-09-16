@@ -17,7 +17,7 @@ function fp_install_roles(): void {
     foreach ( [ 'delete_', 'delete_others_', 'delete_published_', 'delete_private_' ] as $prefix ) {
         $caps[$prefix . 'fp_projects'] = true;
     }
-    if ( ! get_role( 'fp_christophe' ) ) { add_role( 'fp_christophe', 'Christophe — contenus du site', $caps ); }
+    if ( ! get_role( 'fp_christophe' ) ) { add_role( 'fp_christophe', 'Christophe - contenus du site', $caps ); }
     $role = get_role( 'fp_christophe' );
     foreach ( array_keys( $role->capabilities ) as $cap ) {
         if ( ! isset( $caps[$cap] ) ) { $role->remove_cap( $cap ); }

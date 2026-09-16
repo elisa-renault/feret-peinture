@@ -1,4 +1,4 @@
-# Feret Peinture — première version WordPress
+# Feret Peinture : première version WordPress
 
 Les [corrections de l’audit UI / UX](docs/corrections-ui-ux-2026-09-16.md) sont appliquées à la version locale : parcours devis, responsive à 320 px, navigation et retours d’envoi. Ce compte rendu contient les captures et la portée des vérifications récentes.
 

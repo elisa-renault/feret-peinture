@@ -1,4 +1,4 @@
-# Corrections UI / UX — 16 septembre 2026
+# Corrections UI / UX : 16 septembre 2026
 
 Suite à l’audit et à l’accord de mise en œuvre. Modifications appliquées au projet local ; aucune publication.
 

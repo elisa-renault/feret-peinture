@@ -31,7 +31,7 @@ Obtenir une confirmation écrite de Christophe pour les téléphones, le nom d'u
 
 Relire les informations administratives sur un justificatif récent. L'adresse de référence du brief emploie « avenue » et non « rue ». Une implantation administrative ne signifie pas un lieu d'accueil des clients.
 
-## Mentions légales — trame interne à compléter
+## Mentions légales : trame interne à compléter
 
 Ce canevas sert à préparer les pages ; il ne doit jamais être publié avec des crochets ou une mention « à compléter » présentée comme définitive. Les champs manquants sont recensés, pas déduits du nom du projet.
 
@@ -47,7 +47,7 @@ Ce canevas sert à préparer les pages ; il ne doit jamais être publié avec de
 
 Les informations d'identification sont fondées sur la [fiche officielle Service Public](https://entreprendre.service-public.gouv.fr/vosdroits/F37351), consultée le 15 septembre 2026 UTC. Faire vérifier aussi les informations précontractuelles / CGV applicables au parcours réel de devis et au contrat de travaux ; cette V1 ne conclut pas de vente en ligne. La page officielle est générale et ne remplace pas la qualification du cas précis.
 
-## Données personnelles — texte de travail
+## Données personnelles : texte de travail
 
 La [CNIL précise les conditions de la base légale contractuelle et précontractuelle](https://www.cnil.fr/fr/les-bases-legales/contrat). Pour cette V1, traiter une demande de devis à l'initiative du visiteur peut relever des mesures précontractuelles, si les données sont nécessaires à cette demande. La lutte contre l'abus et les éventuelles obligations de conservation doivent être examinées séparément. Aucune case de consentement marketing obligatoire, ni inscription publicitaire par défaut.
 
