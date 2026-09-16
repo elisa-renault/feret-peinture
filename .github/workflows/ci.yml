@@ -1,0 +1,42 @@
+name: WordPress checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  wordpress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Form submission interface
+        run: npm run test:ui
+      - name: Initialize private local configuration
+        run: sh scripts/init-env.sh
+      - name: Start pinned stack
+        run: docker compose up -d --wait db wordpress mailpit
+      - name: Install and seed WordPress
+        run: docker compose run --rm --entrypoint sh wpcli /project/scripts/install.sh
+      - name: PHP syntax
+        run: docker compose run --rm --entrypoint sh wpcli /project/scripts/lint.sh
+      - name: Repeat installation to check idempotence
+        run: docker compose run --rm --entrypoint sh wpcli /project/scripts/install.sh
+      - name: WordPress permissions and content integration
+        run: docker compose run --rm -e FP_RUN_DESTRUCTIVE_TESTS=1 wpcli wp eval-file /project/tests/integration.php
+      - name: Production publication gates on the disposable database
+        run: docker compose run --rm -e FP_RUN_DESTRUCTIVE_TESTS=1 -e WP_ENVIRONMENT_TYPE=production wpcli wp eval-file /project/tests/integration.php
+      - name: Quote form integration
+        run: docker compose run --rm wpcli wp eval-file /project/tests/form-integration.php
+      - name: Approved production JSON-LD and indexing on disposable fixtures
+        run: docker compose run --rm -e FP_RUN_DESTRUCTIVE_TESTS=1 -e WP_ENVIRONMENT_TYPE=production wpcli wp eval-file /project/tests/publication-integration.php
+      - name: HTTP journeys and SEO
+        run: python3 tests/http-smoke.py
+      - name: Native Christophe administration over HTTP
+        run: python3 tests/admin-http.py --env-file .env
+      - name: Stop test containers
+        if: always()
+        run: docker compose down

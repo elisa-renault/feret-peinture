@@ -1,0 +1,164 @@
+<?php
+defined( 'ABSPATH' ) || exit;
+
+function fp_is_christophe( ?int $user_id = null ): bool {
+    $user = $user_id ? get_userdata( $user_id ) : wp_get_current_user();
+    return $user && in_array( 'fp_christophe', (array) $user->roles, true ) && ! in_array( 'administrator', (array) $user->roles, true );
+}
+
+function fp_install_roles(): void {
+    $caps = [ 'read' => true, 'upload_files' => true ];
+    foreach ( [ 'fp_project', 'fp_service', 'fp_information' ] as $type ) {
+        foreach ( [ 'edit_', 'edit_others_', 'edit_published_', 'publish_', 'read_private_', 'edit_private_' ] as $prefix ) {
+            $caps[$prefix . $type . 's'] = true;
+        }
+    }
+    $caps['create_fp_projects'] = true;
+    foreach ( [ 'delete_', 'delete_others_', 'delete_published_', 'delete_private_' ] as $prefix ) {
+        $caps[$prefix . 'fp_projects'] = true;
+    }
+    if ( ! get_role( 'fp_christophe' ) ) { add_role( 'fp_christophe', 'Christophe — contenus du site', $caps ); }
+    $role = get_role( 'fp_christophe' );
+    foreach ( array_keys( $role->capabilities ) as $cap ) {
+        if ( ! isset( $caps[$cap] ) ) { $role->remove_cap( $cap ); }
+    }
+    foreach ( $caps as $cap => $allowed ) { $role->add_cap( $cap, $allowed ); }
+    $admin = get_role( 'administrator' );
+    if ( $admin ) {
+        foreach ( [ 'fp_project', 'fp_service', 'fp_information' ] as $type ) {
+            $object = get_post_type_object( $type );
+            if ( $object ) {
+                foreach ( (array) $object->cap as $cap ) {
+                    if ( 'do_not_allow' !== $cap ) { $admin->add_cap( $cap ); }
+                }
+            }
+        }
+    }
+    update_option( 'fp_role_version', FP_CORE_VERSION, false );
+}
+add_action( 'init', static function () {
+    if ( FP_CORE_VERSION !== get_option( 'fp_role_version' ) ) { fp_install_roles(); }
+}, 30 );
+
+// Enforce editing limits independently from hidden menus, including forged requests.
+add_filter( 'map_meta_cap', static function ( $caps, $cap, $user_id, $args ) {
+    if ( ! fp_is_christophe( (int) $user_id ) ) { return $caps; }
+    if ( in_array( $cap, [ 'edit_post', 'delete_post', 'read_post' ], true ) && ! empty( $args[0] ) ) {
+        $post = get_post( (int) $args[0] );
+        if ( $post && 'revision' === $post->post_type ) { $post = get_post( $post->post_parent ); }
+        if ( ! $post ) { return [ 'do_not_allow' ]; }
+        if ( 'attachment' === $post->post_type ) {
+            return ( 'read_post' === $cap || (int) $post->post_author === (int) $user_id ) ? [ 'upload_files' ] : [ 'do_not_allow' ];
+        }
+        if ( ! isset( fp_schema()[$post->post_type] ) ) { return [ 'do_not_allow' ]; }
+        if ( 'fp_information' === $post->post_type && $post->ID !== fp_information_id() ) { return [ 'do_not_allow' ]; }
+        if ( 'delete_post' === $cap && 'fp_project' !== $post->post_type ) { return [ 'do_not_allow' ]; }
+    }
+    return $caps;
+}, 30, 4 );
+
+add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
+    if ( ! fp_is_christophe() || empty( $postarr['ID'] ) ) { return $data; }
+    $original = get_post( (int) $postarr['ID'] );
+    if ( $original && in_array( $original->post_type, [ 'fp_service', 'fp_information' ], true ) ) {
+        $data['post_type'] = $original->post_type;
+        $data['post_name'] = $original->post_name;
+        $data['post_title'] = $original->post_title;
+        $data['post_parent'] = 0;
+        $data['menu_order'] = $original->menu_order;
+        if ( 'fp_information' === $original->post_type ) { $data['post_status'] = $original->post_status; }
+    }
+    return $data;
+}, 20, 2 );
+
+add_action( 'admin_menu', static function () {
+    if ( ! fp_is_christophe() ) { return; }
+    global $menu;
+    $allowed = [ 'edit.php?post_type=fp_project', 'edit.php?post_type=fp_service', 'edit.php?post_type=fp_information' ];
+    foreach ( $menu as $item ) {
+        if ( ! in_array( $item[2], $allowed, true ) ) { remove_menu_page( $item[2] ); }
+    }
+    // Keep the native single-item editor; no replacement CMS or settings capability.
+    remove_submenu_page( 'edit.php?post_type=fp_information', 'post-new.php?post_type=fp_information' );
+    // WP removes single-item submenus. For a role without core edit_posts, that
+    // loses the CPT parent and incorrectly denies the native list screen. A
+    // useful second link keeps its native parent/capability mapping intact.
+    add_submenu_page( 'edit.php?post_type=fp_service', 'Voir les prestations', 'Voir sur le site', 'edit_fp_services', home_url( '/prestations/' ) );
+    add_submenu_page( 'edit.php?post_type=fp_information', 'Voir mes informations', 'Voir sur le site', 'edit_fp_informations', home_url( '/entreprise/' ) );
+}, 999 );
+
+add_action( 'admin_init', static function () {
+    if ( ! fp_is_christophe() || wp_doing_ajax() ) { return; }
+    global $pagenow;
+    if ( 'index.php' === $pagenow ) {
+        wp_safe_redirect( admin_url( 'edit.php?post_type=fp_project' ) ); exit;
+    }
+    $allowed = [ 'edit.php', 'post.php', 'post-new.php', 'profile.php', 'user-edit.php', 'upload.php', 'media-new.php', 'media.php', 'async-upload.php', 'admin-post.php', 'revision.php' ];
+    if ( ! in_array( $pagenow, $allowed, true ) ) {
+        wp_die( 'Cet écran est réservé à Aliant. Vous pouvez modifier vos chantiers, prestations et informations.', 'Accès réservé', [ 'response' => 403 ] );
+    }
+    if ( in_array( $pagenow, [ 'edit.php', 'post-new.php' ], true ) ) {
+        $type = sanitize_key( $_GET['post_type'] ?? 'post' );
+        if ( ! isset( fp_schema()[$type] ) || ( 'post-new.php' === $pagenow && 'fp_project' !== $type ) ) {
+            wp_die( 'Cet écran est réservé à Aliant.', 'Accès réservé', [ 'response' => 403 ] );
+        }
+        if ( 'edit.php' === $pagenow && 'fp_information' === $type && fp_information_id() ) {
+            wp_safe_redirect( admin_url( 'post.php?post=' . fp_information_id() . '&action=edit' ) ); exit;
+        }
+    }
+} );
+
+add_filter( 'login_redirect', static function ( $url, $requested, $user ) {
+    return $user instanceof WP_User && in_array( 'fp_christophe', (array) $user->roles, true ) ? admin_url( 'edit.php?post_type=fp_project' ) : $url;
+}, 10, 3 );
+add_filter( 'show_admin_bar', static fn( $show ) => fp_is_christophe() ? false : $show );
+add_filter( 'use_block_editor_for_post_type', static fn( $use, $type ) => isset( fp_schema()[$type] ) ? false : $use, 10, 2 );
+add_filter( 'post_row_actions', static function ( $actions, $post ) {
+    if ( isset( fp_schema()[$post->post_type] ) ) { unset( $actions['inline hide-if-no-js'] ); }
+    return $actions;
+}, 10, 2 );
+
+add_action( 'add_meta_boxes', static function ( $type ) {
+    if ( ! isset( fp_schema()[$type] ) ) { return; }
+    foreach ( [ 'slugdiv', 'authordiv', 'postcustom', 'commentstatusdiv', 'commentsdiv', 'trackbacksdiv' ] as $box ) {
+        remove_meta_box( $box, $type, 'normal' );
+    }
+    if ( 'fp_project' === $type ) { remove_meta_box( 'postexcerpt', $type, 'normal' ); }
+} );
+
+add_action( 'admin_notices', static function () {
+    $screen = get_current_screen();
+    if ( ! $screen || ! isset( fp_schema()[$screen->post_type] ) ) { return; }
+    if ( ! function_exists( 'pods' ) || ! fp_schema() ) {
+        echo '<div class="notice notice-error"><p>Les champs métier sont indisponibles. Contactez Aliant avant toute modification.</p></div>'; return;
+    }
+    $save_hint = 'fp_information' === $screen->post_type ? 'Cliquez sur Mettre à jour pour enregistrer vos informations dans tout le site.' : 'Enregistrez en brouillon pour préparer votre contenu.';
+    echo '<div class="notice notice-info"><p>' . esc_html( $save_hint ) . ' Les révisions restaurent les textes et les champs métier, y compris l’ordre des photos ; elles ne récupèrent pas un fichier supprimé de la médiathèque.</p></div>';
+    if ( 'fp_project' === $screen->post_type ) {
+        echo '<div class="notice notice-info"><p>Pour afficher un chantier : ajoutez une photo principale, renseignez la commune, confirmez les droits des photos et cliquez sur Publier. N’indiquez jamais le nom ou l’adresse précise du client.</p></div>';
+    }
+} );
+
+add_action( 'admin_head', static function () {
+    $screen = get_current_screen();
+    if ( ! $screen || ! isset( fp_schema()[$screen->post_type] ) ) { return; }
+    echo '<style>.pods-form-ui-row{max-width:900px}.pods-form-ui-field-type-paragraph textarea{min-height:100px}#poststuff .inside .pods-form-ui-field{max-width:100%}';
+    if ( fp_is_christophe() && in_array( $screen->post_type, [ 'fp_information', 'fp_service' ], true ) ) { echo '#titlediv,#edit-slug-box{display:none}'; }
+    echo '@media(max-width:600px){.pods-form-ui-label,.pods-form-ui-field{float:none!important;width:100%!important}#poststuff{min-width:0}.pods-field{max-width:100%}}</style>';
+} );
+
+// No public app consumes REST. Native media and administration remain available
+// to authenticated users; WordPress/Pods endpoint capability checks still apply.
+add_filter( 'rest_authentication_errors', static function ( $result ) {
+    if ( $result ) { return $result; }
+    return is_user_logged_in() ? $result : new WP_Error( 'fp_authentication_required', 'Authentification requise.', [ 'status' => 401 ] );
+}, 30 );
+add_filter( 'rest_pre_dispatch', static function ( $result, $server, $request ) {
+    // Pods exposes schema discovery to authenticated readers. Christophe edits
+    // content in native screens and never needs these configuration endpoints.
+    if ( preg_match( '#^/pods(?:/|$)#', $request->get_route() ) && ! current_user_can( 'manage_options' ) ) {
+        return new WP_Error( 'fp_schema_access_denied', 'La configuration des contenus est réservée à Aliant.', [ 'status' => is_user_logged_in() ? 403 : 401 ] );
+    }
+    return $result;
+}, 10, 3 );
+add_filter( 'xmlrpc_enabled', '__return_false' );

@@ -1,0 +1,99 @@
+name: feret-peinture
+
+x-wordpress-environment: &wordpress-environment
+  WORDPRESS_DB_HOST: db:3306
+  WORDPRESS_DB_NAME: feret
+  WORDPRESS_DB_USER: feret
+  WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:?Run sh scripts/init-env.sh first}
+  WORDPRESS_DEBUG: '0'
+  WP_ENVIRONMENT_TYPE: local
+  FP_LAUNCH_APPROVED: '0'
+  FP_CONTACT_APPROVED: '0'
+  FP_PRIVACY_APPROVED: '0'
+  FP_MAIL_DELIVERY_VERIFIED: '0'
+  FP_QUOTE_TO: quote@example.test
+  FP_MAIL_FROM: site@example.test
+  FP_SMTP_HOST: mailpit
+  FP_SMTP_PORT: '1025'
+  FP_SMTP_SECURE: ''
+  FP_SMTP_USER: ''
+  FP_SMTP_PASS: ''
+  WORDPRESS_CONFIG_EXTRA: |
+    define('WP_ENVIRONMENT_TYPE', getenv('WP_ENVIRONMENT_TYPE') ?: 'local');
+    define('DISALLOW_FILE_EDIT', true);
+    define('WP_DEBUG_DISPLAY', false);
+    define('WP_POST_REVISIONS', 20);
+
+services:
+  db:
+    image: mariadb:10.11.19-jammy
+    environment:
+      MARIADB_DATABASE: feret
+      MARIADB_USER: feret
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Run sh scripts/init-env.sh first}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Run sh scripts/init-env.sh first}
+    volumes:
+      - database:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'healthcheck.sh', '--connect', '--innodb_initialized']
+      interval: 5s
+      timeout: 5s
+      retries: 24
+    restart: unless-stopped
+
+  wordpress:
+    image: wordpress:7.1.0-php8.3-apache
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    ports:
+      - '127.0.0.1:${WP_PORT:-8080}:80'
+    environment: *wordpress-environment
+    volumes:
+      - wordpress:/var/www/html
+      - ./wp-content/themes/feret-peinture:/var/www/html/wp-content/themes/feret-peinture:ro
+      - ./wp-content/plugins/feret-peinture-core:/var/www/html/wp-content/plugins/feret-peinture-core:ro
+      - ./config/pods:/var/www/html/config/pods:ro
+      - ./scripts/php-local.ini:/usr/local/etc/php/conf.d/feret-local.ini:ro
+    restart: unless-stopped
+
+  wpcli:
+    image: wordpress:cli-2.12.0-php8.3
+    profiles: ['tools']
+    user: '33:33'
+    working_dir: /var/www/html
+    entrypoint: []
+    command: ['wp', '--info']
+    environment:
+      <<: *wordpress-environment
+      WP_CLI_CACHE_DIR: /tmp/wp-cli-cache
+      WP_URL: ${WP_URL:-http://localhost:8080}
+      WP_ADMIN_USER: ${WP_ADMIN_USER:-aliant}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL:-aliant@example.test}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD:?Run sh scripts/init-env.sh first}
+      CHRISTOPHE_EMAIL: ${CHRISTOPHE_EMAIL:-christophe@example.test}
+      CHRISTOPHE_PASSWORD: ${CHRISTOPHE_PASSWORD:?Run sh scripts/init-env.sh first}
+    volumes:
+      - wordpress:/var/www/html
+      - ./wp-content/themes/feret-peinture:/var/www/html/wp-content/themes/feret-peinture:ro
+      - ./wp-content/plugins/feret-peinture-core:/var/www/html/wp-content/plugins/feret-peinture-core:ro
+      - ./config/pods:/var/www/html/config/pods:ro
+      - ./:/project:ro
+
+  mailpit:
+    image: axllent/mailpit:v1.31.1
+    ports:
+      - '127.0.0.1:${MAILPIT_PORT:-8025}:8025'
+    environment:
+      MP_MAX_MESSAGES: '100'
+      MP_DATABASE: /data/mailpit.db
+    volumes:
+      - mailpit:/data
+    restart: unless-stopped
+
+volumes:
+  database:
+  wordpress:
+  mailpit:

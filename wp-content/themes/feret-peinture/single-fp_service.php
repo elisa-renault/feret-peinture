@@ -1,0 +1,5 @@
+<?php get_header(); while (have_posts()) : the_post(); ?>
+<div class="container"><?php fp_theme_breadcrumb('Prestations', home_url('/prestations/')); ?></div>
+<section class="page-intro container"><p class="eyebrow">Les prestations · Christophe Feret</p><h1><?php the_title(); ?></h1><p class="intro-copy"><?php echo esc_html(get_the_excerpt()); ?></p></section>
+<div class="container detail-layout"><article class="prose service-content"><?php if (has_post_thumbnail()) { the_post_thumbnail('fp-project-wide', array('class' => 'service-photo')); } ?><?php the_content(); ?></article><aside class="project-aside"><p class="eyebrow">Votre projet</p><h2>Et si on en parlait ?</h2><p>Indiquez la commune, les surfaces concernées et ce que vous souhaitez faire.</p><?php fp_theme_quote_button('Présenter mon projet', 'button--primary', get_post_field('post_name', get_the_ID())); ?><?php fp_theme_phone_link('', 'phone-large'); ?><a class="text-link" href="<?php echo esc_url(home_url('/prestations/')); ?>">Toutes les prestations</a></aside></div>
+<?php endwhile; fp_theme_contact_band(); get_footer(); ?>

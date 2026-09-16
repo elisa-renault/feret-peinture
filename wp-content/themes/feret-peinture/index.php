@@ -1,0 +1,1 @@
+<?php get_header(); ?><section class="container section"><h1><?php echo esc_html(get_bloginfo('name')); ?></h1><?php while (have_posts()) : the_post(); ?><article class="prose"><h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2><?php the_excerpt(); ?></article><?php endwhile; ?></section><?php get_footer(); ?>

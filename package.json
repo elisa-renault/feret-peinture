@@ -1,0 +1,13 @@
+{
+  "name": "feret-peinture-acceptance",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Browser acceptance tests only; Node is not required to serve the WordPress site.",
+  "scripts": {
+    "test:ui": "node tests/submit-state.test.cjs",
+    "test:browser": "playwright test tests/browser.spec.mjs --workers=1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}
