@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Real HTTP acceptance checks against disposable local WordPress + Mailpit. No external traffic."""
 import json
+import base64
+import hashlib
 import re
 import os
 import sys
@@ -91,6 +93,21 @@ for page in pages.values():
 
 def payload(fields):
     return dict(fields, fp_name="Recette HTTP", fp_town="Ã‰couen", fp_type="a-preciser", fp_description="Message fictif du parcours de recette HTTP.", fp_phone="", fp_email="http@example.test", fp_period="", fp_website="")
+
+def captcha_proof():
+    status, body, _, _ = fetch('/?fp_captcha=1')
+    check(status == 200, 'Local CAPTCHA challenge is available')
+    challenge = json.loads(body)
+    params = challenge['parameters']
+    check(params['algorithm'] == 'PBKDF2/SHA-256' and params['cost'] == 1000, 'Expected local CAPTCHA algorithm')
+    nonce, salt = bytes.fromhex(params['nonce']), bytes.fromhex(params['salt'])
+    prefix = bytes.fromhex(params['keyPrefix'])
+    for counter in range(100000):
+        key = hashlib.pbkdf2_hmac('sha256', nonce + counter.to_bytes(4, 'big'), salt, params['cost'], params['keyLength'])
+        if key.startswith(prefix):
+            value = {'challenge': challenge, 'solution': {'counter': counter, 'derivedKey': key.hex()}}
+            return base64.b64encode(json.dumps(value).encode()).decode()
+    raise AssertionError('Local CAPTCHA challenge could not be solved')
 status, body, _, _ = fetch("/contact/")
 fields = Page(body).fields
 check("fp_nonce" in fields and "fp_token" in fields, "Actual quote page provides server-generated nonce and token")
@@ -108,7 +125,7 @@ status, body, _, _ = fetch("/contact/", dict(payload(fields), fp_website="spam")
 check(status == 422, "Honeypot actual POST is rejected")
 fields = Page(body).fields
 time.sleep(2.1)
-status, body, _, url = fetch("/contact/", payload(fields))
+status, body, _, url = fetch("/contact/", dict(payload(fields), fp_captcha=captcha_proof()))
 check(status == 200 and "/merci/?sent=" in url and "data-form-success" in body, "Valid HTTP request redirects to verified thank-you page")
 check("Message fictif" not in url and "example.test" not in url, "No submitted personal data in redirect URL")
 print(json.dumps({"checks": checks, "status": "passed", "base": BASE}, ensure_ascii=False))
