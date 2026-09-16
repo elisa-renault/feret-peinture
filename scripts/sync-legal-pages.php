@@ -1,7 +1,7 @@
 <?php
 /** Sync reviewed legal templates into pages, retaining a private rollback snapshot. */
 if (!defined('WP_CLI') || !WP_CLI) { exit(1); }
-if (untrailingslashit(home_url()) !== 'https://feret-peinture.fr') { WP_CLI::error('Unexpected target site.'); }
+if (!in_array(untrailingslashit(home_url()), ['https://feret-peinture.fr', 'http://localhost:8080'], true)) { WP_CLI::error('Unexpected target site.'); }
 $updates = [];
 foreach (['mentions-legales' => 'legal-draft.php', 'confidentialite' => 'privacy-draft.php'] as $slug => $file) {
     $page = get_page_by_path($slug);
