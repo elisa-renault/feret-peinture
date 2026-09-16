@@ -65,6 +65,10 @@ Pour revenir à une version précédente, utilisez **Révisions** dans la fiche 
 
 ## Recevoir les demandes
 
+Pour les demandes relatives aux données personnelles, notez la date de réception et répondez sous un mois. Si la complexité impose une prolongation, informez la personne et expliquez les motifs dans ce premier mois. Vérifiez les deux emplacements de stockage (messagerie et ordinateur) avant de répondre. Ne demandez un justificatif d’identité qu’en cas de doute raisonnable. Expliquez tout maintien d’une pièce nécessaire à une obligation légale ou à la défense de droits.
+
+Les factures et pièces comptables sont à conserver dix ans depuis la clôture de l’exercice. Pour les autres pièces des travaux, distinguez suivi actif et archives nécessaires aux garanties ou litiges ; ne supprimez pas automatiquement tout le dossier à l’échéance des demandes sans suite.
+
 Vous répondez vous-même aux demandes d’accès, de correction ou de suppression des données personnelles. Cette responsabilité est confirmée. La procédure pratique reste à formaliser ; une demande de suppression doit être examinée en tenant compte des obligations de conservation applicables aux documents concernés.
 
 Les devis signés et factures des dossiers devenus clients sont conservés dans votre messagerie et dans un dossier uniquement sur votre ordinateur, sans synchronisation cloud ni sauvegarde séparée du dossier local. Les règles de conservation et de suppression à finaliser devront couvrir ces deux emplacements. Les sauvegardes éventuelles du fournisseur de messagerie sont un sujet distinct.

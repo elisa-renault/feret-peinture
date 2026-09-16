@@ -4,6 +4,26 @@ Date : 16 septembre 2026. Médiation et email exclus à la demande d’Elisa, y 
 
 ## Conclusion
 
+### Corrections appliquées après l’audit
+
+Les constats ci-dessous restent la photographie initiale. Corrections déployées le 16 septembre 2026 :
+
+- Responsable identifié comme EURL CHRISTOPHE FERET, avec siège et représentant ; distinction des bases précontractuelle, contractuelle, obligation légale et intérêt légitime.
+- Droits, contact postal, délai d’un mois, prolongation motivée, vérification proportionnée d’identité et lien de réclamation CNIL ajoutés.
+- Données alignées sur le formulaire actuel simplifié de rendez-vous (nom, commune, description, téléphone et/ou email). Type et période ne sont plus présentés comme des champs affichés.
+- Aliant et IONOS identifiés ; stockage messagerie/ordinateur et absence de prospection repris des réponses validées.
+- Antispam et ALTCHA auto-hébergé décrits ; nettoyage fp_quote_cleanup exécuté avec succès. Défis ALTCHA : vingt minutes ; preuve consommée : une heure ; anti-doublon : vingt-quatre heures. Suppression lors de la tâche horaire.
+- Conservation des factures précisée : dix ans depuis la clôture de l’exercice. Critères d’archivage des autres pièces exposés, sans inventer une purge déjà opérationnelle.
+- Mention d’information et lien vers la politique ajoutés avant le bouton d’envoi.
+- Mobile public autorisé ajouté aux mentions : le constat historique d’absence de téléphone est corrigé.
+- Textes intégrés aux deux pages WordPress par scripts/sync-legal-pages.php avec sauvegarde des contenus précédents dans fp_legal_snapshot_20260916_193442. La cause « contenu vide » est résolue. Les indicateurs d’approbation ne sont pas activés : cela ne prétend pas faire passer l’ensemble du contrôle de lancement.
+
+Contrôles effectués avec Edge via Playwright : accueil, contact (redirection depuis /devis/) et confidentialité, sans connexion WordPress ni envoi de formulaire. Aucun cookie, aucun stockage local, aucune ressource d’un domaine tiers relevés ; seul wpEmojiSettingsSupports dans le stockage de session. La politique décrit ce stockage technique. Pas de débordement horizontal sur confidentialité à 390 px. Syntaxe PHP du formulaire et diff contrôlés. Le test ne couvre pas une session administrateur ou un envoi réel.
+
+Restent ouverts, sans les masquer : rétention globale des journaux et sauvegardes, lieux de stockage et transferts éventuels, mise en œuvre réelle de la suppression des emails/dossiers par Christophe. Nginx tourne ses journaux quotidiennement avec 14 archives, mais Apache écrit dans journald : cette seule rotation ne permet pas de promettre une durée globale de 14 jours. Le site et la messagerie nécessitent des preuves de localisation et de conditions contractuelles ; le siège de netcup et la marque IONOS ne suffisent pas. La politique reste à compléter sur ces points avant validation RGPD finale. Les exclusions médiation et transport email sont conservées.
+
+Références complémentaires utilisées : [conservation des documents](https://entreprendre.service-public.gouv.fr/vosdroits/F10029), [réponse aux demandes de droits](https://www.cnil.fr/fr/repondre-une-demande-de-droit-dacces).
+
 Mise à jour après réponses d’Elisa : accès ponctuel de maintenance d’Elisa / Aliant ajouté à la politique ; Christophe seul assure le suivi client ; absence d’offres commerciales explicitée. Christophe est confirmé comme responsable de vérifier les droits et autorisations des photos avant publication. Ces décisions sont acquises. Le constat initial ci-dessous sur l’omission d’Aliant est donc corrigé ; les autres aspects de ce constat (données techniques et journaux) restent à traiter.
 
 Les deux pages ne sont pas encore prêtes pour la production dans le périmètre examiné. Les mentions d’identité, d’hébergement et de photographies sont en place. La confidentialité reste incomplète et le contrôle technique de publication ne reconnaît pas les textes affichés par le thème comme des contenus de pages finalisés.

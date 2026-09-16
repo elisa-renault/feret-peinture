@@ -6,6 +6,8 @@
 
 Audit du 16 septembre 2026, hors médiation et email : voir [le rapport des pages légales et confidentialité](audit-legal-confidentialite-2026-09-16.md). Il relève notamment les informations RGPD encore provisoires et le décalage entre les textes servis par le thème et les contenus WordPress exigés par le contrôle de publication.
 
+Mise à jour après correction : textes réécrits et synchronisés dans WordPress, mention du formulaire harmonisée, droits/base légale/responsable précisés, mobile autorisé intégré et traceurs vérifiés sur le parcours consulté. Le contenu vide des pages est corrigé. Restent la rétention des journaux et sauvegardes, la localisation/les transferts, l’organisation effective des suppressions et les validations finales. Ne pas remettre ces corrections rédactionnelles dans la liste des questions à Elisa.
+
 | Point | État et prochaine action | Responsable |
 | --- | --- | --- |
 | Identité juridique, capital, adresse, immatriculation, TVA | Validés et intégrés. Aucune nouvelle confirmation à demander. | Acquis |
