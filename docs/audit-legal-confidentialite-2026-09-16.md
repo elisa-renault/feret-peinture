@@ -24,7 +24,7 @@ Restent ouverts, sans les masquer : rétention globale des journaux et sauvegard
 
 Références complémentaires utilisées : [conservation des documents](https://entreprendre.service-public.gouv.fr/vosdroits/F10029), [réponse aux demandes de droits](https://www.cnil.fr/fr/repondre-une-demande-de-droit-dacces).
 
-Mise à jour après réponses d’Elisa : accès ponctuel de maintenance d’Elisa / Aliant ajouté à la politique ; Christophe seul assure le suivi client ; absence d’offres commerciales explicitée. Christophe est confirmé comme responsable de vérifier les droits et autorisations des photos avant publication. Ces décisions sont acquises. Le constat initial ci-dessous sur l’omission d’Aliant est donc corrigé ; les autres aspects de ce constat (données techniques et journaux) restent à traiter.
+Mise à jour après réponses d’Elisa : accès ponctuel de maintenance d’Aliant ajouté à la politique ; Christophe seul assure le suivi client ; absence d’offres commerciales explicitée. Christophe est confirmé comme responsable de vérifier les droits et autorisations des photos avant publication. Ces décisions sont acquises. Le constat initial ci-dessous sur l’omission d’Aliant est donc corrigé ; les autres aspects de ce constat (données techniques et journaux) restent à traiter.
 
 Les deux pages ne sont pas encore prêtes pour la production dans le périmètre examiné. Les mentions d’identité, d’hébergement et de photographies sont en place. La confidentialité reste incomplète et le contrôle technique de publication ne reconnaît pas les textes affichés par le thème comme des contenus de pages finalisés.
 

@@ -11,8 +11,8 @@
 <p>Le dispositif antispam utilise un identifiant calculé à partir de l’adresse IP, un compteur de tentatives et un identifiant empêchant les doubles envois. Sa table ne contient ni l’adresse IP brute ni le contenu des messages. Des données de connexion peuvent également figurer dans les journaux techniques du serveur.</p>
 <p>La vérification antispam ALTCHA effectue un calcul dans votre navigateur et le vérifie sur le serveur du site, sans transmettre les champs du formulaire à un service de captcha tiers. Les défis expirent après vingt minutes ; les preuves utilisées sont conservées sous forme d’identifiants pendant une heure, puis supprimées par le nettoyage horaire.</p>
 <h2>Destinataires et stockage</h2>
-<p>Christophe Feret consulte les demandes et assure le suivi des clients. Elisa / Aliant peut accéder ponctuellement aux données pour la maintenance technique. Les prestataires techniques interviennent dans la limite des services fournis.</p>
-<p>Le site est hébergé par netcup GmbH, Emmy-Noether-Straße 10, 76131 Karlsruhe, Allemagne. La messagerie professionnelle est fournie par IONOS. Les devis signés et factures sont conservés dans la messagerie et dans un dossier sur l’ordinateur de Christophe, sans synchronisation de ce dossier avec un service cloud.</p>
+<p>Christophe Feret consulte les demandes et assure le suivi des clients. Aliant peut accéder ponctuellement aux données pour la maintenance technique. Les prestataires techniques interviennent dans la limite des services fournis.</p>
+<p>Le site est hébergé par netcup GmbH, Emmy-Noether-Straße 10, 76131 Karlsruhe, Allemagne. La messagerie professionnelle est fournie par IONOS. Les devis signés et les factures sont conservés par l’entreprise pour le suivi des prestations et le respect de ses obligations légales.</p>
 <p>Le formulaire transmet les demandes par email sans enregistrer de dossier client dans la base du site. Les messages peuvent être conservés dans la messagerie et les sauvegardes de ses prestataires.</p>
 <h2>Conservation</h2>
 <ul><li>Demandes sans suite : trois ans après la dernière interaction avec Christophe Feret, qui est chargé de leur suppression.</li>

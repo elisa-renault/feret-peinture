@@ -1,4 +1,4 @@
-# Exploitation par Elisa / Aliant
+# Exploitation par Aliant
 
 Procédure préparée, à adapter au serveur choisi. Aucune commande de déploiement, certificat, DNS ou restauration de production n'a été exécutée pour cette livraison. Le démarrage Docker local figure dans le README ; Compose est un environnement de développement, pas une configuration publique prête à exposer.
 

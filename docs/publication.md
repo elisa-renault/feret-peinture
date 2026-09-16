@@ -15,7 +15,7 @@ Mise à jour après correction : textes réécrits et synchronisés dans WordPre
 | Téléphones de Christophe | Mobile public autorisé : 06 83 82 45 16. Fixe privé. | Acquis |
 | Email et publication | Adresse choisie : contact@feret-peinture.fr ; directeur de publication : Christophe Feret. | Acquis |
 | Messagerie | Boîte contact@feret-peinture.fr active chez IONOS, confirmée par Elisa. Création et fournisseur acquis. Reste à configurer/vérifier le transport du formulaire et constater sa réception réelle. | Boîte acquise ; test technique Aliant |
-| Accès aux demandes | Validé : Christophe seul pour le suivi client ; Elisa / Aliant ponctuellement pour la maintenance. | Acquis |
+| Accès aux demandes | Validé : Christophe seul pour le suivi client ; Aliant ponctuellement pour la maintenance. | Acquis |
 | Transmission à un comptable | Validé : aucune facture ni autre document client transmis à un comptable ou cabinet comptable. Ne pas l’ajouter aux destinataires de la politique. | Acquis |
 | Usage des coordonnées | Validé : réponses aux demandes et suivi des travaux uniquement, aucun envoi d’offres commerciales. | Acquis |
 | Vérification des photos | Validé : Christophe vérifie droits et autorisations avant chaque publication. Ne plus demander qui s’en charge. | Acquis |

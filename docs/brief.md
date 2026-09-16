@@ -6,7 +6,7 @@ Version de travail du 16 septembre 2026, heure de Paris (consultation web le 15 
 
 Acquérir des demandes de devis pertinentes et faciliter le contact direct avec Christophe Feret, peintre en bâtiment implanté à Écouen. « Feret Peinture » est un nom d'usage proposé, sans affirmation de marque déposée. Domaine acheté selon le brief : `feret-peinture.fr`.
 
-WordPress classique, thème sur mesure, Pods gratuit et plugin métier léger. Elisa / Aliant conserve l'administration technique. Christophe modifie chantiers, prestations et informations dans WordPress. Aucun achat de licence, boutique, compte visiteur, chatbot ou blog vide. Le dépôt contient le code ; l'exécution nécessite PHP et une base de données. Aucune publication, modification DNS ou modification de fiche Google Business n'est autorisée par cette mission.
+WordPress classique, thème sur mesure, Pods gratuit et plugin métier léger. Aliant conserve l'administration technique. Christophe modifie chantiers, prestations et informations dans WordPress. Aucun achat de licence, boutique, compte visiteur, chatbot ou blog vide. Le dépôt contient le code ; l'exécution nécessite PHP et une base de données. Aucune publication, modification DNS ou modification de fiche Google Business n'est autorisée par cette mission.
 
 ## Informations métier à valider
 

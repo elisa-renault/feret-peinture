@@ -12,7 +12,7 @@ Elisa confirme qu’aucune facture ni aucun autre document client n’est transm
 
 ## Traitement des demandes relatives aux données personnelles
 
-Elisa confirme que Christophe répond lui-même aux demandes d’accès, de rectification ou de suppression des données personnelles. Responsable opérationnel validé : ne plus redemander qui traite ces demandes. L’accès ponctuel d’Elisa / Aliant pour la maintenance reste distinct et ne lui attribue pas la gestion de ces demandes. Les modalités pratiques et les règles applicables restent à documenter.
+Elisa confirme que Christophe répond lui-même aux demandes d’accès, de rectification ou de suppression des données personnelles. Responsable opérationnel validé : ne plus redemander qui traite ces demandes. L’accès ponctuel d’Aliant pour la maintenance reste distinct et ne lui attribue pas la gestion de ces demandes. Les modalités pratiques et les règles applicables restent à documenter.
 
 ## Stockage des dossiers clients
 
@@ -22,7 +22,7 @@ Elisa confirme que les devis signés et factures des dossiers devenus clients so
 
 Réponses expressément confirmées par Elisa le 16 septembre 2026, à enregistrer comme validées et à ne plus redemander :
 
-1. Christophe seul consulte les demandes et assure le suivi des clients. Elisa / Aliant dispose uniquement d’un accès ponctuel nécessaire à la maintenance technique.
+1. Christophe seul consulte les demandes et assure le suivi des clients. Aliant dispose uniquement d’un accès ponctuel nécessaire à la maintenance technique.
 2. Les coordonnées servent uniquement à répondre aux demandes et à suivre les travaux. Aucun usage pour l’envoi d’offres commerciales.
 3. Christophe vérifie les droits d’utilisation et les autorisations nécessaires avant chaque publication de photos de chantiers. La responsabilité de cette vérification est acquise ; elle ne vaut pas autorisation globale de toutes les photos futures.
 
