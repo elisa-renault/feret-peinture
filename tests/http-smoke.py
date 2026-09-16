@@ -113,11 +113,11 @@ fields = Page(body).fields
 check("fp_nonce" in fields and "fp_token" in fields, "Actual quote page provides server-generated nonce and token")
 time.sleep(2.1)
 status, body, _, _ = fetch("/contact/", dict(payload(fields), fp_email="", fp_phone=""))
-if status != 422 or "form-error-summary" not in body:
-    print("Invalid submission diagnostic: HTTP", status, "error summary:", "form-error-summary" in body)
+if status != 422 or 'id="error-contact"' not in body:
+    print("Invalid submission diagnostic: HTTP", status, "contact error:", 'id="error-contact"' in body)
     if os.environ.get("FP_TEST_DEBUG_DIR"):
         Path(os.environ["FP_TEST_DEBUG_DIR"]).joinpath("invalid-quote.html").write_text(body, encoding="utf-8")
-check(status == 422 and "form-error-summary" in body, "Invalid actual POST returns a useful server error")
+check(status == 422 and 'id="error-contact"' in body, "Invalid actual POST returns an error beside the contact fields")
 check("Message fictif du parcours de recette HTTP." in body, "Invalid HTTP submission retains description")
 fields = Page(body).fields
 time.sleep(2.1)

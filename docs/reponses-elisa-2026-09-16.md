@@ -1,5 +1,7 @@
 # Informations confirmées par Elisa
 
+Précision validée : la conservation des demandes sans suite est plafonnée à trois ans après le dernier échange ; une suppression plus précoce est possible lorsque les données ne sont plus nécessaires au suivi. Ce plafond ne constitue pas une obligation de conserver chaque demande pendant trois ans. La politique et la mention du formulaire sont harmonisées sur ce point.
+
 ## Messagerie active : décision actuelle
 
 Elisa confirme que contact@feret-peinture.fr est active. Sa capture montre cette adresse connectée au webmail IONOS sous le nom Christophe Feret. La création de la boîte et le fournisseur IONOS sont acquis, sans nouvelle confirmation à demander. Cette information remplace toutes les mentions historiques « en cours de création » ou « à configurer » ci-dessous. Les mentions légales et la confidentialité sont actualisées en conséquence.
@@ -42,7 +44,7 @@ Les deux téléphones restent privés : aucun affichage, lien d’appel ou tél�
 
 Email pour le site et les demandes relatives aux données : contact@feret-peinture.fr. Boîte désormais active chez IONOS, confirmée par Elisa ; livraison du formulaire non vérifiée. Le destinataire est consigné dans l’option privée fp_launch_decisions_20260916 ; le transport de prévisualisation et le blocage des emails restent inchangés.
 
-Christophe Feret consulte les demandes et est responsable de publication. Conservation retenue pour les demandes sans suite : trois ans après la dernière interaction. Elisa a confirmé que Christophe est responsable de leur suppression dans la boîte de réception : décision validée, ne plus demander qui s’en charge. L’organisation pratique reste à mettre en place ; cette attribution ne prouve pas une suppression déjà effective et ne couvre pas les sauvegardes ni les dossiers devenus clients. Les autres durées restent à finaliser.
+Christophe Feret consulte les demandes et est responsable de publication. Conservation retenue pour les demandes sans suite : au maximum trois ans après la dernière interaction. Elisa a confirmé que Christophe est responsable de leur suppression dans la boîte de réception : décision validée, ne plus demander qui s’en charge. L’organisation pratique reste à mettre en place ; cette attribution ne prouve pas une suppression déjà effective et ne couvre pas les sauvegardes ni les dossiers devenus clients. Les autres durées restent à finaliser.
 
 Les prestations issues du fonds source sont déjà intégrées : intérieur, ravalement, bois et métal extérieurs, dépose et toile de verre, préparation et sols stratifiés ou PVC en pose flottante. Aucun ajout non documenté. Les documents ne prouvent pas une autorisation photographique.
 

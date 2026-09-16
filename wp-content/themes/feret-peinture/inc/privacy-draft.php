@@ -15,7 +15,7 @@
 <p>Le site est hébergé par netcup GmbH, Emmy-Noether-Straße 10, 76131 Karlsruhe, Allemagne. La messagerie professionnelle est fournie par IONOS. Les devis signés et les factures sont conservés par l’entreprise pour le suivi des prestations et le respect de ses obligations légales.</p>
 <p>Le formulaire transmet les demandes par email sans enregistrer de dossier client dans la base du site. Les messages peuvent être conservés dans la messagerie et les sauvegardes de ses prestataires.</p>
 <h2>Conservation</h2>
-<ul><li>Demandes sans suite : trois ans après la dernière interaction avec Christophe Feret, qui est chargé de leur suppression.</li>
+<ul><li>Demandes sans suite : conservation pendant trois ans maximum après le dernier échange. Elles peuvent être supprimées plus tôt lorsqu’elles ne sont plus nécessaires au suivi de la demande.</li>
 <li>Dossiers clients : pendant le suivi des travaux, puis archivage des seules pièces nécessaires aux obligations légales, aux garanties et à la défense des droits. Les factures et pièces comptables sont conservées dix ans à compter de la clôture de l’exercice concerné. Pour les autres pièces, la durée est déterminée par leur nature et les délais de garantie ou de prescription applicables. En cas de litige, les pièces utiles sont conservées jusqu’à son règlement définitif.</li>
 <li>Compteurs antispam : expiration après une heure. Identifiants anti-doublon : expiration après vingt-quatre heures. Le nettoyage des entrées expirées est programmé toutes les heures.</li></ul>
 <h2>Exercer vos droits</h2>

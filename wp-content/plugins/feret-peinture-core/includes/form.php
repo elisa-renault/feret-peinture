@@ -273,7 +273,7 @@ function fp_render_quote_form() {
         <?php if ( isset( $errors['captcha'] ) ) : ?><p class="form-error" id="error-captcha"><?php echo esc_html( $errors['captcha'] ); ?></p><?php endif; ?>
         <noscript><p>Activez JavaScript pour la vérification anti-spam, ou contactez Christophe par téléphone.</p></noscript>
         </div>
-		<p class="form-note form-privacy">L’EURL CHRISTOPHE FERET utilise ces informations pour organiser votre rendez-vous, sur la base des mesures précontractuelles demandées. Christophe traite votre demande ; Aliant peut accéder aux données pour la maintenance. Les demandes sans suite sont conservées trois ans après le dernier échange. Pour connaître vos droits d’accès, de rectification et d’effacement et les exercer, consultez la <a href="<?php echo esc_url( home_url( '/confidentialite/' ) ); ?>">politique de confidentialité</a>.</p>
+		<p class="form-note form-privacy">L’EURL CHRISTOPHE FERET utilise ces informations pour organiser votre rendez-vous, sur la base des mesures précontractuelles demandées. Christophe traite votre demande ; Aliant peut accéder aux données pour la maintenance. Les demandes sans suite sont conservées au maximum trois ans après le dernier échange. Pour connaître vos droits d’accès, de rectification et d’effacement et les exercer, consultez la <a href="<?php echo esc_url( home_url( '/confidentialite/' ) ); ?>">politique de confidentialité</a>.</p>
 		<button type="submit" class="button button--primary">Envoyer ma demande</button>
 		<p class="form-note submit-status" role="status" aria-live="polite" aria-atomic="true" data-submit-status></p>
 	</form>

@@ -73,7 +73,7 @@ Vous répondez vous-même aux demandes d’accès, de correction ou de suppressi
 
 Les devis signés et factures des dossiers devenus clients sont conservés dans votre messagerie et dans un dossier uniquement sur votre ordinateur, sans synchronisation cloud ni sauvegarde séparée du dossier local. Les règles de conservation et de suppression à finaliser devront couvrir ces deux emplacements. Les sauvegardes éventuelles du fournisseur de messagerie sont un sujet distinct.
 
-Vous êtes responsable de supprimer de la boîte de réception les demandes restées sans suite trois ans après le dernier échange avec la personne. Cette responsabilité et cette durée sont validées. Les dossiers devenus clients suivent des règles distinctes ; la conservation des sauvegardes reste à organiser avec Aliant.
+Vous êtes responsable de supprimer de la boîte de réception les demandes restées sans suite au plus tard trois ans après le dernier échange avec la personne. Cette responsabilité et cette durée sont validées. Les dossiers devenus clients suivent des règles distinctes ; la conservation des sauvegardes reste à organiser avec Aliant.
 
 Les demandes arrivent dans la boîte email configurée par Aliant. La confirmation d’envoi ne garantit pas leur réception : Aliant la vérifie avant l’ouverture du site. Si une demande semble manquer, signalez l’heure approximative et le problème à Aliant sans publier les coordonnées du visiteur.
 
