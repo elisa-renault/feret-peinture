@@ -2,9 +2,9 @@
 
 Les [corrections de l’audit UI / UX](docs/corrections-ui-ux-2026-09-16.md) sont appliquées à la version locale : parcours devis, responsive à 320 px, navigation et retours d’envoi. Ce compte rendu contient les captures et la portée des vérifications récentes.
 
-Site vitrine français pour Christophe Feret à Écouen : thème classique sur mesure, Pods gratuit et petit plugin métier. Le parcours principal mène à une demande de devis ; les appels disposent de liens `tel:`. Aucun service analytique externe n’est activé.
+Site vitrine français pour Christophe Feret à Écouen : thème classique sur mesure, Pods gratuit et petit plugin métier. Le parcours principal mène à une demande de rendez-vous sur place avant devis ; les appels disposent de liens `tel:`. Aucun service analytique externe n’est activé.
 
-**Prévisualisation locale uniquement à ce stade.** La mise en ligne reste bloquée tant que les informations, les pages légales et la livraison des emails ne sont pas validées. Aucune modification DNS ni publication n’a été effectuée. Voir [la recette réelle](docs/recette.md) pour les tests exécutés et leurs limites.
+**Prévisualisation privée déployée sur le VPS le 16 septembre 2026.** `https://feret-peinture.fr` est protégé temporairement par mot de passe, en HTTPS et sans indexation. Le domaine www redirige vers cette adresse. Voir [le déploiement privé](docs/deploiement-prive-vps.md) pour les accès, l'exploitation et le retrait ultérieur de la protection. L'ouverture publique reste conditionnée à la validation des informations, des pages légales et de la livraison des emails.
 
 ## Démarrer
 
@@ -43,6 +43,8 @@ docker compose run --rm -e FP_IMPORT_DEMO=1 wpcli wp eval-file /project/scripts/
 ```
 
 ## Vérifier
+
+Trois [chantiers d’exemple avec photos stock](docs/chantiers-exemples.md) ont été ajoutés volontairement à la prévisualisation le 16 septembre 2026. Ils utilisent les fiches existantes et sont exclus de la production.
 
 Ces suites utilisent uniquement une **base locale jetable** et des données fictives. Les tests d’intégration créent puis nettoient leurs propres fixtures. Le test du formulaire dépose des messages dans Mailpit.
 
@@ -112,7 +114,7 @@ Le dépôt contient le thème, le plugin, les scripts, les tests et la documenta
 
 Les fichiers `.env`, `LIRE-AVANT.txt`, les archives Git, les captures historiques, la base et les médias sont exclus. Ne pas publier une archive brute du dossier local. Pour distribuer les seuls fichiers versionnés, utiliser `git archive`.
 
-Les téléphones sont vides à la première installation. Renseigner les coordonnées approuvées dans « Mes informations » et compléter les mentions légales dans WordPress. Relancer l’installation conserve les données déjà saisies ; leur validation reste nécessaire sur les installations existantes.
+Les téléphones sont vides à la première installation. Le mobile renseigné est affiché pour prendre rendez-vous ; le fixe reste privé. Renseigner l’email public approuvé dans « Mes informations » et compléter les mentions légales dans WordPress. Relancer l’installation conserve les données déjà saisies ; leur validation reste nécessaire sur les installations existantes.
 
 La publication du code sur GitHub est distincte de l’ouverture du site : les conditions de [publication](docs/publication.md) restent applicables. Aucun dépôt distant n’est configuré par ces scripts.
 

@@ -24,13 +24,18 @@ function fp_register_content(): void {
     ];
     foreach ( $types as $name => $labels ) {
         $is_info = 'fp_information' === $name;
+        $item_labels = [
+            'fp_project' => [ 'Ajouter un chantier', 'Modifier le chantier', 'Nouveau chantier', 'Rechercher un chantier', 'Aucun chantier trouvé.' ],
+            'fp_service' => [ 'Ajouter une prestation', 'Modifier la prestation', 'Nouvelle prestation', 'Rechercher une prestation', 'Aucune prestation trouvée.' ],
+            'fp_information' => [ 'Ajouter des informations', 'Modifier mes informations', 'Nouvelles informations', 'Rechercher des informations', 'Aucune fiche trouvée.' ],
+        ][$name];
         register_post_type( $name, [
             'labels' => [
                 'name' => $labels[0], 'singular_name' => $labels[1], 'menu_name' => $labels[0],
-                'add_new' => 'Ajouter', 'add_new_item' => 'Ajouter un chantier',
-                'edit_item' => 'Modifier : ' . mb_strtolower( $labels[1] ),
-                'new_item' => 'Nouveau chantier', 'view_item' => 'Voir sur le site',
-                'search_items' => 'Rechercher', 'not_found' => 'Aucun élément.',
+                'add_new' => 'Ajouter', 'add_new_item' => $item_labels[0],
+                'edit_item' => $item_labels[1],
+                'new_item' => $item_labels[2], 'view_item' => 'Voir sur le site',
+                'search_items' => $item_labels[3], 'not_found' => $item_labels[4],
                 'not_found_in_trash' => 'La corbeille est vide.', 'all_items' => $labels[0],
                 'featured_image' => 'Photo principale', 'set_featured_image' => 'Choisir la photo principale',
                 'remove_featured_image' => 'Retirer la photo principale', 'use_featured_image' => 'Utiliser cette photo',
@@ -95,7 +100,8 @@ function fp_info( string $key, $default = '' ) {
 
 function fp_get_info( string $key, $default = '' ) { return fp_info( $key, $default ); }
 
-function fp_phone_display(): string { return fp_info( 'phone_mobile', fp_info( 'phone_landline' ) ); }
+// Mobile publication approved by Elisa; never fall back to the private landline.
+function fp_phone_display(): string { return fp_info( 'phone_mobile' ); }
 
 function fp_phone_uri(): string {
     $phone = preg_replace( '/[^0-9+]/', '', fp_phone_display() );

@@ -44,12 +44,12 @@
       };
       // Native validation runs before submit. Keep the regular server POST.
       form.addEventListener('submit', (event) => {
+        if (event.defaultPrevented) return;
         if (sending) { event.preventDefault(); return; }
         sending = true;
         submit.disabled = true;
         submit.setAttribute('aria-busy', 'true');
         submit.textContent = 'Envoi en cours…';
-        status.textContent = 'Votre demande est en cours d’envoi. Patientez quelques instants.';
       });
       // Restore the button when returning through the browser back/forward cache.
       window.addEventListener('pageshow', reset);
@@ -58,7 +58,8 @@
     if (document.querySelector('.form-error-summary, [data-has-errors="1"]')) {
       emit('form_error');
       const summary = document.querySelector('.form-error-summary');
-      if (summary) summary.focus();
+      const target = summary || form.querySelector('[aria-invalid="true"]');
+      if (target) target.focus();
     }
   }
   if (document.querySelector('[data-form-success]')) emit('form_success');

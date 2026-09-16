@@ -4,6 +4,10 @@
 !.env.production.example
 node_modules/
 vendor/
+!wp-content/plugins/feret-peinture-core/vendor/
+!wp-content/plugins/feret-peinture-core/vendor/altcha/
+!wp-content/plugins/feret-peinture-core/vendor/altcha/**
+output/
 .runtime/
 artifacts/*.json
 artifacts/*.log
@@ -20,6 +24,7 @@ backups/
 .local-credentials*
 test-results/
 playwright-report/
+.playwright-cli/
 __pycache__/
 *.pyc
 /LIRE-AVANT.txt

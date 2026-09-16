@@ -13,6 +13,11 @@ $token = function () {
     $body = ( time() - 3 ) . '.' . wp_generate_password( 24, false, false );
     return $body . '.' . hash_hmac( 'sha256', $body, wp_salt( 'nonce' ) );
 };
+$captcha = function () {
+    $challenge = fp_captcha_challenge();
+    $solution = fp_captcha_service()->solveChallenge(new \AltchaOrg\Altcha\SolveChallengeOptions($challenge, new \AltchaOrg\Altcha\Algorithm\Pbkdf2()));
+    return (new \AltchaOrg\Altcha\Payload($challenge, $solution))->toBase64();
+};
 $base = array( 'name' => 'Recette locale', 'town' => 'Écouen', 'type' => 'a-preciser', 'description' => 'Message fictif de recette : peinture du séjour.', 'phone' => '', 'email' => 'recette@example.test', 'period' => '', 'website' => '', 'fp_nonce' => wp_create_nonce( 'fp_quote' ), 'fp_token' => $token() );
 $assert( fp_quote_ready(), 'Mailpit configured and quote form enabled locally' );
 $assert( empty( fp_quote_validate( $base )['errors'] ), 'Email-only request valid' );
@@ -24,8 +29,8 @@ ob_start();
 fp_render_quote_form();
 $missing_contact_html = ob_get_clean();
 unset( $GLOBALS['fp_quote_result'] );
-$assert( str_contains( $missing_contact_html, 'href="#quote-contact"' ), 'Missing contact error links to the contact group' );
-$assert( 2 === substr_count( $missing_contact_html, 'aria-invalid="true" aria-describedby="contact-hint error-contact"' ), 'Both contact fields reference the shared error and instructions' );
+$assert( str_contains( $missing_contact_html, 'id="error-contact"' ) && ! str_contains( $missing_contact_html, 'form-error-summary' ), 'Missing contact error appears once near the contact group' );
+$assert( 2 === substr_count( $missing_contact_html, 'aria-invalid="true" aria-describedby="error-contact"' ), 'Both contact fields reference the shared error' );
 $assert( str_contains( $missing_contact_html, 'value="Recette locale"' ), 'Rendered contact error keeps the entered name' );
 $assert( str_contains( $missing_contact_html, 'role="status" aria-live="polite"' ), 'Submission has a live status region' );
 $assert( isset( fp_quote_validate( array_merge( $base, array( 'email' => 'invalid' ) ) )['errors']['email'] ), 'Malformed email rejected' );
@@ -43,13 +48,14 @@ $result = fp_quote_submit( array_merge( $base, array( 'fp_nonce' => 'incorrect' 
 $assert( ! $result['success'], 'Invalid WordPress nonce rejected' );
 for ( $i = 0; $i < 5; $i++ ) { $assert( fp_quote_rate_allowed( 'rate-' . $salt ), 'Rate limit allows attempt ' . ( $i + 1 ) ); }
 $assert( ! fp_quote_rate_allowed( 'rate-' . $salt ), 'Rate limit rejects sixth attempt' );
+$base['captcha'] = $captcha();
 $result = fp_quote_submit( $base, 'valid-' . $salt );
 if ( ! $result['success'] ) { WP_CLI::log( 'Quote failure category: ' . implode( ', ', array_keys( $result['errors'] ) ) ); }
 $assert( $result['success'], 'Real wp_mail SMTP delivery accepted by Mailpit' );
 $assert( ! fp_quote_submit( $base, 'repeat-' . $salt )['success'], 'Same signed request cannot send twice' );
 $old_port = getenv( 'FP_SMTP_PORT' );
 putenv( 'FP_SMTP_PORT=1' );
-$result = fp_quote_submit( array_merge( $base, array( 'fp_token' => $token() ) ), 'failure-' . $salt );
+$result = fp_quote_submit( array_merge( $base, array( 'fp_token' => $token(), 'captcha' => $captcha() ) ), 'failure-' . $salt );
 $assert( ! $result['success'] && isset( $result['errors']['form'] ), 'Actual SMTP connection failure has no success' );
 $assert( $result['values']['description'] === $base['description'], 'SMTP failure retains supplied text in response state' );
 false === $old_port ? putenv( 'FP_SMTP_PORT' ) : putenv( 'FP_SMTP_PORT=' . $old_port );

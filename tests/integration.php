@@ -189,7 +189,7 @@ try {
     fpqa_check( $information_title === get_the_title( $information_id ) && $information_slug === get_post_field( 'post_name', $information_id ), 'Forged information title and slug changes are ignored server-side' );
     fpqa_check( false === strpos( get_post_meta( $information_id, 'presentation', true ), '<script>' ), 'Information field sanitation removes script markup on save' );
     if ( fp_is_preview() || fp_approved( 'FP_CONTACT_APPROVED' ) ) {
-        fpqa_check( '06 00 00 00 01' === fp_phone_display() && 'tel:+33600000001' === fp_phone_uri(), 'Edited coordinates immediately propagate to display and tel URI' );
+        fpqa_check( '06 00 00 00 01' === fp_phone_display() && 'tel:+33600000001' === fp_phone_uri(), 'Approved mobile is displayed with a callable international URI' );
         fpqa_check( 'qa@example.test' === fp_info( 'public_email' ), 'Edited public email is returned by the shared content helper' );
     } else {
         fpqa_check( '' === fp_phone_display() && '' === fp_info( 'public_email' ), 'Unapproved contact details are hidden in production' );

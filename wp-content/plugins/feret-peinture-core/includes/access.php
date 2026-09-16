@@ -130,12 +130,16 @@ add_action( 'admin_notices', static function () {
     $screen = get_current_screen();
     if ( ! $screen || ! isset( fp_schema()[$screen->post_type] ) ) { return; }
     if ( ! function_exists( 'pods' ) || ! fp_schema() ) {
-        echo '<div class="notice notice-error"><p>Les champs métier sont indisponibles. Contactez Aliant avant toute modification.</p></div>'; return;
+        echo '<div class="notice notice-error"><p>Les champs de cette fiche ne sont pas disponibles. Contactez Aliant avant de la modifier.</p></div>'; return;
     }
-    $save_hint = 'fp_information' === $screen->post_type ? 'Cliquez sur Mettre à jour pour enregistrer vos informations dans tout le site.' : 'Enregistrez en brouillon pour préparer votre contenu.';
-    echo '<div class="notice notice-info"><p>' . esc_html( $save_hint ) . ' Les révisions restaurent les textes et les champs métier, y compris l’ordre des photos ; elles ne récupèrent pas un fichier supprimé de la médiathèque.</p></div>';
+    if ( 'post' !== $screen->base ) { return; }
+    $save_hint = 'Cliquez sur Mettre à jour pour enregistrer vos modifications.';
+    if ( 'fp_information' !== $screen->post_type && ! in_array( get_post_status( get_the_ID() ), [ 'publish', 'private', 'future' ], true ) ) {
+        $save_hint = 'Enregistrez le brouillon, puis vérifiez l’aperçu avant de publier.';
+    }
+    echo '<div class="notice notice-info"><p>' . esc_html( $save_hint ) . ' Les révisions permettent de revenir à une version enregistrée de la fiche. Elles ne récupèrent pas les photos supprimées de la médiathèque.</p></div>';
     if ( 'fp_project' === $screen->post_type ) {
-        echo '<div class="notice notice-info"><p>Pour afficher un chantier : ajoutez une photo principale, renseignez la commune, confirmez les droits des photos et cliquez sur Publier. N’indiquez jamais le nom ou l’adresse précise du client.</p></div>';
+        echo '<div class="notice notice-info"><p>Un chantier publié s’affiche si sa photo principale est ajoutée et sa publication autorisée. Renseignez la commune, sans nom ni adresse précise du client.</p></div>';
     }
 } );
 

@@ -31,6 +31,8 @@ jobs:
         run: docker compose run --rm -e FP_RUN_DESTRUCTIVE_TESTS=1 -e WP_ENVIRONMENT_TYPE=production wpcli wp eval-file /project/tests/integration.php
       - name: Quote form integration
         run: docker compose run --rm wpcli wp eval-file /project/tests/form-integration.php
+      - name: Self-hosted CAPTCHA
+        run: docker compose run --rm wpcli wp eval-file /project/tests/captcha-integration.php
       - name: Approved production JSON-LD and indexing on disposable fixtures
         run: docker compose run --rm -e FP_RUN_DESTRUCTIVE_TESTS=1 -e WP_ENVIRONMENT_TYPE=production wpcli wp eval-file /project/tests/publication-integration.php
       - name: HTTP journeys and SEO

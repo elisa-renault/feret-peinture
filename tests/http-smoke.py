@@ -58,7 +58,7 @@ def fetch(path, data=None):
     except urllib.error.HTTPError as response:
         return response.code, response.read().decode("utf-8"), dict(response.headers), response.url
 
-paths = ["/", "/prestations/", "/prestations/peinture-interieure/", "/prestations/peinture-exterieure/", "/prestations/revetements-muraux/", "/prestations/revetements-sols/", "/entreprise/", "/zone-intervention/", "/devis/", "/mentions-legales/", "/confidentialite/", "/merci/"]
+paths = ["/", "/prestations/", "/prestations/peinture-interieure/", "/prestations/peinture-exterieure/", "/prestations/revetements-muraux/", "/prestations/revetements-sols/", "/entreprise/", "/zone-intervention/", "/contact/", "/mentions-legales/", "/confidentialite/", "/merci/"]
 pages = {}
 for path in paths:
     status, body, headers, url = fetch(path)
@@ -78,7 +78,7 @@ status, body, _, _ = fetch("/page-inexistante-recette/")
 check(status == 404 and Page(body).h1 == 1, "Useful 404 page returns 404 with H1")
 status, body, _, _ = fetch("/merci/?sent=1")
 check("data-form-success" not in body, "A manual query string cannot simulate successful submission")
-check(all(re.fullmatch(r"tel:\+33[0-9]{9}", link) for link in pages["/"].links if link.startswith("tel:")), "Configured telephone links use international tel URI; fresh installs may have none")
+check("Prendre rendez-vous" in fetch("/")[1], "Appointment contact is the primary action")
 
 seen = set(paths)
 for page in pages.values():
@@ -91,11 +91,11 @@ for page in pages.values():
 
 def payload(fields):
     return dict(fields, fp_name="Recette HTTP", fp_town="Ã‰couen", fp_type="a-preciser", fp_description="Message fictif du parcours de recette HTTP.", fp_phone="", fp_email="http@example.test", fp_period="", fp_website="")
-status, body, _, _ = fetch("/devis/")
+status, body, _, _ = fetch("/contact/")
 fields = Page(body).fields
 check("fp_nonce" in fields and "fp_token" in fields, "Actual quote page provides server-generated nonce and token")
 time.sleep(2.1)
-status, body, _, _ = fetch("/devis/", dict(payload(fields), fp_email="", fp_phone=""))
+status, body, _, _ = fetch("/contact/", dict(payload(fields), fp_email="", fp_phone=""))
 if status != 422 or "form-error-summary" not in body:
     print("Invalid submission diagnostic: HTTP", status, "error summary:", "form-error-summary" in body)
     if os.environ.get("FP_TEST_DEBUG_DIR"):
@@ -104,11 +104,11 @@ check(status == 422 and "form-error-summary" in body, "Invalid actual POST retur
 check("Message fictif du parcours de recette HTTP." in body, "Invalid HTTP submission retains description")
 fields = Page(body).fields
 time.sleep(2.1)
-status, body, _, _ = fetch("/devis/", dict(payload(fields), fp_website="spam"))
+status, body, _, _ = fetch("/contact/", dict(payload(fields), fp_website="spam"))
 check(status == 422, "Honeypot actual POST is rejected")
 fields = Page(body).fields
 time.sleep(2.1)
-status, body, _, url = fetch("/devis/", payload(fields))
+status, body, _, url = fetch("/contact/", payload(fields))
 check(status == 200 and "/merci/?sent=" in url and "data-form-success" in body, "Valid HTTP request redirects to verified thank-you page")
 check("Message fictif" not in url and "example.test" not in url, "No submitted personal data in redirect URL")
 print(json.dumps({"checks": checks, "status": "passed", "base": BASE}, ensure_ascii=False))

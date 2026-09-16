@@ -1,6 +1,7 @@
 <?php
 /** Quote requests: WordPress mail API, explicit SMTP and no saved customer messages. */
 defined( 'ABSPATH' ) || exit;
+require_once __DIR__ . '/captcha.php';
 
 function fp_mail_setting( $name, $default = '' ) {
 	if ( defined( $name ) ) { return constant( $name ); }
@@ -119,10 +120,11 @@ function fp_quote_types() {
 
 function fp_quote_values( $input ) {
 	$values = array();
-	foreach ( array( 'name', 'town', 'type', 'description', 'phone', 'email', 'period', 'website', 'fp_token', 'fp_nonce' ) as $key ) {
+	foreach ( array( 'name', 'town', 'type', 'description', 'phone', 'email', 'period', 'website', 'fp_token', 'fp_nonce', 'captcha' ) as $key ) {
 		$value = isset( $input[ $key ] ) && is_scalar( $input[ $key ] ) ? (string) $input[ $key ] : '';
 		$values[ $key ] = 'description' === $key ? sanitize_textarea_field( $value ) : sanitize_text_field( $value );
 	}
+	if ( '' === $values['type'] ) { $values['type'] = 'a-preciser'; }
 	return $values;
 }
 
@@ -134,14 +136,14 @@ function fp_quote_validate( $input ) {
 	if ( $len( $values['town'] ) < 2 || $len( $values['town'] ) > 100 ) { $errors['town'] = 'Indiquez la commune ou le code postal du chantier.'; }
 	if ( ! isset( fp_quote_types()[ $values['type'] ] ) ) { $errors['type'] = 'Choisissez le type de travaux.'; }
 	if ( $len( $values['description'] ) < 10 || $len( $values['description'] ) > 4000 ) { $errors['description'] = 'Décrivez les travaux en 10 à 4 000 caractères.'; }
-	if ( '' === $values['email'] && '' === $values['phone'] ) { $errors['phone'] = 'Renseignez au moins un téléphone ou une adresse email pour être recontacté.'; }
+	if ( '' === $values['email'] && '' === $values['phone'] ) { $errors['phone'] = 'Renseignez un téléphone ou un email.'; }
 	// Validate original email/phone values too: do not turn a malformed or injected address into a valid one.
 	$raw_email = isset( $input['email'] ) && is_string( $input['email'] ) ? trim( $input['email'] ) : '';
 	if ( '' !== $values['email'] && ( $raw_email !== $values['email'] || ! is_email( $raw_email ) || strlen( $raw_email ) > 254 ) ) { $errors['email'] = 'Vérifiez votre adresse email.'; }
 	$raw_phone = isset( $input['phone'] ) && is_string( $input['phone'] ) ? trim( $input['phone'] ) : '';
 	$digits = preg_replace( '/[\s.()\-]/u', '', $raw_phone );
 	if ( '' !== $values['phone'] && ( ! preg_match( '/^\+?[0-9]{8,15}$/D', $digits ) || strlen( $raw_phone ) > 40 || preg_match( '/[\r\n]/', $raw_phone ) ) ) { $errors['phone'] = 'Vérifiez votre numéro de téléphone.'; }
-	if ( $len( $values['period'] ) > 100 ) { $errors['period'] = 'Précisez la période en moins de 100 caractères.'; }
+	if ( $len( $values['period'] ) > 100 ) { $errors['period'] = 'Précisez la période en 100 caractères maximum.'; }
 	return array( 'values' => $values, 'errors' => $errors );
 }
 
@@ -149,28 +151,33 @@ function fp_quote_validate( $input ) {
 function fp_quote_submit( $input, $ip ) {
 	$result = fp_quote_validate( $input );
 	$result['success'] = false;
-	if ( ! fp_quote_ready() ) { $result['errors'] = array( 'form' => 'Le formulaire est momentanément indisponible. Vous pouvez joindre Christophe par téléphone.' ); return $result; }
-	if ( ! fp_quote_rate_allowed( $ip ) ) { $result['errors'] = array( 'form' => 'Trop de tentatives récentes. Réessayez dans 15 minutes ou utilisez le téléphone.' ); return $result; }
+	if ( ! fp_quote_ready() ) { $result['errors'] = array( 'form' => 'Le formulaire est momentanément indisponible. Réessayez ultérieurement.' ); return $result; }
+	if ( ! fp_quote_rate_allowed( $ip ) ) { $result['errors'] = array( 'form' => 'Trop de tentatives récentes. Réessayez dans 15 minutes.' ); return $result; }
 	$v = $result['values'];
 	if ( ! wp_verify_nonce( $v['fp_nonce'], 'fp_quote' ) || ! fp_quote_token_valid( $v['fp_token'] ) || '' !== $v['website'] ) {
 		$result['errors'] = array( 'form' => 'Le formulaire a expiré ou a été envoyé trop rapidement. Vérifiez votre saisie puis réessayez.' );
 		return $result;
 	}
 	if ( $result['errors'] ) { return $result; }
+	$proof = fp_captcha_verify( $v['captcha'] );
+	if ( ! $proof || ! fp_captcha_consume( $proof ) ) {
+		$result['errors']['captcha'] = 'Relancez la vérification anti-spam.';
+		return $result;
+	}
 	global $wpdb;
 	$table = $wpdb->prefix . 'fp_quote_limits';
 	$key = hash_hmac( 'sha256', 'sent:' . $v['fp_token'], wp_salt( 'nonce' ) );
 	$reserved = $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO $table (counter_key, attempts, expires) VALUES (%s, 1, %d)", $key, time() + DAY_IN_SECONDS ) );
 	if ( 1 !== $reserved ) { $result['errors'] = array( 'form' => 'Cette demande a déjà été traitée ou est en cours. Ne la renvoyez pas immédiatement.' ); return $result; }
 	$type = fp_quote_types()[ $v['type'] ];
-	$subject = 'Demande de devis : ' . $v['town'] . ' - ' . $type;
-	$body = "Nouvelle demande de devis\n\nNom : {$v['name']}\nCommune / code postal : {$v['town']}\nTravaux : $type\nTéléphone : {$v['phone']}\nEmail : {$v['email']}\nPériode souhaitée : {$v['period']}\n\nDescription :\n{$v['description']}\n";
+	$subject = 'Demande de rendez-vous : ' . $v['town'] . ' - ' . $type;
+	$body = "Nouvelle demande de rendez-vous\n\nNom : {$v['name']}\nCommune / code postal : {$v['town']}\nTravaux : $type\nTéléphone : {$v['phone']}\nEmail : {$v['email']}\nPériode souhaitée : {$v['period']}\n\nDescription :\n{$v['description']}\n";
 	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
 	if ( '' !== $v['email'] ) { $headers[] = 'Reply-To: ' . $v['email']; }
 	$sent = wp_mail( fp_mail_setting( 'FP_QUOTE_TO' ), $subject, $body, $headers );
 	if ( ! $sent ) {
 		$wpdb->delete( $table, array( 'counter_key' => $key ), array( '%s' ) );
-		$result['errors'] = array( 'form' => 'L’envoi n’a pas abouti. Votre saisie est conservée ci-dessous : réessayez ou contactez Christophe par téléphone.' );
+		$result['errors'] = array( 'form' => 'L’envoi n’a pas abouti. Votre saisie est conservée ci-dessous : réessayez ultérieurement.' );
 		return $result;
 	}
 	$result['success'] = true;
@@ -178,7 +185,7 @@ function fp_quote_submit( $input, $ip ) {
 }
 
 add_action( 'template_redirect', function () {
-	if ( ! is_page( 'devis' ) ) { return; }
+	if ( ! is_page( 'contact' ) ) { return; }
 	nocache_headers();
 	if ( ! defined( 'DONOTCACHEPAGE' ) ) { define( 'DONOTCACHEPAGE', true ); }
 	if ( 'POST' !== ( $_SERVER['REQUEST_METHOD'] ?? '' ) ) { return; }
@@ -192,7 +199,7 @@ add_action( 'template_redirect', function () {
 	// Prefix HTML fields: WordPress reserves public query variables such as `name`.
 	$posted = wp_unslash( $_POST );
 	$input = array( 'fp_nonce' => $posted['fp_nonce'] ?? '', 'fp_token' => $posted['fp_token'] ?? '' );
-	foreach ( array( 'name', 'town', 'type', 'description', 'phone', 'email', 'period', 'website' ) as $key ) {
+	foreach ( array( 'name', 'town', 'type', 'description', 'phone', 'email', 'period', 'website', 'captcha' ) as $key ) {
 		$input[ $key ] = $posted[ 'fp_' . $key ] ?? '';
 	}
 	$result = fp_quote_submit( $input, $ip );
@@ -207,7 +214,7 @@ add_action( 'template_redirect', function () {
 /** Render a labelled field and connect its instructions and server errors. */
 function fp_render_quote_field( $key, $field, $values, $errors ) {
 	$contact = in_array( $key, array( 'phone', 'email' ), true );
-	$described_by = $contact ? array( 'contact-hint' ) : array();
+	$described_by = array();
 	if ( $contact && isset( $errors['contact'] ) ) { $described_by[] = 'error-contact'; }
 	if ( isset( $errors[ $key ] ) ) { $described_by[] = 'error-' . $key; }
 	$invalid = isset( $errors[ $key ] ) || ( $contact && isset( $errors['contact'] ) );
@@ -220,14 +227,13 @@ function fp_render_quote_field( $key, $field, $values, $errors ) {
 
 function fp_render_quote_form() {
 	if ( ! fp_quote_ready() ) {
-		echo '<div class="form-notice"><h2>Parlons de votre projet</h2><p>Le formulaire sera bientôt disponible. Vous pouvez contacter Christophe par téléphone.</p>';
+		echo '<div class="form-notice"><h2>Parlons de votre projet</h2><p>Le formulaire est en cours de préparation. L’envoi des demandes sera disponible à l’ouverture du site.</p>';
 		if ( fp_phone_uri() ) { echo '<a class="button button--primary" data-event="click_phone" href="' . esc_url( fp_phone_uri() ) . '">' . esc_html( fp_phone_display() ) . '</a>'; }
 		echo '</div>';
 		return;
 	}
 	$result = $GLOBALS['fp_quote_result'] ?? array( 'values' => array(), 'errors' => array() );
 	$values = wp_parse_args( $result['values'], array_fill_keys( array( 'name', 'town', 'type', 'description', 'phone', 'email', 'period' ), '' ) );
-	if ( '' === $values['type'] && isset( $_GET['prestation'] ) && is_string( $_GET['prestation'] ) ) { $values['type'] = sanitize_key( wp_unslash( $_GET['prestation'] ) ); }
 	$errors = $result['errors'];
 	// A missing contact method concerns the pair, not the telephone alone.
 	if ( isset( $errors['phone'] ) && '' === $values['phone'] && '' === $values['email'] ) {
@@ -236,42 +242,52 @@ function fp_render_quote_form() {
 	}
 	$token = fp_quote_token();
 	?>
-	<form class="fp-form" action="<?php echo esc_url( home_url( '/devis/' ) ); ?>" method="post" data-quote-form data-has-errors="<?php echo $errors ? '1' : '0'; ?>">
-		<?php if ( fp_is_preview() ) : ?><p class="form-note preview-notice">Prévisualisation : les demandes sont captées dans la boîte de test locale. Aucun envoi à Christophe.</p><?php endif; ?>
-		<?php if ( $errors ) : ?>
-		<div class="form-error-summary" id="form-errors" role="alert" tabindex="-1"><h2>Votre demande n’a pas été envoyée</h2><ul>
-		<?php foreach ( $errors as $field => $message ) : ?><li><?php if ( 'form' !== $field ) : ?><a href="#quote-<?php echo esc_attr( $field ); ?>"><?php echo esc_html( $message ); ?></a><?php else : ?><?php echo esc_html( $message ); ?><?php endif; ?></li><?php endforeach; ?>
-		</ul><?php if ( fp_phone_uri() ) : ?><p>Vous pouvez aussi appeler le <a href="<?php echo esc_url( fp_phone_uri() ); ?>" data-event="click_phone"><?php echo esc_html( fp_phone_display() ); ?></a>.</p><?php endif; ?></div>
+	<form class="fp-form" action="<?php echo esc_url( home_url( '/contact/' ) ); ?>" method="post" data-quote-form data-has-errors="<?php echo $errors ? '1' : '0'; ?>">
+		<?php if ( fp_is_preview() ) : ?><p class="form-note preview-notice">Formulaire de test : utilisez des coordonnées fictives. Aucun message ne sera transmis à Christophe.</p><?php endif; ?>
+		<?php if ( isset( $errors['form'] ) ) : ?>
+		<div class="form-error-summary" id="form-errors" role="alert" tabindex="-1"><p><?php echo esc_html( $errors['form'] ); ?></p></div>
 		<?php endif; ?>
-		<p class="form-note" id="quote-required">Les champs marqués d’un * sont obligatoires.</p>
+		<p class="form-note" id="quote-required">* Champs obligatoires.</p>
 		<div class="form-grid">
 		<?php
 		$fields = array(
 			'name' => array( 'Votre nom *', 'text', 'name', 100, true ),
-			'town' => array( 'Commune ou code postal du chantier *', 'text', 'off', 100, true ),
+			'town' => array( 'Commune ou code postal *', 'text', 'off', 100, true ),
 		);
 		foreach ( $fields as $key => $field ) { fp_render_quote_field( $key, $field, $values, $errors ); }
 		?>
 		</div>
-		<fieldset class="contact-methods" id="quote-contact" tabindex="-1" aria-describedby="contact-hint<?php echo isset( $errors['contact'] ) ? ' error-contact' : ''; ?>">
-		<legend>Comment vous recontacter ? *</legend>
-		<p class="form-note" id="contact-hint">Un téléphone <strong>ou</strong> un email suffit. Vous pouvez renseigner les deux.</p>
-		<?php if ( isset( $errors['contact'] ) ) : ?><p class="form-error" id="error-contact"><?php echo esc_html( $errors['contact'] ); ?></p><?php endif; ?>
+		<fieldset class="contact-methods" id="quote-contact" tabindex="-1" aria-label="Coordonnées" <?php echo isset( $errors['contact'] ) ? 'aria-describedby="error-contact"' : ''; ?>>
 		<div class="form-grid"><?php
 		fp_render_quote_field( 'phone', array( 'Téléphone', 'tel', 'tel', 40, false ), $values, $errors );
 		fp_render_quote_field( 'email', array( 'Email', 'email', 'email', 254, false ), $values, $errors );
-		?></div></fieldset>
-		<div class="form-field"><label for="quote-type">Type de travaux *</label><select id="quote-type" name="fp_type" required <?php echo isset( $errors['type'] ) ? 'aria-invalid="true" aria-describedby="error-type"' : ''; ?>><option value="">Choisir une prestation</option><?php foreach ( fp_quote_types() as $key => $label ) : ?><option value="<?php echo esc_attr( $key ); ?>" <?php selected( $values['type'], $key ); ?>><?php echo esc_html( $label ); ?></option><?php endforeach; ?></select><?php if ( isset( $errors['type'] ) ) : ?><p class="form-error" id="error-type"><?php echo esc_html( $errors['type'] ); ?></p><?php endif; ?></div>
-		<div class="form-field"><label for="quote-description">Les travaux envisagés *</label><p class="form-note" id="description-hint">La pièce ou les surfaces concernées, leur état, ce que vous souhaitez changer. Pas besoin de mesures précises.</p><textarea id="quote-description" name="fp_description" rows="5" minlength="10" maxlength="4000" required aria-describedby="description-hint<?php echo isset( $errors['description'] ) ? ' error-description' : ''; ?>" <?php echo isset( $errors['description'] ) ? 'aria-invalid="true"' : ''; ?>><?php echo esc_textarea( $values['description'] ); ?></textarea><?php if ( isset( $errors['description'] ) ) : ?><p class="form-error" id="error-description"><?php echo esc_html( $errors['description'] ); ?></p><?php endif; ?></div>
-		<div class="form-field"><label for="quote-period">Période souhaitée <span class="form-note">(facultatif)</span></label><input id="quote-period" name="fp_period" type="text" maxlength="100" placeholder="Par exemple : cet automne, sans date précise…" value="<?php echo esc_attr( $values['period'] ); ?>" <?php echo isset( $errors['period'] ) ? 'aria-invalid="true" aria-describedby="error-period"' : ''; ?>><?php if ( isset( $errors['period'] ) ) : ?><p class="form-error" id="error-period"><?php echo esc_html( $errors['period'] ); ?></p><?php endif; ?></div>
+		?></div>
+		<?php if ( isset( $errors['contact'] ) ) : ?><p class="form-error" id="error-contact"><?php echo esc_html( $errors['contact'] ); ?></p><?php endif; ?>
+		</fieldset>
+		<div class="form-field"><label for="quote-description">Vos travaux en quelques mots *</label><textarea id="quote-description" name="fp_description" rows="3" minlength="10" maxlength="4000" required <?php echo isset( $errors['description'] ) ? 'aria-describedby="error-description"' : ''; ?> <?php echo isset( $errors['description'] ) ? 'aria-invalid="true"' : ''; ?>><?php echo esc_textarea( $values['description'] ); ?></textarea><?php if ( isset( $errors['description'] ) ) : ?><p class="form-error" id="error-description"><?php echo esc_html( $errors['description'] ); ?></p><?php endif; ?></div>
 		<div hidden aria-hidden="true"><label for="quote-website">Ne pas remplir</label><input id="quote-website" name="fp_website" tabindex="-1" autocomplete="off" value=""></div>
 		<?php wp_nonce_field( 'fp_quote', 'fp_nonce', false ); ?>
 		<input type="hidden" name="fp_token" value="<?php echo esc_attr( $token ); ?>">
-		<div class="form-privacy"><p>Les informations servent à étudier votre projet et à vous recontacter. Elles sont destinées à Christophe Feret ; Aliant peut y accéder pour la maintenance technique.</p>
-		<?php if ( fp_is_preview() ) : ?><p>Texte de confidentialité et durée de conservation à valider avant l’ouverture. Utilisez uniquement des données fictives pour cette prévisualisation.</p><?php else : ?><p><?php echo esc_html( fp_mail_setting( 'FP_PRIVACY_RETENTION' ) ); ?></p><p>Vous pouvez demander l’accès, la rectification ou l’effacement de vos données, ou la limitation de leur traitement dans les cas prévus par la réglementation. Les coordonnées et les modalités figurent dans la <a href="<?php echo esc_url( home_url( '/confidentialite/' ) ); ?>">politique de confidentialité</a>.</p><?php endif; ?></div>
+		<div class="form-field" id="quote-captcha" tabindex="-1" <?php echo isset( $errors['captcha'] ) ? 'aria-invalid="true" aria-describedby="error-captcha"' : ''; ?>>
+        <altcha-widget name="fp_captcha" language="fr" auto="onload" challenge="<?php echo esc_url( add_query_arg( 'fp_captcha', '1', home_url( '/' ) ) ); ?>" configuration='{"humanInteractionSignature":false,"hideFooter":true}'></altcha-widget>
+        <?php if ( isset( $errors['captcha'] ) ) : ?><p class="form-error" id="error-captcha"><?php echo esc_html( $errors['captcha'] ); ?></p><?php endif; ?>
+        <noscript><p>Activez JavaScript pour la vérification anti-spam, ou contactez Christophe par téléphone.</p></noscript>
+        </div>
+		<p class="form-note form-privacy">L’EURL CHRISTOPHE FERET utilise ces informations pour organiser votre rendez-vous, sur la base des mesures précontractuelles demandées. Christophe traite votre demande ; Aliant peut accéder aux données pour la maintenance. Les demandes sans suite sont conservées trois ans après le dernier échange. Pour connaître vos droits d’accès, de rectification et d’effacement et les exercer, consultez la <a href="<?php echo esc_url( home_url( '/confidentialite/' ) ); ?>">politique de confidentialité</a>.</p>
 		<button type="submit" class="button button--primary">Envoyer ma demande</button>
 		<p class="form-note submit-status" role="status" aria-live="polite" aria-atomic="true" data-submit-status></p>
-		<p class="form-note">Vous pourrez transmettre des photos lors du premier échange.</p>
 	</form>
 	<?php
 }
+
+// Preserve existing bookmarks and POST bodies from forms opened before the move.
+add_action( 'template_redirect', function () {
+    global $wp;
+    if ( 'devis' !== trim( $wp->request ?? '', '/' ) ) { return; }
+    $url = home_url( '/contact/' );
+    if ( isset( $_GET['prestation'] ) && is_string( $_GET['prestation'] ) ) {
+        $url = add_query_arg( 'prestation', sanitize_key( wp_unslash( $_GET['prestation'] ) ), $url );
+    }
+    wp_safe_redirect( $url, 'POST' === ( $_SERVER['REQUEST_METHOD'] ?? '' ) ? 308 : 301 );
+    exit;
+}, 0 );

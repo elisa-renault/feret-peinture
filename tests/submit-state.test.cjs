@@ -41,7 +41,7 @@ test('submission gives feedback and prevents repeated submission', () => {
   assert.equal(ui.submit.disabled, true);
   assert.equal(ui.submit.textContent, 'Envoi en cours…');
   assert.equal(ui.attributes['aria-busy'], 'true');
-  assert.match(ui.status.textContent, /en cours/);
+  assert.equal(ui.status.textContent, '');
   ui.formEvents.submit({ preventDefault() { prevented++; } });
   assert.equal(prevented, 1, 'second submit is blocked');
 });

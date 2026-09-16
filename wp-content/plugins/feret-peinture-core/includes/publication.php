@@ -7,7 +7,7 @@ function fp_launch_errors(): array {
         if ( ! fp_approved( $flag ) ) { $errors[] = $flag . ' : validation manquante.'; }
     }
     if ( ! function_exists( 'pods' ) || 3 !== count( fp_schema() ) ) { $errors[] = 'Configuration métier ou Pods indisponible.'; }
-    if ( ! fp_phone_uri() ) { $errors[] = 'Téléphone public valide manquant.'; }
+    if ( ! is_email( fp_info( 'public_email' ) ) ) { $errors[] = 'Email public valide manquant.'; }
     if ( ! function_exists( 'fp_quote_ready' ) || ! fp_quote_ready() ) { $errors[] = 'Configuration d’envoi et d’information sur les données incomplète.'; }
     foreach ( [ 'mentions-legales', 'confidentialite' ] as $slug ) {
         $page = get_page_by_path( $slug );
@@ -106,7 +106,6 @@ add_action( 'wp_head', static function () {
         '@context' => 'https://schema.org', '@type' => 'HousePainter',
         '@id' => home_url( '/#entreprise' ), 'name' => 'Feret Peinture',
         'legalName' => 'CHRISTOPHE FERET', 'url' => home_url( '/' ),
-        'telephone' => str_replace( 'tel:', '', fp_phone_uri() ),
     ];
     $areas = array_values( array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', fp_info( 'confirmed_area' ) ) ) ) );
     if ( $areas ) { $data['areaServed'] = $areas; }

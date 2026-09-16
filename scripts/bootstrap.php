@@ -35,10 +35,10 @@ $pages = [
     'accueil' => 'Peintre en bâtiment à Écouen',
     'entreprise' => 'Christophe Feret - Peintre à Écouen',
     'zone-intervention' => 'Votre projet et sa localisation',
-    'devis' => 'Demander un devis',
+    'contact' => 'Prendre rendez-vous',
     'mentions-legales' => 'Mentions légales',
     'confidentialite' => 'Confidentialité',
-    'merci' => 'Votre demande de devis',
+    'merci' => 'Votre demande de rendez-vous',
 ];
 foreach ( $pages as $slug => $title ) {
     [ $id, $new ] = fp_seed_post( 'page:' . $slug, [ 'post_type' => 'page', 'post_status' => 'publish', 'post_name' => $slug, 'post_title' => $title, 'post_content' => '' ] );
@@ -57,7 +57,7 @@ if ( $new ) {
     pods( 'fp_information', $information_id )->save( [
         'phone_mobile' => '', 'phone_landline' => '',
         'public_email' => '',
-        'presentation' => 'Christophe Feret est implanté à Écouen, dans le Val-d’Oise. L’entreprise exerce une activité de travaux de peinture.',
+        'presentation' => 'Christophe Feret est peintre en bâtiment à Écouen, dans le Val-d’Oise.',
         'confirmed_area' => '', 'temporary_message' => '',
     ] );
 }

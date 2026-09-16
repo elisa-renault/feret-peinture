@@ -10,7 +10,7 @@ Le code original du thème et du plugin, les compositions CSS/SVG originales et 
 | --- | --- | --- |
 | Nom composé Feret Peinture | Identité typographique provisoire réalisée pour le projet | En-tête et pied de page ; aucun logo historique prétendu. |
 | Favicon SVG | Dessin vectoriel original du thème | Repère graphique, sans badge de qualification. |
-| Hero de nuancier / matières | Composition graphique originale CSS/SVG | Illustration abstraite ; ne représente ni un chantier ni Christophe. |
+| Photographies d’ambiance | Sélection de photos stock fournie par Elisa, voir le registre ci-dessous | Accueil et peinture intérieure ; identifiées comme illustrations. |
 | Textes du site | Rédaction originale depuis le brief et les faits référencés | Texte de prévisualisation jusqu'aux validations métier ; aucun lorem ipsum. |
 | Photos professionnelles | Aucune photo authentifiée fournie pour cette V1 | Aucune fausse réalisation en production. |
 | Fixtures éventuelles | Échantillons explicitement marqués, import facultatif de développement | Test technique uniquement ; exclusion du rendu public de production. |
@@ -65,3 +65,17 @@ Tenir ce registre dans un espace privé géré par Aliant, associé à l'identif
 # Complément : image de partage
 
 `wp-content/themes/feret-peinture/assets/partage.png` : composition originale créée pour ce projet le 16 septembre 2026, à partir de texte et de trois aplats de la palette du site. Format 1 200 × 630 px. Typographies système Georgia et Arial rendues dans l’image ; aucun fichier de police supplémentaire distribué. Aucun chantier, portrait ou photo tiers utilisé.
+
+## Photos stock intégrées le 16 septembre 2026
+
+Sélection depuis le dossier « Images stock candidates » fourni par Elisa comme contenant des images libres de droit. Les noms des fichiers identifient les auteurs et plateformes ci-dessous ; les pages source et conditions de téléchargement n’ont pas été revérifiées pendant cette intégration. Conserver les justificatifs de téléchargement avec les originaux.
+
+| Original fourni | Auteur / plateforme selon le fichier | Dérivé dans assets/images | Emplacement |
+| --- | --- | --- | --- |
+| pexels-ivan-s-5799131.jpg | Ivan S / Pexels | atelier-terracotta-640.jpg et -1200.jpg | Photo principale de l’accueil |
+| brett-jordan-dwlAdWdSieI-unsplash.jpg | Brett Jordan / Unsplash | nuancier-360.jpg | Nuancier superposé à l’accueil |
+| pexels-anete-lusina-4792518.jpg | Anete Lusina / Pexels | geste-peinture-640.jpg et -1200.jpg | Peinture intérieure, uniquement en l’absence d’image éditoriale |
+
+Dérivés JPEG à qualité 82, redimensionnés sans métadonnées des originaux. Cadrages réalisés en CSS, sans retouche générative. Images hébergées localement, sans appel aux plateformes. Les photographies conservent leurs propres conditions d’utilisation et ne sont pas couvertes par la licence GPL du code.
+
+Ces illustrations ne sont ni un portrait de Christophe ni des réalisations de l’entreprise. Aucun contenu de chantier n’a été créé. Les images éditoriales définies dans WordPress restent prioritaires sur la fiche prestation.

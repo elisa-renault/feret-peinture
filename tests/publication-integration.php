@@ -12,6 +12,8 @@ $assert = function ( $condition, $message ) use ( &$checks ) {
 $backup = array();
 $information_id = fp_information_id();
 $original_phone = get_post_meta( $information_id, 'phone_mobile', true );
+$original_email = get_post_meta( $information_id, 'public_email', true );
+$original_area = get_post_meta( $information_id, 'confirmed_area', true );
 $indexing = get_option( 'blog_public' );
 $flag_names = array( 'FP_LAUNCH_APPROVED', 'FP_CONTACT_APPROVED', 'FP_SERVICES_APPROVED', 'FP_LEGAL_APPROVED', 'FP_PRIVACY_APPROVED', 'FP_MAIL_DELIVERY_VERIFIED', 'FP_PRIVACY_RETENTION', 'FP_BUSINESS_ADDRESS_JSON' );
 $previous_env = array();
@@ -19,6 +21,8 @@ foreach ( $flag_names as $key ) { $previous_env[ $key ] = getenv( $key ); }
 $test_domain = static fn() => 'https://feret-peinture.fr';
 try {
     update_post_meta( $information_id, 'phone_mobile', '06 00 00 00 01' );
+    update_post_meta( $information_id, 'public_email', 'contact@feret-peinture.fr' );
+    update_post_meta( $information_id, 'confirmed_area', '' );
     foreach ( array_slice( $flag_names, 0, 6 ) as $flag ) { putenv( $flag . '=1' ); }
     putenv( 'FP_PRIVACY_RETENTION=Texte synthétique de recette, jamais publié.' );
     putenv( 'FP_BUSINESS_ADDRESS_JSON=' . wp_json_encode( array( 'streetAddress' => '10 avenue de Recette', 'postalCode' => '95440', 'addressLocality' => 'Écouen', 'addressCountry' => 'FR' ) ) );
@@ -43,7 +47,7 @@ try {
     $data = json_decode( $matches[1][0], true, 512, JSON_THROW_ON_ERROR );
     $assert( 'HousePainter' === $data['@type'] && 'https://schema.org' === $data['@context'], 'JSON-LD parses with the expected HousePainter vocabulary' );
     $assert( 'https://feret-peinture.fr/' === $data['url'] && ! str_contains( wp_json_encode( $data ), 'localhost' ), 'Structured URLs use the configured production origin' );
-    $assert( str_replace( 'tel:', '', fp_phone_uri() ) === $data['telephone'], 'JSON-LD and visible telephone use the same data' );
+    $assert( ! isset( $data['telephone'] ) && '' === fp_phone_uri(), 'Private phone is absent from both JSON-LD and public links' );
     $assert( '10 avenue de Recette' === $data['address']['streetAddress'], 'Address is emitted only when also present in the approved legal text' );
     $assert( ! isset( $data['areaServed'] ), 'No unconfirmed geographic coverage emitted' );
     $assert( ! array_intersect( array( 'geo', 'aggregateRating', 'openingHours' ), array_keys( $data ) ), 'No invented coordinates, ratings or opening hours' );
@@ -52,6 +56,8 @@ try {
     $assert( ! isset( $sitemap_types['post'] ) && ! isset( $sitemap_types['attachment'] ), 'No blog or media archives in the sitemap types' );
 } finally {
     update_post_meta( $information_id, 'phone_mobile', $original_phone );
+    update_post_meta( $information_id, 'public_email', $original_email );
+    update_post_meta( $information_id, 'confirmed_area', $original_area );
     remove_filter( 'pre_option_home', $test_domain );
     remove_filter( 'pre_option_siteurl', $test_domain );
     update_option( 'blog_public', $indexing );

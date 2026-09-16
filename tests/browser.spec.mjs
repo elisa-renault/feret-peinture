@@ -35,11 +35,7 @@ for (const width of widths) {
     await page.evaluate(() => document.fonts.ready);
     await checkStructure(page, width);
     await expect(page.locator('h1')).toHaveText('Peintre en bâtiment à Écouen.');
-    // A fresh public checkout has no approved telephone yet.
-    for (const link of await page.locator('a[href^="tel:"]').all()) {
-      await expect(link).toBeVisible();
-      await expect(link).toHaveAttribute('href', /^tel:\+33[0-9]{9}$/);
-    }
+    await expect(page.locator('a[href^="tel:"]')).toHaveCount(0);
     await expect(page.locator('.faq-grid h2')).toHaveText(/Quelques\s+réponses utiles\./);
     await page.screenshot({ path: testInfo.outputPath(`accueil-${width}.png`), fullPage: true });
 
@@ -104,7 +100,7 @@ test('404 and manually constructed thank-you URL never report a successful submi
 });
 
 test('only anonymous, allowlisted local event names are emitted', async ({ page }) => {
-  await page.goto(baseURL + '/devis/');
+  await page.goto(baseURL + '/contact/');
   await page.evaluate(() => {
     window.fpTestEvents = [];
     window.addEventListener('fp:analytics', (event) => window.fpTestEvents.push(event.detail));
