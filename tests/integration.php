@@ -55,8 +55,18 @@ try {
         foreach ( $definition['fields'] as $name => $field ) {
             fpqa_check( isset( $actual[$name] ) && $actual[$name]['type'] === $field['type'], "Pods field {$type}.{$name} has its expected type" );
         }
-        fpqa_check( ! get_post_type_object( $type )->show_in_rest, "{$type} has no public native REST collection" );
+        $rest_enabled = 'fp_service' === $type;
+        fpqa_check( $rest_enabled === (bool) get_post_type_object( $type )->show_in_rest, "{$type} has the expected native REST availability" );
     }
+    fpqa_check( use_block_editor_for_post_type( 'fp_service' ), 'Services use the block editor' );
+    fpqa_check( 'all' === get_post_type_object( 'fp_service' )->template_lock, 'Service block structure is locked' );
+    foreach ( fp_service_block_names() as $block_name ) {
+        fpqa_check( WP_Block_Type_Registry::get_instance()->is_registered( $block_name ), "Custom block {$block_name} is registered" );
+    }
+    $converted_service = fp_service_blocks_from_html( '<p>Contenu de prestation QA.</p>' );
+    $converted_blocks = parse_blocks( $converted_service );
+    fpqa_check( 2 === count( $converted_blocks ) && 'feret/service-content' === $converted_blocks[0]['blockName'] && 'feret/service-note' === $converted_blocks[1]['blockName'], 'Legacy service content converts to the two locked custom blocks' );
+    fpqa_check( [ 'move' => true, 'remove' => true ] === $converted_blocks[0]['attrs']['lock'] && false !== strpos( do_blocks( $converted_service ), 'Contenu de prestation QA.' ), 'Converted service text renders while the empty practical note stays hidden' );
     fpqa_check( false === get_post_type_object( 'fp_information' )->show_in_menu, 'Information singleton is hidden from the generic content menu' );
     fpqa_check( [ 'phone_mobile', 'phone_landline', 'public_email', 'presentation', 'confirmed_area' ] === fp_information_panel_fields(), 'Information panel exposes only the recurring shared fields' );
     $login = 'fpqa_' . strtolower( wp_generate_password( 8, false, false ) );
@@ -144,6 +154,8 @@ try {
     fpqa_check( 403 === $response->get_status(), 'Authenticated REST cannot inspect or manage the Pods schema (403)' );
     $response = fpqa_rest( 'GET', '/wp/v2/fp_information' );
     fpqa_check( 404 === $response->get_status(), 'Information CPT has no REST endpoint' );
+    $response = fpqa_rest( 'GET', '/wp/v2/fp_service' );
+    fpqa_check( 200 === $response->get_status(), 'Authenticated editor can load services for the block editor' );
 
     $project = wp_insert_post( [ 'post_type' => 'fp_project', 'post_title' => 'FP QA revision A', 'post_content' => 'Description réelle de test A.', 'post_status' => 'draft', 'post_author' => $editor ], true );
     if ( is_wp_error( $project ) ) { throw new RuntimeException( 'Cannot insert test project.' ); }

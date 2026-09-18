@@ -221,6 +221,13 @@ def main():
                 check(status == 200 and EditorHTML(edited_info).values.get("pods_meta_phone_mobile") == "06 00 00 00 02", "Christophe Feret edits the shared phone through the native information form")
                 _, public_home, _ = request("/")
                 check("tel:+33600000002" in public_home, "Native contact edit propagates to the public phone link")
+            if post_type == "fp_service" and status == 200:
+                service_editor = next((link for link in EditorHTML(page).links if "post.php?post=" in link and "action=edit" in link), None)
+                if service_editor:
+                    editor_status, editor_source, _ = request(service_editor)
+                    check(editor_status == 200 and "feret/service-content" in editor_source and "feret/service-note" in editor_source, "Service editor loads the two locked custom blocks")
+                else:
+                    check(False, "Service list provides an editable block-editor link")
 
         status, source, _ = request("/wp-admin/post-new.php?post_type=fp_project")
         form = EditorHTML(source)

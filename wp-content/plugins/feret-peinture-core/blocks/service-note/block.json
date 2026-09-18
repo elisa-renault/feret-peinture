@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "feret/service-note",
+  "version": "1.0.0",
+  "title": "Note pratique",
+  "category": "text",
+  "icon": "info-outline",
+  "description": "Un repère facultatif qui complète une prestation.",
+  "keywords": ["prestation", "conseil", "Feret"],
+  "attributes": {
+    "title": { "type": "string", "default": "" },
+    "body": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false, "multiple": false },
+  "editorScript": "file:./index.js",
+  "style": "file:./style.css",
+  "render": "file:./render.php"
+}

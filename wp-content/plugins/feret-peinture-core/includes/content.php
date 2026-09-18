@@ -16,6 +16,13 @@ function fp_service_seed(): array {
     return is_file( $file ) ? require $file : [];
 }
 
+function fp_service_block_template(): array {
+    return [
+        [ 'feret/service-content', [ 'lock' => [ 'move' => true, 'remove' => true ] ] ],
+        [ 'feret/service-note', [ 'lock' => [ 'move' => true, 'remove' => true ] ] ],
+    ];
+}
+
 function fp_register_content(): void {
     $types = [
         'fp_project' => [ 'Mes chantiers', 'Chantier', 'realisations', 'dashicons-format-gallery' ],
@@ -41,13 +48,15 @@ function fp_register_content(): void {
                 'remove_featured_image' => 'Retirer la photo principale', 'use_featured_image' => 'Utiliser cette photo',
             ],
             'public' => ! $is_info, 'publicly_queryable' => ! $is_info,
-            'exclude_from_search' => true, 'show_ui' => true, 'show_in_rest' => false,
+            'exclude_from_search' => true, 'show_ui' => true, 'show_in_rest' => 'fp_service' === $name,
             'show_in_menu' => ! $is_info, 'show_in_nav_menus' => ! $is_info, 'has_archive' => $is_info ? false : $labels[2],
             'rewrite' => $is_info ? false : [ 'slug' => $labels[2], 'with_front' => false ],
             'query_var' => ! $is_info, 'menu_icon' => $labels[3], 'menu_position' => 5 + array_search( $name, array_keys( $types ), true ),
             'capability_type' => [ $name, $name . 's' ], 'map_meta_cap' => true,
             'capabilities' => [ 'create_posts' => 'create_' . $name . 's' ],
             'supports' => $is_info ? [ 'title', 'revisions' ] : [ 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ],
+            'template' => 'fp_service' === $name ? fp_service_block_template() : [],
+            'template_lock' => 'fp_service' === $name ? 'all' : false,
         ] );
     }
 }

@@ -197,7 +197,10 @@ add_filter( 'login_redirect', static function ( $url, $requested, $user ) {
     return $user instanceof WP_User && in_array( 'fp_christophe', (array) $user->roles, true ) ? admin_url( 'edit.php?post_type=fp_project' ) : $url;
 }, 10, 3 );
 add_filter( 'show_admin_bar', static fn( $show ) => fp_is_christophe() ? false : $show );
-add_filter( 'use_block_editor_for_post_type', static fn( $use, $type ) => isset( fp_schema()[$type] ) ? false : $use, 10, 2 );
+add_filter( 'use_block_editor_for_post_type', static function ( $use, $type ) {
+    if ( 'fp_service' === $type ) { return true; }
+    return isset( fp_schema()[$type] ) ? false : $use;
+}, 10, 2 );
 add_filter( 'post_row_actions', static function ( $actions, $post ) {
     if ( isset( fp_schema()[$post->post_type] ) ) { unset( $actions['inline hide-if-no-js'] ); }
     return $actions;

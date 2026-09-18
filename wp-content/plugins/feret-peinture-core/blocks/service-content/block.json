@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "feret/service-content",
+  "version": "1.0.0",
+  "title": "Texte de prestation",
+  "category": "text",
+  "icon": "editor-paragraph",
+  "description": "Le texte principal d’une prestation.",
+  "keywords": ["prestation", "texte", "Feret"],
+  "attributes": {
+    "content": { "type": "string", "source": "html", "selector": "div" }
+  },
+  "supports": { "html": false, "multiple": false },
+  "editorScript": "file:./index.js",
+  "style": "file:./style.css"
+}
