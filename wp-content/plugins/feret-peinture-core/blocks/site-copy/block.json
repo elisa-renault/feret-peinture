@@ -12,7 +12,7 @@
     "label": { "type": "string" },
     "content": { "type": "string" }
   },
-  "supports": { "html": false, "multiple": false },
+  "supports": { "html": false },
   "editorScript": "file:./index.js",
   "render": "file:./render.php"
 }

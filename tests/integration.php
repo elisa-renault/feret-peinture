@@ -67,6 +67,7 @@ try {
     $site_copy_script = $site_copy_block->editor_script_handles[0] ?? '';
     $site_copy_dependencies = $site_copy_script && isset( wp_scripts()->registered[ $site_copy_script ] ) ? wp_scripts()->registered[ $site_copy_script ]->deps : [];
     fpqa_check( $site_copy_block && in_array( 'wp-block-editor', $site_copy_dependencies, true ), 'Site-copy block loads after the WordPress block editor dependencies' );
+    fpqa_check( $site_copy_block && false !== ( $site_copy_block->supports['multiple'] ?? true ), 'Site-copy blocks can be used for each guided text on the page' );
     $converted_service = fp_service_blocks_from_html( '<p>Contenu de prestation QA.</p>' );
     $converted_blocks = parse_blocks( $converted_service );
     fpqa_check( 2 === count( $converted_blocks ) && 'feret/service-content' === $converted_blocks[0]['blockName'] && 'feret/service-note' === $converted_blocks[1]['blockName'], 'Legacy service content converts to the two locked custom blocks' );
