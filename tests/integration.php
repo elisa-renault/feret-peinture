@@ -63,6 +63,10 @@ try {
     foreach ( fp_service_block_names() as $block_name ) {
         fpqa_check( WP_Block_Type_Registry::get_instance()->is_registered( $block_name ), "Custom block {$block_name} is registered" );
     }
+    $site_copy_block = WP_Block_Type_Registry::get_instance()->get_registered( 'feret/site-copy' );
+    $site_copy_script = $site_copy_block->editor_script_handles[0] ?? '';
+    $site_copy_dependencies = $site_copy_script && isset( wp_scripts()->registered[ $site_copy_script ] ) ? wp_scripts()->registered[ $site_copy_script ]->deps : [];
+    fpqa_check( $site_copy_block && in_array( 'wp-block-editor', $site_copy_dependencies, true ), 'Site-copy block loads after the WordPress block editor dependencies' );
     $converted_service = fp_service_blocks_from_html( '<p>Contenu de prestation QA.</p>' );
     $converted_blocks = parse_blocks( $converted_service );
     fpqa_check( 2 === count( $converted_blocks ) && 'feret/service-content' === $converted_blocks[0]['blockName'] && 'feret/service-note' === $converted_blocks[1]['blockName'], 'Legacy service content converts to the two locked custom blocks' );
