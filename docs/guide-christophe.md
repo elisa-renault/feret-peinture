@@ -63,7 +63,9 @@ Les prestations utilisent des blocs sur mesure verrouillés. Les chantiers reste
 
 Ouvrez **Textes du site**, puis choisissez la page concernée : **Accueil**, **Entreprise**, **Zone d’intervention** ou **Contact**. Chaque texte apparaît dans son propre bloc avec un intitulé clair. Modifiez le contenu du bloc, puis cliquez sur **Mettre à jour** et vérifiez la page publique.
 
-Vous pouvez réécrire les titres, introductions, paragraphes, étapes et questions-réponses proposés. Les blocs restent dans leur emplacement : la structure, les boutons, le formulaire, la navigation, les liens, les coordonnées légales et les pages légales ne peuvent pas être modifiés depuis cet écran. Pour ajouter une nouvelle prestation, utilisez **Mes prestations**.
+Vous pouvez réécrire les titres, introductions, paragraphes, étapes et questions-réponses proposés. Vous pouvez aussi ajouter vos propres **titres, paragraphes, listes, citations, images et boutons** avec le bouton +, puis les déplacer, les modifier ou les retirer. Ces compléments sont affichés sur la page avant la bande de contact.
+
+Les textes-guides restent dans leur emplacement pour que la mise en page conserve sa cohérence. La structure générale, le formulaire, la navigation, les coordonnées légales et les pages légales ne peuvent pas être modifiés depuis cet écran. Pour ajouter une nouvelle prestation, utilisez **Mes prestations**.
 
 Utilisez **Aperçu** avant d’enregistrer une modification importante. Les révisions WordPress permettent de comparer ou restaurer une version enregistrée si nécessaire. Conservez aussi votre brouillon sur votre ordinateur jusqu’à publication.
 

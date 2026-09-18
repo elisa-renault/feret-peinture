@@ -44,6 +44,10 @@ function fp_editable_page_definitions(): array {
 
 function fp_editable_page_slugs(): array { return array_keys( fp_editable_page_definitions() ); }
 
+function fp_editable_page_extra_blocks(): array {
+    return [ 'core/heading', 'core/paragraph', 'core/list', 'core/quote', 'core/image', 'core/buttons', 'core/button', 'core/separator' ];
+}
+
 function fp_is_editable_page( $post ): bool {
     $post = get_post( $post );
     return $post instanceof WP_Post && 'page' === $post->post_type && in_array( $post->post_name, fp_editable_page_slugs(), true );
@@ -66,16 +70,48 @@ function fp_page_copy_block_template( string $slug ): array {
 }
 
 function fp_site_copy( string $slug, string $key, string $default = '' ): string {
-    static $copy = [];
-    if ( ! isset( $copy[ $slug ] ) ) {
-        $copy[ $slug ] = [];
-        $page = get_page_by_path( $slug );
-        foreach ( $page ? parse_blocks( $page->post_content ) : [] as $block ) {
-            if ( 'feret/site-copy' === $block['blockName'] && ! empty( $block['attrs']['key'] ) ) { $copy[ $slug ][ $block['attrs']['key'] ] = (string) ( $block['attrs']['content'] ?? '' ); }
-        }
+    $copy = [];
+    $page = get_page_by_path( $slug );
+    foreach ( $page ? parse_blocks( $page->post_content ) : [] as $block ) {
+        if ( 'feret/site-copy' === $block['blockName'] && ! empty( $block['attrs']['key'] ) ) { $copy[ $block['attrs']['key'] ] = (string) ( $block['attrs']['content'] ?? '' ); }
     }
-    $value = trim( (string) ( $copy[ $slug ][ $key ] ?? '' ) );
+    $value = trim( (string) ( $copy[ $key ] ?? '' ) );
     return '' === $value ? $default : wp_strip_all_tags( $value );
+}
+
+function fp_editable_page_extra_content( string $slug ): string {
+    $page = get_page_by_path( $slug );
+    if ( ! $page ) { return ''; }
+    $blocks = array_filter( parse_blocks( $page->post_content ), static fn( $block ) => in_array( $block['blockName'], fp_editable_page_extra_blocks(), true ) );
+    return $blocks ? do_blocks( serialize_blocks( $blocks ) ) : '';
+}
+
+function fp_sanitize_editable_page_content( string $content, WP_Post $original, ?string $raw_copy_content = null ): string {
+    $slug = $original->post_name;
+    $incoming = parse_blocks( $content );
+    $incoming_copy = parse_blocks( null === $raw_copy_content ? $content : $raw_copy_content );
+    $original_copy = [];
+    foreach ( parse_blocks( $original->post_content ) as $block ) {
+        if ( 'feret/site-copy' === $block['blockName'] && ! empty( $block['attrs']['key'] ) ) { $original_copy[ $block['attrs']['key'] ] = $block; }
+    }
+    $submitted_copy = [];
+    $extra = [];
+    foreach ( $incoming_copy as $block ) {
+        if ( 'feret/site-copy' === $block['blockName'] && ! empty( $block['attrs']['key'] ) ) { $submitted_copy[ $block['attrs']['key'] ] = $block; }
+    }
+    foreach ( $incoming as $block ) {
+        if ( in_array( $block['blockName'], fp_editable_page_extra_blocks(), true ) ) { $extra[] = $block; }
+    }
+    $locked = [];
+    foreach ( fp_editable_page_definitions()[ $slug ] ?? [] as [ $key, $label, $default ] ) {
+        $block = $original_copy[ $key ] ?? [ 'blockName' => 'feret/site-copy', 'attrs' => [ 'key' => $key, 'label' => $label, 'content' => $default ], 'innerBlocks' => [], 'innerHTML' => '', 'innerContent' => [] ];
+        if ( isset( $submitted_copy[ $key ]['attrs']['content'] ) ) { $block['attrs']['content'] = wp_kses_post( (string) $submitted_copy[ $key ]['attrs']['content'] ); }
+        $block['attrs']['key'] = $key;
+        $block['attrs']['label'] = $label;
+        $block['attrs']['lock'] = [ 'move' => true, 'remove' => true ];
+        $locked[] = $block;
+    }
+    return serialize_blocks( array_merge( $locked, $extra ) );
 }
 
 function fp_service_blocks_from_html( string $html ): string {
@@ -109,7 +145,7 @@ add_filter( 'allowed_block_types_all', static function ( $allowed, $context ) {
     if ( $post instanceof WP_Post && 'fp_service' === $post->post_type ) {
         return fp_service_block_names();
     }
-    if ( fp_is_editable_page( $post ) ) { return [ 'feret/site-copy' ]; }
+    if ( fp_is_editable_page( $post ) ) { return array_merge( [ 'feret/site-copy' ], fp_editable_page_extra_blocks() ); }
     return $allowed;
 }, 20, 2 );
 
@@ -117,7 +153,7 @@ add_filter( 'block_editor_settings_all', static function ( $settings, $context )
     $post = $context->post ?? null;
     if ( fp_is_editable_page( $post ) ) {
         $settings['template'] = fp_page_copy_block_template( $post->post_name );
-        $settings['templateLock'] = 'all';
+        $settings['templateLock'] = false;
     }
     return $settings;
 }, 20, 2 );

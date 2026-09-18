@@ -75,8 +75,21 @@ add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
             $data['post_title'] = $original->post_title;
             $data['post_status'] = $original->post_status;
         }
+        if ( fp_is_editable_page( $original ) && isset( $data['post_content'] ) ) {
+            $raw = $GLOBALS['fp_editable_page_rest_content'][ $original->ID ] ?? null;
+            unset( $GLOBALS['fp_editable_page_rest_content'][ $original->ID ] );
+            $data['post_content'] = fp_sanitize_editable_page_content( (string) $data['post_content'], $original, is_string( $raw ) ? $raw : null );
+        }
     }
     return $data;
+}, 20, 2 );
+
+add_filter( 'rest_pre_insert_page', static function ( $prepared, $request ) {
+    $post = get_post( (int) $request['id'] );
+    if ( fp_is_christophe() && fp_is_editable_page( $post ) && isset( $prepared->post_content ) ) {
+        $GLOBALS['fp_editable_page_rest_content'][ $post->ID ] = (string) $prepared->post_content;
+    }
+    return $prepared;
 }, 20, 2 );
 
 function fp_information_panel_fields(): array {

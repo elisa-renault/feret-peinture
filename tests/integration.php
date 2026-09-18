@@ -161,9 +161,13 @@ try {
     fpqa_check( ! empty( $home_blocks ) && ! array_filter( $home_blocks, static fn( $block ) => 'feret/site-copy' !== $block['blockName'] || empty( $block['attrs']['lock']['move'] ) || empty( $block['attrs']['lock']['remove'] ) ), 'Accueil text block order and structure are locked' );
     if ( $home_page ) {
         $updated_home_content = str_replace( 'Peintre en bâtiment à Écouen.', 'Titre d’accueil QA.', $home_original_content );
-        wp_update_post( [ 'ID' => $home_page->ID, 'post_content' => $updated_home_content ] );
+        $response = fpqa_rest( 'POST', '/wp/v2/pages/' . $home_page->ID, [ 'content' => $updated_home_content ] );
+        fpqa_check( 200 === $response->get_status(), 'Christophe Feret can save the accueil page through the native block editor REST route' );
         fpqa_check( 'Titre d’accueil QA.' === fp_site_copy( 'accueil', 'hero_title' ), 'Christophe Feret can change the accueil headline through a guided block' );
         fpqa_check( 'Titre d’accueil QA.' === fp_theme_copy( 'accueil', 'hero_title', '' ), 'The accueil theme renders the guided block text' );
+        $extra_block = serialize_blocks( [ [ 'blockName' => 'core/paragraph', 'attrs' => [], 'innerBlocks' => [], 'innerHTML' => '<p>Complément éditorial QA.</p>', 'innerContent' => [ '<p>Complément éditorial QA.</p>' ] ] ] );
+        wp_update_post( [ 'ID' => $home_page->ID, 'post_content' => $updated_home_content . $extra_block ] );
+        fpqa_check( false !== strpos( fp_editable_page_extra_content( 'accueil' ), 'Complément éditorial QA.' ), 'Christophe Feret can add a free editorial block to the accueil page' );
         wp_update_post( [ 'ID' => $home_page->ID, 'post_content' => $home_original_content ] );
     }
     $legal_page = get_page_by_path( 'mentions-legales' );

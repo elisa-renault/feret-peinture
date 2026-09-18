@@ -10,6 +10,12 @@ function fp_theme_copy($page, $key, $default) {
     return function_exists('fp_site_copy') ? fp_site_copy($page, $key, $default) : $default;
 }
 
+function fp_theme_extra_content($page) {
+    if (!function_exists('fp_editable_page_extra_content')) { return; }
+    $content = fp_editable_page_extra_content($page);
+    if ($content) { echo '<section class="section editorial-extra-section"><div class="container prose editorial-extra">' . $content . '</div></section>'; }
+}
+
 add_action('after_setup_theme', function () {
 
     add_theme_support('title-tag');
