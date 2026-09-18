@@ -57,6 +57,8 @@ try {
         }
         fpqa_check( ! get_post_type_object( $type )->show_in_rest, "{$type} has no public native REST collection" );
     }
+    fpqa_check( false === get_post_type_object( 'fp_information' )->show_in_menu, 'Information singleton is hidden from the generic content menu' );
+    fpqa_check( [ 'phone_mobile', 'phone_landline', 'public_email', 'presentation', 'confirmed_area' ] === fp_information_panel_fields(), 'Information panel exposes only the recurring shared fields' );
     $login = 'fpqa_' . strtolower( wp_generate_password( 8, false, false ) );
     $editor = wp_insert_user( [ 'user_login' => $login, 'user_pass' => wp_generate_password( 48, true, true ), 'user_email' => $login . '@example.test', 'role' => 'fp_christophe' ] );
     if ( is_wp_error( $editor ) ) { throw new RuntimeException( 'Cannot create the synthetic editor account.' ); }

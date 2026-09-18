@@ -42,7 +42,7 @@ function fp_register_content(): void {
             ],
             'public' => ! $is_info, 'publicly_queryable' => ! $is_info,
             'exclude_from_search' => true, 'show_ui' => true, 'show_in_rest' => false,
-            'show_in_nav_menus' => ! $is_info, 'has_archive' => $is_info ? false : $labels[2],
+            'show_in_menu' => ! $is_info, 'show_in_nav_menus' => ! $is_info, 'has_archive' => $is_info ? false : $labels[2],
             'rewrite' => $is_info ? false : [ 'slug' => $labels[2], 'with_front' => false ],
             'query_var' => ! $is_info, 'menu_icon' => $labels[3], 'menu_position' => 5 + array_search( $name, array_keys( $types ), true ),
             'capability_type' => [ $name, $name . 's' ], 'map_meta_cap' => true,

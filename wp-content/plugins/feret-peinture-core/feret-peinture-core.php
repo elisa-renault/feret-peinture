@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Feret Peinture - métier
  * Description: Contenus Pods, accès Christophe Feret, garde-fous de publication et demandes de devis.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 6.8
  * Requires PHP: 8.2
  * Requires Plugins: pods
@@ -11,7 +11,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'FP_CORE_VERSION', '1.0.0' );
+define( 'FP_CORE_VERSION', '1.0.1' );
 define( 'FP_CORE_PATH', __DIR__ );
 require_once __DIR__ . '/includes/content.php';
 require_once __DIR__ . '/includes/revisions.php';

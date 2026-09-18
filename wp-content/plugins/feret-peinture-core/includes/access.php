@@ -71,20 +71,102 @@ add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
     return $data;
 }, 20, 2 );
 
+function fp_information_panel_fields(): array {
+    return [ 'phone_mobile', 'phone_landline', 'public_email', 'presentation', 'confirmed_area' ];
+}
+
+function fp_information_panel_url( array $args = [] ): string {
+    return add_query_arg( $args, admin_url( 'admin.php?page=fp-site-information' ) );
+}
+
+function fp_register_information_panel(): void {
+    add_menu_page(
+        'Mes informations',
+        'Mes informations',
+        'edit_fp_informations',
+        'fp-site-information',
+        'fp_render_information_panel',
+        'dashicons-id-alt',
+        7
+    );
+}
+add_action( 'admin_menu', 'fp_register_information_panel', 20 );
+
+function fp_render_information_panel(): void {
+    $id = fp_information_id();
+    if ( ! $id || ! current_user_can( 'edit_post', $id ) ) {
+        wp_die( 'Vous ne pouvez pas modifier ces informations.', 'Accès réservé', [ 'response' => 403 ] );
+    }
+    $schema = fp_schema()['fp_information']['fields'] ?? [];
+    ?>
+    <div class="wrap fp-information-panel">
+        <h1>Mes informations</h1>
+        <p>Modifiez ici les éléments récurrents du site. Les changements sont enregistrés dans une révision et se répercutent sur les pages concernées.</p>
+        <?php if ( isset( $_GET['updated'] ) && '1' === $_GET['updated'] ) : ?>
+            <div class="notice notice-success is-dismissible"><p>Vos informations sont enregistrées.</p></div>
+        <?php endif; ?>
+        <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+            <?php wp_nonce_field( 'fp_save_site_information', 'fp_information_nonce' ); ?>
+            <input type="hidden" name="action" value="fp_save_site_information">
+            <table class="form-table" role="presentation">
+                <tbody>
+                <?php foreach ( fp_information_panel_fields() as $key ) :
+                    if ( empty( $schema[ $key ] ) ) { continue; }
+                    $field = $schema[ $key ];
+                    $value = get_post_meta( $id, $key, true );
+                    ?>
+                    <tr>
+                        <th scope="row"><label for="fp-information-<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ); ?></label></th>
+                        <td>
+                            <?php if ( 'paragraph' === $field['type'] ) : ?>
+                                <textarea class="large-text" rows="5" id="fp-information-<?php echo esc_attr( $key ); ?>" name="fp_information[<?php echo esc_attr( $key ); ?>]"><?php echo esc_textarea( $value ); ?></textarea>
+                            <?php else : ?>
+                                <input class="regular-text" type="<?php echo 'public_email' === $key ? 'email' : 'text'; ?>" id="fp-information-<?php echo esc_attr( $key ); ?>" name="fp_information[<?php echo esc_attr( $key ); ?>]" value="<?php echo esc_attr( $value ); ?>">
+                            <?php endif; ?>
+                            <?php if ( ! empty( $field['description'] ) ) : ?><p class="description"><?php echo esc_html( $field['description'] ); ?></p><?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php submit_button( 'Enregistrer mes informations' ); ?>
+        </form>
+        <p><a href="<?php echo esc_url( home_url( '/entreprise/' ) ); ?>" target="_blank" rel="noopener">Voir la page Entreprise</a></p>
+    </div>
+    <?php
+}
+
+add_action( 'admin_post_fp_save_site_information', static function () {
+    $id = fp_information_id();
+    if ( ! $id || ! current_user_can( 'edit_post', $id ) ) {
+        wp_die( 'Vous ne pouvez pas modifier ces informations.', 'Accès réservé', [ 'response' => 403 ] );
+    }
+    check_admin_referer( 'fp_save_site_information', 'fp_information_nonce' );
+    if ( ! function_exists( 'pods' ) ) {
+        wp_die( 'Les champs ne sont pas disponibles. Contactez Aliant avant de réessayer.', 'Enregistrement impossible', [ 'response' => 503 ] );
+    }
+    $submitted = isset( $_POST['fp_information'] ) && is_array( $_POST['fp_information'] ) ? wp_unslash( $_POST['fp_information'] ) : [];
+    $values = [];
+    foreach ( fp_information_panel_fields() as $key ) {
+        $raw = isset( $submitted[ $key ] ) ? $submitted[ $key ] : '';
+        $values[ $key ] = sanitize_meta( $key, is_scalar( $raw ) ? $raw : '', 'post' );
+    }
+    pods( 'fp_information', $id )->save( $values );
+    wp_safe_redirect( fp_information_panel_url( [ 'updated' => '1' ] ) );
+    exit;
+} );
+
 add_action( 'admin_menu', static function () {
     if ( ! fp_is_christophe() ) { return; }
     global $menu;
-    $allowed = [ 'edit.php?post_type=fp_project', 'edit.php?post_type=fp_service', 'edit.php?post_type=fp_information' ];
+    $allowed = [ 'edit.php?post_type=fp_project', 'edit.php?post_type=fp_service', 'fp-site-information' ];
     foreach ( $menu as $item ) {
         if ( ! in_array( $item[2], $allowed, true ) ) { remove_menu_page( $item[2] ); }
     }
-    // Keep the native single-item editor; no replacement CMS or settings capability.
-    remove_submenu_page( 'edit.php?post_type=fp_information', 'post-new.php?post_type=fp_information' );
     // WP removes single-item submenus. For a role without core edit_posts, that
     // loses the CPT parent and incorrectly denies the native list screen. A
     // useful second link keeps its native parent/capability mapping intact.
     add_submenu_page( 'edit.php?post_type=fp_service', 'Voir les prestations', 'Voir sur le site', 'edit_fp_services', home_url( '/prestations/' ) );
-    add_submenu_page( 'edit.php?post_type=fp_information', 'Voir mes informations', 'Voir sur le site', 'edit_fp_informations', home_url( '/entreprise/' ) );
 }, 999 );
 
 add_action( 'admin_init', static function () {
@@ -93,7 +175,7 @@ add_action( 'admin_init', static function () {
     if ( 'index.php' === $pagenow ) {
         wp_safe_redirect( admin_url( 'edit.php?post_type=fp_project' ) ); exit;
     }
-    $allowed = [ 'edit.php', 'post.php', 'post-new.php', 'profile.php', 'user-edit.php', 'upload.php', 'media-new.php', 'media.php', 'async-upload.php', 'admin-post.php', 'revision.php' ];
+    $allowed = [ 'admin.php', 'edit.php', 'post.php', 'post-new.php', 'profile.php', 'user-edit.php', 'upload.php', 'media-new.php', 'media.php', 'async-upload.php', 'admin-post.php', 'revision.php' ];
     if ( ! in_array( $pagenow, $allowed, true ) ) {
         wp_die( 'Cet écran est réservé à Aliant. Vous pouvez modifier vos chantiers, prestations et informations.', 'Accès réservé', [ 'response' => 403 ] );
     }
@@ -105,6 +187,9 @@ add_action( 'admin_init', static function () {
         if ( 'edit.php' === $pagenow && 'fp_information' === $type && fp_information_id() ) {
             wp_safe_redirect( admin_url( 'post.php?post=' . fp_information_id() . '&action=edit' ) ); exit;
         }
+    }
+    if ( 'admin.php' === $pagenow && 'fp-site-information' !== ( $_GET['page'] ?? '' ) ) {
+        wp_die( 'Cet écran est réservé à Aliant.', 'Accès réservé', [ 'response' => 403 ] );
     }
 } );
 

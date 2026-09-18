@@ -5,6 +5,7 @@ Export CHRISTOPHE_PASSWORD or pass --env-file .env. No credential/cookie is logg
 No browser rendering is claimed: this tests native HTTP login/forms/capabilities.
 """
 import argparse
+import html
 import http.cookiejar
 import json
 import os
@@ -167,6 +168,25 @@ def main():
                 return link
         return None
 
+    def information_panel_values(source):
+        values = {}
+        for key in ("phone_mobile", "phone_landline", "public_email", "presentation", "confirmed_area"):
+            name = re.escape("fp_information[" + key + "]")
+            match = re.search(r"name=[\"']" + name + r"[\"'][^>]*value=[\"']([^\"']*)", source)
+            if match:
+                values["fp_information[" + key + "]"] = html.unescape(match.group(1))
+                continue
+            match = re.search(r"name=[\"']" + name + r"[\"'][^>]*>(.*?)</textarea>", source, re.S)
+            if not match:
+                raise RuntimeError("Information panel field absent: " + key)
+            values["fp_information[" + key + "]"] = html.unescape(re.sub(r"<[^>]*>", "", match.group(1)))
+        nonce = re.search(r"name=[\"']fp_information_nonce[\"'][^>]*value=[\"']([^\"']+)", source)
+        if not nonce:
+            raise RuntimeError("Information panel nonce absent; no write attempted.")
+        values["fp_information_nonce"] = html.unescape(nonce.group(1))
+        values["action"] = "fp_save_site_information"
+        return values
+
     try:
         request("/wp-login.php")
         status, source, url = request("/wp-login.php", fields={"log": "christophe", "pwd": password, "wp-submit": "Se connecter", "redirect_to": base + "/wp-admin/", "testcookie": "1"})
@@ -178,6 +198,16 @@ def main():
         for path in ("options-general.php", "plugins.php", "users.php", "themes.php", "edit.php", "edit.php?post_type=page", "post-new.php?post_type=fp_service", "post-new.php?post_type=fp_information", "admin.php?page=pods"):
             status, _, _ = request("/wp-admin/" + path)
             check(status == 403, "Direct restricted admin URL returns 403: " + path)
+        status, panel, _ = request("/wp-admin/admin.php?page=fp-site-information")
+        panel_values = information_panel_values(panel) if status == 200 else None
+        information_restore = panel_values.copy() if panel_values else None
+        check(status == 200 and panel_values is not None and "Mes informations" in panel, "Dedicated recurring information panel is accessible")
+        if panel_values:
+            panel_values["fp_information[phone_mobile]"] = "06 00 00 00 02"
+            status, updated_panel, _ = request("/wp-admin/admin-post.php", fields=panel_values)
+            check(status == 200 and "Vos informations sont enregistrées." in updated_panel, "Dedicated information panel saves with its scoped nonce")
+            _, public_home, _ = request("/")
+            check("tel:+33600000002" in public_home, "Dedicated information panel propagates to the public phone link")
         for post_type in ("fp_project", "fp_service", "fp_information"):
             status, page, _ = request("/wp-admin/edit.php?post_type=" + post_type)
             check(status == 200 and 'id="adminmenumain"' in page, "Native métier screen is accessible: " + post_type)
@@ -187,7 +217,6 @@ def main():
                     print("HTTP DENIAL " + re.sub(r"<[^>]*>", "", error.group(1)).strip()[:350])
             if post_type == "fp_information" and status == 200:
                 info_values = EditorHTML(page).values
-                information_restore = (info_values.get("post_ID"), info_values.get("pods_meta_phone_mobile", ""))
                 status, edited_info, _ = save_editor(page, {"pods_meta_phone_mobile": "06 00 00 00 02", "save": "Mettre à jour"})
                 check(status == 200 and EditorHTML(edited_info).values.get("pods_meta_phone_mobile") == "06 00 00 00 02", "Christophe Feret edits the shared phone through the native information form")
                 _, public_home, _ = request("/")
@@ -259,13 +288,12 @@ def main():
         failures.append(type(error).__name__ + ": " + str(error))
         print("FAIL " + failures[-1])
     finally:
-        if information_restore and information_restore[0]:
+        if information_restore:
             try:
-                _, info_source, _ = request(f"/wp-admin/post.php?post={information_restore[0]}&action=edit")
-                status, restored_info, _ = save_editor(info_source, {"pods_meta_phone_mobile": information_restore[1], "save": "Mettre à jour"})
-                check(status == 200 and EditorHTML(restored_info).values.get("pods_meta_phone_mobile") == information_restore[1], "Original shared phone is restored through the native form")
+                status, restored_info, _ = request("/wp-admin/admin-post.php", fields=information_restore)
+                check(status == 200 and "Vos informations sont enregistrées." in restored_info, "Original shared information is restored through the dedicated panel")
             except Exception:
-                check(False, "Original information phone restoration requires inspection")
+                check(False, "Original shared information restoration requires inspection")
         if project_id:
             try:
                 _, source, _ = request(f"/wp-admin/post.php?post={project_id}&action=edit")

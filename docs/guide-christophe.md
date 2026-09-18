@@ -8,7 +8,7 @@ Ce guide concerne le compte **christophe**. Aliant vous remet l'adresse de conne
 | --- | --- |
 | **Mes chantiers** | Ajouter une réalisation, modifier ses photos et son texte, la publier ou la retirer. |
 | **Mes prestations** | Modifier les textes et images des prestations, les afficher ou les masquer. |
-| **Mes informations** | Mettre à jour vos coordonnées publiques, votre présentation et les communes acceptées. |
+| **Mes informations** | Mettre à jour vos coordonnées publiques, votre présentation et les communes acceptées dans une page simplifiée. |
 
 Les réglages techniques sont gérés par Aliant. Vous n'avez rien à installer ou à mettre à jour.
 
@@ -44,15 +44,19 @@ Décrivez uniquement les travaux que vous acceptez. Faites valider tout nouvel e
 
 ## Modifier vos coordonnées ou votre présentation
 
-Ouvrez **Mes informations**. Les champs sont :
+Ouvrez **Mes informations**. Cette page est réservée aux éléments qui reviennent à plusieurs endroits du site : vous n’avez ni titre, ni permalien, ni réglage technique à modifier. Les champs sont :
 
 - **Téléphone mobile public** : le numéro affiché et utilisé par les boutons Appeler pour convenir d’un rendez-vous.
 - **Téléphone fixe** : conservé dans l’administration uniquement, jamais affiché, même si le mobile est vide.
 - **Email affiché sur le site** : facultatif ; indiquez une adresse que vous consultez.
 - **Présentation de l'entreprise** : un texte court sur votre activité.
-- **Communes desservies** : une commune par ligne ; uniquement celles que vous acceptez réellement.
+- **Zone d’intervention** : décrivez le secteur ou la limite de trajet depuis Écouen, uniquement pour les communes que vous acceptez réellement.
 
 Cliquez sur **Mettre à jour**, puis vérifiez le site. Pour changer la boîte qui reçoit les demandes de devis, contactez Aliant.
+
+### Pourquoi les pages ne sont pas faites avec des blocs verrouillés
+
+Le site utilise volontairement des modèles sur mesure et des champs simples pour les chantiers, prestations et informations. Des blocs verrouillés imposeraient de passer par Gutenberg sans rendre cette tâche plus simple. Ils ne sont donc pas ajoutés pour le moment. Si une future page doit combiner plusieurs sections que vous devez réordonner vous-même, Aliant pourra créer des blocs dédiés et verrouiller leur structure.
 
 ## Retirer ou récupérer un contenu
 
