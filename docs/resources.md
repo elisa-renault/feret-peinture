@@ -59,7 +59,7 @@ Les pages juridiques restent des documents de travail à compléter dans WordPre
 
 ## Photos à demander et registre à tenir
 
-Demander plusieurs chantiers : vue d'ensemble, détails de finition, commune, travaux effectués et, seulement si disponibles, les deux photos avant/après. Portrait de Christophe facultatif. Demander pour chaque ressource : auteur, date approximative, autorisation du photographe et du client/personnes représentées si nécessaire, portée de publication autorisée, éventuelles limites/retrait.
+Demander plusieurs chantiers : vue d'ensemble, détails de finition, commune, travaux effectués et, seulement si disponibles, les deux photos avant/après. Portrait de Christophe Feret facultatif. Demander pour chaque ressource : auteur, date approximative, autorisation du photographe et du client/personnes représentées si nécessaire, portée de publication autorisée, éventuelles limites/retrait.
 
 Tenir ce registre dans un espace privé géré par Aliant, associé à l'identifiant de la réalisation. La case d'autorisation dans WordPress signale la validation éditoriale ; elle ne crée pas elle-même des droits. Retirer les métadonnées sensibles des originaux destinés à la publication, notamment la géolocalisation, et examiner les éléments visibles. Ne pas déposer les contrats/consentements ni les données clients dans Git.
 # Complément : image de partage
@@ -78,4 +78,4 @@ Sélection depuis le dossier « Images stock candidates » fourni par Elisa comm
 
 Dérivés JPEG à qualité 82, redimensionnés sans métadonnées des originaux. Cadrages réalisés en CSS, sans retouche générative. Images hébergées localement, sans appel aux plateformes. Les photographies conservent leurs propres conditions d’utilisation et ne sont pas couvertes par la licence GPL du code.
 
-Ces illustrations ne sont ni un portrait de Christophe ni des réalisations de l’entreprise. Aucun contenu de chantier n’a été créé. Les images éditoriales définies dans WordPress restent prioritaires sur la fiche prestation.
+Ces illustrations ne sont ni un portrait de Christophe Feret ni des réalisations de l’entreprise. Aucun contenu de chantier n’a été créé. Les images éditoriales définies dans WordPress restent prioritaires sur la fiche prestation.

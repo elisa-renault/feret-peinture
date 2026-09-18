@@ -172,7 +172,7 @@ def main():
         status, source, url = request("/wp-login.php", fields={"log": "christophe", "pwd": password, "wp-submit": "Se connecter", "redirect_to": base + "/wp-admin/", "testcookie": "1"})
         logged_in = any(cookie.name.startswith("wordpress_logged_in_") for cookie in jar)
         login_ok = status == 200 and logged_in and urllib.parse.urlparse(url).path.startswith("/wp-admin/")
-        check(login_ok, "Christophe authenticates through native wp-login and receives a session cookie")
+        check(login_ok, "Christophe Feret authenticates through native wp-login and receives a session cookie")
         if not login_ok:
             raise RuntimeError("Native login failed; stopping authenticated write checks.")
         for path in ("options-general.php", "plugins.php", "users.php", "themes.php", "edit.php", "edit.php?post_type=page", "post-new.php?post_type=fp_service", "post-new.php?post_type=fp_information", "admin.php?page=pods"):
@@ -189,7 +189,7 @@ def main():
                 info_values = EditorHTML(page).values
                 information_restore = (info_values.get("post_ID"), info_values.get("pods_meta_phone_mobile", ""))
                 status, edited_info, _ = save_editor(page, {"pods_meta_phone_mobile": "06 00 00 00 02", "save": "Mettre à jour"})
-                check(status == 200 and EditorHTML(edited_info).values.get("pods_meta_phone_mobile") == "06 00 00 00 02", "Christophe edits the shared phone through the native information form")
+                check(status == 200 and EditorHTML(edited_info).values.get("pods_meta_phone_mobile") == "06 00 00 00 02", "Christophe Feret edits the shared phone through the native information form")
                 _, public_home, _ = request("/")
                 check("tel:+33600000002" in public_home, "Native contact edit propagates to the public phone link")
 
@@ -221,7 +221,7 @@ def main():
             result = json.loads(upload_body)
             if result.get("success"):
                 attachment = result["data"]
-            check(upload_status == 200 and bool(attachment and attachment.get("id")), "Christophe uploads a real PNG through native authenticated media processing")
+            check(upload_status == 200 and bool(attachment and attachment.get("id")), "Christophe Feret uploads a real PNG through native authenticated media processing")
 
         changes = {"post_title": "QA HTTP - chantier temporaire", "content": "Travaux de vérification locale uniquement.", "post_status": "draft", "save": "Enregistrer le brouillon", "pods_meta_town": "QA Écouen", "pods_meta_short_description": "Description HTTP A", "pods_meta_publication_authorized": "0"}
         if attachment:
@@ -238,7 +238,7 @@ def main():
         saved = EditorHTML(source).values
         if os.getenv("FP_QA_DIAGNOSTIC"):
             print("SAVE_PUBLISH " + json.dumps({"http_status": status, "status": saved.get("original_post_status"), "town": saved.get("pods_meta_town"), "description": saved.get("pods_meta_short_description"), "image": saved.get("_thumbnail_id")}, ensure_ascii=False))
-        check(status == 200 and saved.get("original_post_status") == "publish", "Christophe publishes his project through the native form")
+        check(status == 200 and saved.get("original_post_status") == "publish", "Christophe Feret publishes his project through the native form")
         check(saved.get("pods_meta_short_description") == "Description HTTP B", "Native edit updates a published project's Pods description")
         if attachment:
             check(saved.get("_thumbnail_id") == str(attachment["id"]), "Native editor saves the uploaded featured image")

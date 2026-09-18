@@ -3,7 +3,7 @@
 set -eu
 [ "${WP_ENVIRONMENT_TYPE:-}" = local ] || { printf '%s\n' 'Ce script initialise uniquement un environnement local.' >&2; exit 1; }
 : "${WP_ADMIN_PASSWORD:?Private admin password is required}"
-: "${CHRISTOPHE_PASSWORD:?Private Christophe password is required}"
+: "${CHRISTOPHE_PASSWORD:?Private Christophe Feret password is required}"
 : "${WP_URL:?Local WordPress URL is required}"
 
 attempt=0

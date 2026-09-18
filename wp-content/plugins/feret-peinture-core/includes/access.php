@@ -17,7 +17,7 @@ function fp_install_roles(): void {
     foreach ( [ 'delete_', 'delete_others_', 'delete_published_', 'delete_private_' ] as $prefix ) {
         $caps[$prefix . 'fp_projects'] = true;
     }
-    if ( ! get_role( 'fp_christophe' ) ) { add_role( 'fp_christophe', 'Christophe - contenus du site', $caps ); }
+    if ( ! get_role( 'fp_christophe' ) ) { add_role( 'fp_christophe', 'Christophe Feret - contenus du site', $caps ); }
     $role = get_role( 'fp_christophe' );
     foreach ( array_keys( $role->capabilities ) as $cap ) {
         if ( ! isset( $caps[$cap] ) ) { $role->remove_cap( $cap ); }
@@ -158,7 +158,7 @@ add_filter( 'rest_authentication_errors', static function ( $result ) {
     return is_user_logged_in() ? $result : new WP_Error( 'fp_authentication_required', 'Authentification requise.', [ 'status' => 401 ] );
 }, 30 );
 add_filter( 'rest_pre_dispatch', static function ( $result, $server, $request ) {
-    // Pods exposes schema discovery to authenticated readers. Christophe edits
+    // Pods exposes schema discovery to authenticated readers. Christophe Feret edits
     // content in native screens and never needs these configuration endpoints.
     if ( preg_match( '#^/pods(?:/|$)#', $request->get_route() ) && ! current_user_can( 'manage_options' ) ) {
         return new WP_Error( 'fp_schema_access_denied', 'La configuration des contenus est réservée à Aliant.', [ 'status' => is_user_logged_in() ? 403 : 401 ] );

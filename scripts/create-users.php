@@ -19,13 +19,13 @@ if ( ! username_exists( 'christophe' ) ) {
         'role'         => 'fp_christophe',
     ) );
     if ( is_wp_error( $result ) ) {
-        WP_CLI::error( 'Impossible de créer le compte Christophe. Vérifier les comptes existants.' );
+        WP_CLI::error( 'Impossible de créer le compte Christophe Feret. Vérifier les comptes existants.' );
     }
-    WP_CLI::success( 'Compte Christophe créé sans notification email.' );
+    WP_CLI::success( 'Compte Christophe Feret créé sans notification email.' );
 } else {
     $existing = get_user_by( 'login', 'christophe' );
     if ( ! $existing || array( 'fp_christophe' ) !== array_values( $existing->roles ) || user_can( $existing, 'manage_options' ) ) {
         WP_CLI::error( 'Le compte christophe existant possède un rôle inattendu. Aliant doit le vérifier avant de continuer.' );
     }
-    WP_CLI::log( 'Compte Christophe existant conservé : rôle et mot de passe inchangés.' );
+    WP_CLI::log( 'Compte Christophe Feret existant conservé : rôle et mot de passe inchangés.' );
 }

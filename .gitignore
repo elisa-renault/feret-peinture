@@ -29,6 +29,7 @@ __pycache__/
 *.pyc
 /LIRE-AVANT.txt
 /feret-peinture-history.bundle
+/tmp/
 
 # Captures historiques susceptibles de contenir des coordonnées non validées.
 /docs/audit-ui-ux/*.png

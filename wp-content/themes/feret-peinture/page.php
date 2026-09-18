@@ -1,7 +1,7 @@
 <?php get_header(); while (have_posts()) : the_post(); $slug = get_post_field('post_name', get_the_ID()); ?>
 <div class="container"><?php fp_theme_breadcrumb(); ?></div>
 <?php if ($slug === 'contact') : ?>
-<section class="page-intro quote-intro container"><h1>Prendre rendez-vous</h1><p class="intro-copy">Appelez Christophe ou laissez-lui un message pour convenir d’une visite. Le devis sera établi après le rendez-vous sur place.</p></section>
+<section class="page-intro quote-intro container"><h1>Demander un rendez-vous</h1><p class="intro-copy">Appelez Christophe Feret ou indiquez la commune du chantier, les travaux envisagés et un moyen de vous joindre. Il vous recontactera pour convenir d’une visite sur place, avant d’établir le devis.</p></section>
 <div class="container quote-layout"><section class="quote-form-wrap" aria-label="Formulaire de demande de rendez-vous"><?php if (function_exists('fp_render_quote_form')) { fp_render_quote_form(); } else { echo '<p>Le formulaire est en cours de préparation.</p>'; } ?></section><aside class="quote-aside"><p class="eyebrow">Coordonnées</p><h2>Christophe Feret</h2><?php fp_theme_phone_link('', 'phone-large'); fp_theme_email_link(); ?><p>Peintre à Écouen, Val-d’Oise</p></aside></div>
 <?php elseif ($slug === 'entreprise') : ?>
 <section class="page-intro container company-intro">
@@ -12,28 +12,28 @@
     <aside class="company-person">
         <span class="company-signature" aria-hidden="true">F.</span>
         <h2 id="company-person-title">Christophe Feret</h2>
-        <p><?php echo esc_html(fp_theme_info('presentation', 'Christophe Feret est peintre en bâtiment à Écouen, dans le Val-d’Oise.')); ?></p>
+        <p><?php echo esc_html(fp_theme_info('presentation', 'Christophe Feret est votre contact pour présenter vos travaux et convenir d’un rendez-vous sur place.')); ?></p>
         <p>Un interlocuteur pour vos travaux, de la préparation aux finitions.</p>
     </aside>
     <div class="company-approach prose">
-        <h2>Prendre le temps de préparer</h2>
-        <p>Avant la peinture, il y a le travail du support : lessiver, reboucher les fissures, enduire et poncer. Christophe adapte cette préparation à l’état des murs, des plafonds ou des boiseries à rénover.</p>
+        <h2>Préparer les surfaces avant de peindre</h2>
+        <p>Avant la peinture, il y a le travail du support : lessiver, reboucher les fissures, enduire et poncer. Christophe Feret adapte cette préparation à l’état des murs, des plafonds ou des boiseries à rénover.</p>
         <h2>Un devis détaillé, pièce par pièce</h2>
         <p>La préparation, les finitions, les quantités et les prix sont décrits dans le devis. Vous savez ce qui est prévu pour chaque pièce ou chaque élément du chantier.</p>
         <div class="company-contact">
             <h2>Parlons de vos travaux</h2>
-            <p>Quelques mots sur votre projet et la commune du chantier suffisent pour un premier échange avec Christophe.</p>
+            <p>Quelques mots sur votre projet et la commune du chantier suffisent pour un premier échange avec Christophe Feret.</p>
             <?php fp_theme_quote_button(); ?>
         </div>
     </div>
 </section>
 <?php elseif ($slug === 'zone-intervention') : ?>
 <section class="page-intro container"><p class="eyebrow">Zone d’intervention</p><h1>Vos travaux dans le Val-d’Oise<br><em>et les environs.</em></h1><p class="intro-copy">Depuis Écouen, Christophe Feret intervient dans le Val-d’Oise, en Île-de-France et dans l’Oise, selon la commune de votre chantier.</p></section>
-<section class="container locality-grid section section--topless"><div class="prose"><h2>Un peintre près de chez vous</h2><p>Écouen, Ézanville, Domont, Montmorency, Sarcelles ou L’Isle-Adam : Christophe accompagne vos projets de peinture et de revêtements dans le Val-d’Oise. Dans l’Oise, les secteurs de Chantilly, Gouvieux, Senlis et Compiègne sont également accessibles.</p><h2>Votre chantier est plus loin ?</h2><p>Paris et les autres départements franciliens, mais aussi les secteurs d’Amiens, de Rouen ou de Reims peuvent être envisagés.</p><p>Votre commune n’est pas citée ? Indiquez-la dans votre demande : Christophe vous confirmera la possibilité d’intervention.</p><?php fp_theme_quote_button(); ?></div><div class="locality-card"><span class="locality-postcode">95440</span><span class="locality-name">Écouen</span><span class="locality-caption">Le point de départ de vos projets</span><span class="locality-line" aria-hidden="true"></span></div></section>
+<section class="container locality-grid section section--topless"><div class="prose"><h2>Un peintre près de chez vous</h2><p>Écouen, Ézanville, Domont, Montmorency, Sarcelles ou L’Isle-Adam : Christophe Feret accompagne vos projets de peinture et de revêtements dans le Val-d’Oise. Dans l’Oise, les secteurs de Chantilly, Gouvieux, Senlis et Compiègne sont également accessibles.</p><h2>Votre chantier est plus loin ?</h2><p>Paris et les autres départements franciliens, mais aussi les secteurs d’Amiens, de Rouen ou de Reims peuvent être envisagés.</p><p>Votre commune n’est pas citée ? Indiquez-la dans votre demande : Christophe Feret vous confirmera la possibilité d’intervention.</p><?php fp_theme_quote_button(); ?></div><div class="locality-card"><span class="locality-postcode">95440</span><span class="locality-name">Écouen</span><span class="locality-caption">Le point de départ de vos projets</span><span class="locality-line" aria-hidden="true"></span></div></section>
 <?php elseif ($slug === 'merci') : ?>
-<section class="container thank-you-page"><p class="eyebrow">Votre demande de rendez-vous</p><h1><?php echo function_exists('fp_quote_success_verified') && fp_quote_success_verified() ? 'Merci pour votre demande.' : 'Parlons de votre projet.'; ?></h1><?php if (function_exists('fp_quote_success_verified') && fp_quote_success_verified()) : ?><p class="intro-copy" data-form-success>Votre message a été envoyé. Christophe vous recontactera pour fixer le rendez-vous.</p><p>Vous avez une précision à ajouter à votre projet ? Vous pouvez écrire à Christophe par email.</p><?php fp_theme_email_link(); ?><?php else : ?><p class="intro-copy">Pour transmettre votre projet à Christophe, utilisez le formulaire de demande de rendez-vous.</p><?php fp_theme_quote_button(); ?><?php endif; ?><a class="text-link" href="<?php echo esc_url(home_url('/')); ?>">Retour à l’accueil <?php echo fp_theme_arrow(); ?></a></section>
+<section class="container thank-you-page"><p class="eyebrow">Votre demande de rendez-vous</p><h1><?php echo function_exists('fp_quote_success_verified') && fp_quote_success_verified() ? 'Merci pour votre demande.' : 'Parlons de votre projet.'; ?></h1><?php if (function_exists('fp_quote_success_verified') && fp_quote_success_verified()) : ?><p class="intro-copy" data-form-success>Votre message a été envoyé. Christophe Feret vous recontactera pour fixer le rendez-vous.</p><p>Vous avez une précision à ajouter à votre projet ? Vous pouvez écrire à Christophe Feret par email.</p><?php fp_theme_email_link(); ?><?php else : ?><p class="intro-copy">Pour transmettre votre projet à Christophe Feret, utilisez le formulaire de demande de rendez-vous.</p><?php fp_theme_quote_button(); ?><?php endif; ?><a class="text-link" href="<?php echo esc_url(home_url('/')); ?>">Retour à l’accueil <?php echo fp_theme_arrow(); ?></a></section>
 <?php elseif (in_array($slug, array('mentions-legales', 'confidentialite'), true)) : ?>
-<section class="page-intro container legal-intro"><p class="eyebrow">Les informations du site</p><h1><?php the_title(); ?></h1></section><article class="container prose legal-content"><?php if (fp_theme_preview()) : ?><div class="validation-note"><strong>Document préparatoire : prévisualisation uniquement.</strong><p>Aliant et le responsable du site doivent compléter et valider les informations avant publication.</p></div><?php endif; ?><?php if (trim(get_the_content())) { the_content(); } elseif ($slug === 'mentions-legales') { get_template_part('inc/legal-draft'); } else { get_template_part('inc/privacy-draft'); } ?></article>
+<section class="page-intro container legal-intro"><p class="eyebrow">Les informations du site</p><h1><?php the_title(); ?></h1></section><article class="container prose legal-content"><?php if (trim(get_the_content())) { the_content(); } elseif ($slug === 'mentions-legales') { get_template_part('inc/legal-draft'); } else { get_template_part('inc/privacy-draft'); } ?></article>
 <?php else : ?>
 <section class="page-intro container"><h1><?php the_title(); ?></h1></section><article class="container prose standard-page"><?php the_content(); ?></article>
 <?php endif; endwhile; get_footer(); ?>

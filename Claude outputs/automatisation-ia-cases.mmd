@@ -1,0 +1,22 @@
+flowchart TD
+    Start([Start]) --> C["Case créé<br/>Motif2__c ∈ ('M20006', 'M20010')"]
+    C --> O["Récupérer la commande (OrderSummary)<br/>liée au case"]
+    O --> A{"Is Assigned ?"}
+
+    A -- Oui --> D{"OrderedDate<br/>&lt;= LAST 3 DAYS"}
+    A -- Non --> S{"Is ShippedToStore ?"}
+
+    D -- Oui --> MC["Envoyer email au client"]
+    D -- Non --> S
+
+    S -- Non --> OUT["OUT"]
+    S -- Oui --> L{"LastModifiedDate<br/>&gt; 1 DAY"}
+
+    L -- Oui --> MM["Envoyer email au magasin"]
+    L -- Non --> R["Recheck J+1"]
+    R -. nouvelle vérification .-> S
+
+    classDef dec fill:#FF63C8,stroke:#D6249F,color:#fff,font-weight:bold
+    classDef act fill:#DCEBFF,stroke:#4C9AFF,color:#12325E
+    class A,D,S,L dec
+    class C,O,MC,MM,OUT,R act

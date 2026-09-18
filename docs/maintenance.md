@@ -1,10 +1,19 @@
 # Exploitation par Aliant
 
+## Rétention configurée le 16 septembre 2026
+
+- Journal système partagé du VPS : `/etc/systemd/journald.conf.d/90-retention.conf`, MaxRetentionSec=30day, MaxFileSec=1day. Cette limite concerne tout le VPS, y compris les journaux des conteneurs. Rotation et vacuum initial exécutés ; service actif.
+- Nginx : rotation quotidienne existante, 14 archives. Aucun réglage global Nginx modifié.
+- Sauvegardes de déploiement : purge quotidienne à 03:17 heure serveur par `/etc/cron.d/feret-backup-retention`. Le script `scripts/retention-deployment-backups.py` vise exclusivement les fichiers réguliers de `/srv/apps/feret-peinture/backups`, sans suivre les liens symboliques. Suppression après 30 jours depuis la plus récente des dates mtime/ctime, au prochain passage quotidien. Les répertoires vides sont conservés. Ni base active, ni médias actifs, ni sauvegardes IONOS concernés.
+- Première simulation et première application : aucun fichier éligible, aucune sauvegarde supprimée. Configuration précédente sauvegardée dans un dossier retention-config sous backups.
+- Vérification : `scripts/check-retention.py` sur fixtures isolées ; le nettoyage réel sans `--apply` reste une simulation.
+- Cette purge ne crée pas de sauvegarde périodique et ne prouve pas leur restaurabilité. La politique de sauvegarde globale et les copies IONOS restent distinctes.
+
 Procédure préparée, à adapter au serveur choisi. Aucune commande de déploiement, certificat, DNS ou restauration de production n'a été exécutée pour cette livraison. Le démarrage Docker local figure dans le README ; Compose est un environnement de développement, pas une configuration publique prête à exposer.
 
 ## Responsabilités et composants
 
-Christophe utilise les trois rubriques métier. Aliant gère comptes, mises à jour, messagerie, configuration privée, hébergement et restauration. Les médias et la base ne sont pas dans Git. Le thème contient la présentation ; `feret-peinture-core` conserve types, autorisations et fonctions métier ; `config/pods` versionne les champs.
+Christophe Feret utilise les trois rubriques métier. Aliant gère comptes, mises à jour, messagerie, configuration privée, hébergement et restauration. Les médias et la base ne sont pas dans Git. Le thème contient la présentation ; `feret-peinture-core` conserve types, autorisations et fonctions métier ; `config/pods` versionne les champs.
 
 Les versions locales fixées se trouvent dans `compose.yaml`, `.env.example` et les scripts d'installation. Pour Debian natif, contrôler d'abord la version de l'OS, les [versions PHP maintenues](https://www.php.net/supported-versions.php), les paquets disponibles et la compatibilité WordPress/Pods. Ne pas supposer PHP 8.3 disponible dans les dépôts de toute version de Debian. Utiliser le PHP-FPM maintenu de la distribution, puis rejouer la recette sur cette version ; une exécution locale avec PHP 8.3 ne vérifie pas automatiquement un serveur en PHP 8.4.
 
@@ -27,7 +36,7 @@ Exemple d'organisation à créer uniquement sur le serveur retenu :
 
 Le fichier `wp-config.php` doit lire des secrets privés disponibles aussi en WP-CLI. Vérifier le traitement des variables d'environnement par PHP-FPM (`clear_env` et déclarations du pool) : ne pas supposer que les variables du shell arrivent dans les requêtes web. Pour une configuration PHP privée incluse, permissions minimales et aucun accès HTTP. Ne jamais copier les identifiants locaux de `.env` en production.
 
-Utiliser un utilisateur SQL dédié limité à sa base, un compte d'administration Aliant nominatif et le rôle `fp_christophe` pour Christophe. Réinitialisation et email du compte doivent être opérationnels avant remise. Ne pas donner `manage_options` au rôle Christophe. Désactiver l'éditeur de fichiers via `DISALLOW_FILE_EDIT`; garder erreurs détaillées hors réponses publiques, secrets et contenu des devis hors logs de debug. Utiliser un compte/pool distinct des autres sites lorsque le serveur le permet.
+Utiliser un utilisateur SQL dédié limité à sa base, un compte d'administration Aliant nominatif et le rôle `fp_christophe` pour Christophe Feret. Réinitialisation et email du compte doivent être opérationnels avant remise. Ne pas donner `manage_options` au rôle Christophe Feret. Désactiver l'éditeur de fichiers via `DISALLOW_FILE_EDIT`; garder erreurs détaillées hors réponses publiques, secrets et contenu des devis hors logs de debug. Utiliser un compte/pool distinct des autres sites lorsque le serveur le permet.
 
 ## Préparer Nginx et HTTPS
 
@@ -90,7 +99,11 @@ Références de configuration : [WordPress avec Nginx](https://developer.wordpre
 
 ## Sauvegarde cohérente de la base et des médias
 
-Politique proposée à approuver : sauvegarde quotidienne et avant chaque mise à jour, copie chiffrée hors serveur, historique limité à une durée décidée avec le responsable du site. Vérifier chaque sauvegarde et tester périodiquement la restauration. Conserver séparément les éléments nécessaires pour reconstruire : commit du site, versions WordPress/Pods, configuration privée et configuration Nginx/PHP, procédure d'accès. La base seule ne contient pas les fichiers photo.
+Décision d'Elisa du 18 septembre 2026 : aucune sauvegarde automatique du site n'est mise en place. Le code est versionné dans GitHub et Christophe Feret conserve ses brouillons sur son ordinateur avant publication.
+
+Cette organisation ne sauvegarde pas la base WordPress, les médias, les réglages ni les comptes déjà publiés. Elle ne garantit donc pas une restauration complète après incident. Le test isolé du 18 septembre a restauré une archive technique antérieure sans chantier ni média. Revoir explicitement cette décision avant l'ajout de réalisations réelles ou de tout contenu difficile à recréer.
+
+La procédure ci-dessous est conservée comme référence pour une sauvegarde manuelle ultérieure, et n'est pas planifiée automatiquement.
 
 Exemple Bash pour une installation native existante. À lancer avec un compte opérateur autorisé à écrire les sauvegardes et à exécuter WP-CLI sous l'utilisateur du pool PHP. Adapter les deux variables ; suspendre temporairement l'édition des contenus pendant base + médias pour obtenir une paire cohérente. Ne pas saisir de mot de passe SQL en ligne de commande.
 
@@ -154,14 +167,14 @@ sudo -u "$fp_php_user" wp --path="$fp_restore" search-replace \
   --all-tables-with-prefix --skip-columns=guid --dry-run
 ```
 
-Ne pas conserver `staging.example.invalid` : c'est un repère documentaire, pas un domaine prévu. Vérifier options `home`/`siteurl`, permaliens, chantiers, coordonnées, miniatures, galeries dans leur ordre, avant/après, droits Christophe et réception dans la boîte de test. La restauration des fichiers photo d'origine doit être vérifiée, pas uniquement leurs miniatures. Enregistrer date, archive, commit/versions, durée mesurée, résultat et limites hors données clients. Références : [wp db import](https://developer.wordpress.org/cli/commands/db/import/) et [wp search-replace](https://developer.wordpress.org/cli/commands/search-replace/).
+Ne pas conserver `staging.example.invalid` : c'est un repère documentaire, pas un domaine prévu. Vérifier options `home`/`siteurl`, permaliens, chantiers, coordonnées, miniatures, galeries dans leur ordre, avant/après, droits Christophe Feret et réception dans la boîte de test. La restauration des fichiers photo d'origine doit être vérifiée, pas uniquement leurs miniatures. Enregistrer date, archive, commit/versions, durée mesurée, résultat et limites hors données clients. Références : [wp db import](https://developer.wordpress.org/cli/commands/db/import/) et [wp search-replace](https://developer.wordpress.org/cli/commands/search-replace/).
 
 Une restauration de production remplace des données : elle nécessite une fenêtre décidée, une sauvegarde de l'état courant et vérification de l'absence de nouvelles demandes à perdre. Utiliser la procédure éprouvée sur la copie, après décision d'Aliant ; aucune commande de restauration destructrice automatisée n'est livrée.
 
 ## Mises à jour et surveillance
 
 - Avant mise à jour : sauvegarde vérifiée, changelog de sécurité/compatibilité, staging avec données de test. Mettre à jour les versions fixées dans le dépôt, pas seulement sur le serveur.
-- Après mise à jour : lint PHP, parcours devis et panne SMTP, rôle Christophe, ajout photo, révisions, rendu mobile, sitemap/JSON-LD. Le bootstrap ne doit pas réinitialiser ses contenus.
+- Après mise à jour : lint PHP, parcours devis et panne SMTP, rôle Christophe Feret, ajout photo, révisions, rendu mobile, sitemap/JSON-LD. Le bootstrap ne doit pas réinitialiser ses contenus.
 - Vérifier les fichiers WordPress officiels avec [`wp core verify-checksums`](https://developer.wordpress.org/cli/commands/core/verify-checksums/) ; la commande ne valide pas le code sur mesure. Ne pas utiliser `--insecure` pour masquer un problème de certificat.
 - Surveiller échecs SMTP, disponibilité, espace disque, sauvegardes et certificats, avec accès restreint et sans journaliser les descriptions/contact des demandes. Définir qui reçoit ces alertes.
 - Garder l'expéditeur de test sur staging. Mailpit, base de données et ports de développement ne doivent pas être exposés à Internet.
@@ -170,3 +183,8 @@ Une restauration de production remplace des données : elle nécessite une fenê
 ## Réversibilité
 
 Le dossier remis doit contenir l'export SQL, les médias, le code et son commit, les versions de dépendances, les accès et configurations transmis par canal privé, la procédure de restauration et les autorisations photo. Les révisions WordPress sont une aide éditoriale ; elles ne remplacent pas la sauvegarde de la base et des médias. Faire une remise effective des accès en fin de prestation sans exposer les secrets dans la PR.
+# Configuration de la messagerie du site
+
+Le transport utilise IONOS smtp.ionos.fr, port 465, SSL/TLS. Le destinataire et l'expéditeur sont contact@feret-peinture.fr. Les paramètres privés sont chargés par wp-config.php depuis /srv/apps/feret-peinture/wordpress/feret-mail-private.php (0600, propriétaire 33:33), hors dépôt. Ne pas afficher ni copier ce fichier dans les comptes rendus. Conserver sa confidentialité dans les sauvegardes.
+
+Au 16 septembre 2026, identifiants validés via IMAP, mais connexions SMTP 465 et 587 depuis le VPS sans réponse. Politique netcup Mail Block à vérifier dans le panneau serveur : https://www.netcup.com/en/helpcenter/documentation/server/firewall. Aucun envoi ou réception validé, prévisualisation protégée et blocage applicatif maintenus.

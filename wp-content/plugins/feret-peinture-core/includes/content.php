@@ -175,7 +175,7 @@ foreach ( [ 'phone_mobile', 'phone_landline' ] as $fp_phone_key ) {
     } );
 }
 add_filter( 'sanitize_post_meta_public_email', 'sanitize_email' );
-foreach ( [ 'presentation', 'confirmed_area', 'temporary_message', 'short_description', 'town' ] as $fp_text_key ) {
+foreach ( [ 'presentation', 'confirmed_area', 'short_description', 'town' ] as $fp_text_key ) {
     add_filter( 'sanitize_post_meta_' . $fp_text_key, 'sanitize_textarea_field' );
 }
 

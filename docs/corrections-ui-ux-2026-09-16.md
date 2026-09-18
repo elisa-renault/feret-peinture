@@ -59,6 +59,6 @@ Le retour historique vers une réponse POST a rencontré `ERR_CACHE_MISS` dans l
 
 ## Éléments nécessaires à la suite
 
-Les constats éditoriaux 3 et 4 de l’audit restent ouverts : demander à Christophe les photos autorisées, la nature réelle des travaux, les communes et quelques descriptions de chantiers. Préciser les prestations directement dans les contenus WordPress existants une fois les réponses obtenues ; modifier uniquement le fichier d’initialisation ne mettrait pas à jour ces contenus.
+Les constats éditoriaux 3 et 4 de l’audit restent ouverts : demander à Christophe Feret les photos autorisées, la nature réelle des travaux, les communes et quelques descriptions de chantiers. Préciser les prestations directement dans les contenus WordPress existants une fois les réponses obtenues ; modifier uniquement le fichier d’initialisation ne mettrait pas à jour ces contenus.
 
-Restent aussi la recette de l’administration avec Christophe, le contrôle sur appareils et navigateurs réels, Lighthouse, la livraison vers la vraie boîte email et les conditions d’ouverture déjà listées dans `docs/publication.md`. L’image de partage est prête, mais son affichage sur les plateformes externes devra être vérifié après publication autorisée.
+Restent aussi la recette de l’administration avec Christophe Feret, le contrôle sur appareils et navigateurs réels, Lighthouse, la livraison vers la vraie boîte email et les conditions d’ouverture déjà listées dans `docs/publication.md`. L’image de partage est prête, mais son affichage sur les plateformes externes devra être vérifié après publication autorisée.

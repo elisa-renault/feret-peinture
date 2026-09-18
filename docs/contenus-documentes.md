@@ -1,6 +1,6 @@
 # Contenus issus du fonds professionnel
 
-Mise à jour du 16 septembre 2026. Les documents originaux restent dans le dossier de ressources privé « Documents Christophe ». Aucun document client ni extrait nominatif ne doit être ajouté au dépôt ou aux médias WordPress.
+Mise à jour du 16 septembre 2026. Les documents originaux restent dans le dossier de ressources privé « Documents Christophe Feret ». Aucun document client ni extrait nominatif ne doit être ajouté au dépôt ou aux médias WordPress.
 
 ## Éléments intégrés
 

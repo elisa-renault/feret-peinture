@@ -53,7 +53,7 @@ Pour une installation déjà passée par la mise à jour documentée, utiliser c
 
 ## Seconde passe : site et backoffice
 
-À la demande d’Elisa, nouvelle relecture du site et des trois rubriques de Christophe. Corrections appliquées en local, sans mise à jour du serveur privé.
+À la demande d’Elisa, nouvelle relecture du site et des trois rubriques de Christophe Feret. Corrections appliquées en local, sans mise à jour du serveur privé.
 
 Sur le site : suppression du texte qui répète les quatre prestations et de l’introduction qui annonce simplement leur liste. La FAQ conserve trois réponses ; les consignes de demande et la zone d’intervention sont déjà expliquées dans les sections précédentes. Le lien d’appel, le titre sur la préparation des supports et les consignes du formulaire sont allégés. Le message de longueur maximale indique désormais « 100 caractères maximum », conformément au contrôle existant.
 
@@ -64,7 +64,7 @@ Dans le backoffice :
 - Les aides précisent l’emplacement de la présentation, l’usage du téléphone fixe si le principal est vide et l’affichage du message temporaire.
 - « Mettre en avant » explique le classement des chantiers et les trois emplacements sur l’accueil.
 - Les consignes d’enregistrement apparaissent dans les fiches, pas dans les listes. Une fiche publiée invite à mettre à jour ; un brouillon invite à enregistrer et vérifier l’aperçu.
-- Le guide Christophe reprend les nouveaux libellés et retire les explications techniques inutiles à l’édition.
+- Le guide Christophe Feret reprend les nouveaux libellés et retire les explications techniques inutiles à l’édition.
 
 Les limites des révisions, les autorisations des photos et les informations nécessaires à la publication sont conservées. Les champs, leurs valeurs et les droits d’accès ne changent pas. Aucun engagement commercial ajouté ; aucun tiret cadratin dans les textes modifiés.
 
@@ -74,4 +74,4 @@ Contrôles de cette seconde passe : syntaxe PHP réussie, 31 assertions du formu
 
 Les deux passes ont été déployées le 16 septembre 2026 à la demande d’Elisa. Sauvegarde préalable du code et de la base dans `/srv/apps/feret-peinture/backups/editorial-20260916T134912Z`. Dix-huit fichiers transférés, empreintes et syntaxe PHP vérifiées sur le serveur. Trois fiches prestations et la présentation mises à jour ; seconde exécution sans modification.
 
-Les textes ont été contrôlés sur six pages du site et trois écrans authentifiés du compte Christophe. Les contrôles du déploiement privé ont réussi : pages et ressources accessibles avec authentification, refus sans mot de passe, HTTPS et absence d’indexation conservés. Le blocage des emails de prévisualisation et les paramètres d’ouverture publique n’ont pas été modifiés.
+Les textes ont été contrôlés sur six pages du site et trois écrans authentifiés du compte Christophe Feret. Les contrôles du déploiement privé ont réussi : pages et ressources accessibles avec authentification, refus sans mot de passe, HTTPS et absence d’indexation conservés. Le blocage des emails de prévisualisation et les paramètres d’ouverture publique n’ont pas été modifiés.

@@ -113,25 +113,25 @@ try {
 
     wp_set_current_user( $editor );
     foreach ( [ 'manage_options', 'activate_plugins', 'install_plugins', 'update_plugins', 'edit_plugins', 'edit_theme_options', 'switch_themes', 'list_users', 'create_users', 'edit_users', 'promote_users', 'delete_users', 'edit_posts', 'publish_posts', 'delete_posts', 'edit_pages', 'publish_pages', 'delete_pages', 'pods', 'pods_admin', 'unfiltered_html', 'unfiltered_upload', 'create_fp_services', 'create_fp_informations', 'delete_fp_services', 'delete_fp_informations' ] as $cap ) {
-        fpqa_check( ! current_user_can( $cap ), 'Christophe cannot ' . $cap );
+        fpqa_check( ! current_user_can( $cap ), 'Christophe Feret cannot ' . $cap );
     }
     foreach ( [ 'read', 'upload_files', 'create_fp_projects', 'publish_fp_projects' ] as $cap ) {
-        fpqa_check( current_user_can( $cap ), 'Christophe can ' . $cap );
+        fpqa_check( current_user_can( $cap ), 'Christophe Feret can ' . $cap );
     }
-    fpqa_check( current_user_can( 'edit_post', $information_id ), 'Christophe can edit the actual information singleton' );
-    fpqa_check( ! current_user_can( 'edit_post', $extra_information ), 'Christophe cannot edit a second information record by ID' );
-    fpqa_check( ! current_user_can( 'delete_post', $information_id ), 'Christophe cannot delete the information singleton' );
-    fpqa_check( current_user_can( 'edit_post', $service_id ), 'Christophe can edit a seeded service' );
-    fpqa_check( ! current_user_can( 'delete_post', $service_id ), 'Christophe cannot delete a seeded service by ID' );
-    wp_update_post( [ 'ID' => $service_id, 'post_title' => 'Forbidden renamed family', 'post_name' => 'forbidden-family-slug', 'post_content' => 'QA prestation modifiée par Christophe.' ] );
+    fpqa_check( current_user_can( 'edit_post', $information_id ), 'Christophe Feret can edit the actual information singleton' );
+    fpqa_check( ! current_user_can( 'edit_post', $extra_information ), 'Christophe Feret cannot edit a second information record by ID' );
+    fpqa_check( ! current_user_can( 'delete_post', $information_id ), 'Christophe Feret cannot delete the information singleton' );
+    fpqa_check( current_user_can( 'edit_post', $service_id ), 'Christophe Feret can edit a seeded service' );
+    fpqa_check( ! current_user_can( 'delete_post', $service_id ), 'Christophe Feret cannot delete a seeded service by ID' );
+    wp_update_post( [ 'ID' => $service_id, 'post_title' => 'Forbidden renamed family', 'post_name' => 'forbidden-family-slug', 'post_content' => 'QA prestation modifiée par Christophe Feret.' ] );
     fpqa_check( $service_original['post_title'] === get_the_title( $service_id ) && $service_original['post_name'] === get_post_field( 'post_name', $service_id ), 'Service family title and slug resist forged structural changes' );
-    fpqa_check( 'QA prestation modifiée par Christophe.' === get_post_field( 'post_content', $service_id ), 'Christophe actually changes service editorial text' );
+    fpqa_check( 'QA prestation modifiée par Christophe Feret.' === get_post_field( 'post_content', $service_id ), 'Christophe Feret actually changes service editorial text' );
     pods( 'fp_service', $service_id )->save( [ 'visible' => 0 ] );
-    fpqa_check( ! in_array( $service_id, fpqa_ids( fp_services() ), true ), 'A service hidden by Christophe disappears from listings' );
+    fpqa_check( ! in_array( $service_id, fpqa_ids( fp_services() ), true ), 'A service hidden by Christophe Feret disappears from listings' );
     pods( 'fp_service', $service_id )->save( [ 'visible' => 1 ] );
     fpqa_check( ! current_user_can( 'edit_post', $page ) && ! current_user_can( 'edit_post', $ordinary ), 'Core page/post ID edit attempts are denied' );
-    fpqa_check( ! current_user_can( 'edit_user', $admin_id ), 'Christophe cannot edit the administrator by ID' );
-    fpqa_check( ! current_user_can( 'delete_user', $admin_id ), 'Christophe cannot delete the administrator by ID' );
+    fpqa_check( ! current_user_can( 'edit_user', $admin_id ), 'Christophe Feret cannot edit the administrator by ID' );
+    fpqa_check( ! current_user_can( 'delete_user', $admin_id ), 'Christophe Feret cannot delete the administrator by ID' );
     foreach ( [ 'GET' => '/wp/v2/settings', 'POST' => '/wp/v2/pages' ] as $method => $route ) {
         $response = fpqa_rest( $method, $route, [ 'title' => 'Denied QA request', 'status' => 'publish' ] );
         fpqa_check( 403 === $response->get_status(), "Authenticated REST {$method} {$route} denied with 403" );
@@ -147,7 +147,7 @@ try {
     if ( is_wp_error( $project ) ) { throw new RuntimeException( 'Cannot insert test project.' ); }
     $project = (int) $project;
     $posts_to_delete[] = $project;
-    fpqa_check( current_user_can( 'edit_post', $project ), 'Christophe can edit his own draft project' );
+    fpqa_check( current_user_can( 'edit_post', $project ), 'Christophe Feret can edit his own draft project' );
     wp_update_post( [ 'ID' => $project, 'post_status' => 'publish' ] );
     fpqa_check( 'publish' === get_post_status( $project ) && current_user_can( 'edit_post', $project ), 'Project publishes and remains editable' );
     set_post_thumbnail( $project, $image1 );
@@ -164,7 +164,7 @@ try {
     set_post_thumbnail( $project, $image3 );
     pods( 'fp_project', $project )->save( [ 'town' => 'QA Écouen B', 'service' => $service2_id, 'short_description' => 'Texte B', 'gallery' => [ $image3, $image1 ], 'before_photo' => $image3, 'after_photo' => '', 'featured' => 0, 'publication_authorized' => 0 ] );
     fpqa_check( [ $image3, $image1 ] === fp_gallery( $project ), 'A second real Pods save changes image selection and order' );
-    fpqa_check( current_user_can( 'edit_post', $revision_a ), 'Christophe has native revision restoration permission' );
+    fpqa_check( current_user_can( 'edit_post', $revision_a ), 'Christophe Feret has native revision restoration permission' );
     $restored = $revision_a ? wp_restore_post_revision( $revision_a ) : false;
     fpqa_check( $project === $restored, 'Native wp_restore_post_revision successfully restores the project' );
     fpqa_check( 'FP QA revision A' === get_the_title( $project ) && 'Description réelle de test A.' === get_post_field( 'post_content', $project ), 'Revision restores title and main content' );
@@ -174,7 +174,7 @@ try {
     fpqa_check( $service_id === (int) get_post_meta( $project, 'service', true ), 'Revision restores the actual saved service relationship' );
     fpqa_check( $image1 === (int) get_post_thumbnail_id( $project ), 'Revision restores the featured image selection' );
     fpqa_check( '1' === (string) get_post_meta( $project, 'publication_authorized', true ) && '1' === (string) get_post_meta( $project, 'featured', true ), 'Revision restores publication authorization and featured flag' );
-    fpqa_check( current_user_can( 'delete_post', $project ), 'Christophe may trash his project' );
+    fpqa_check( current_user_can( 'delete_post', $project ), 'Christophe Feret may trash his project' );
     wp_trash_post( $project );
     fpqa_check( 'trash' === get_post_status( $project ) && current_user_can( 'delete_post', $project ), 'Trashed project retains recovery permission' );
     wp_untrash_post( $project );
@@ -184,7 +184,7 @@ try {
     foreach ( array_keys( fp_schema()['fp_information']['fields'] ) as $key ) { $original_information[$key] = get_post_meta( $information_id, $key, true ); }
     $information_title = get_the_title( $information_id );
     $information_slug = get_post_field( 'post_name', $information_id );
-    pods( 'fp_information', $information_id )->save( [ 'phone_mobile' => '06 00 00 00 01', 'public_email' => 'qa@example.test', 'presentation' => 'Présentation QA <script>script</script>', 'temporary_message' => 'QA non écrasé' ] );
+    pods( 'fp_information', $information_id )->save( [ 'phone_mobile' => '06 00 00 00 01', 'public_email' => 'qa@example.test', 'presentation' => 'Présentation QA <script>script</script>', 'confirmed_area' => 'Zone QA non écrasée' ] );
     wp_update_post( [ 'ID' => $information_id, 'post_title' => 'Attempted structural change', 'post_name' => 'attempted-structure' ] );
     fpqa_check( $information_title === get_the_title( $information_id ) && $information_slug === get_post_field( 'post_name', $information_id ), 'Forged information title and slug changes are ignored server-side' );
     fpqa_check( false === strpos( get_post_meta( $information_id, 'presentation', true ), '<script>' ), 'Information field sanitation removes script markup on save' );
@@ -226,7 +226,7 @@ try {
     $legal_error = static function ( string $slug ): bool {
         return (bool) array_filter( fp_launch_errors(), static fn( $error ) => str_contains( $error, 'Page ' . $slug . ' :' ) );
     };
-    foreach ( [ 'mentions-legales', 'confidentialite' ] as $slug ) {
+    foreach ( [ 'mentions-legales' ] as $slug ) {
         $legal = get_page_by_path( $slug );
         if ( ! $legal ) { fpqa_check( false, "Legal page {$slug} exists" ); continue; }
         $restore_posts[$legal->ID] = [ 'post' => get_post( $legal->ID, ARRAY_A ), 'meta' => [ '_fp_legal_approved' => get_post_meta( $legal->ID, '_fp_legal_approved', true ) ], 'revisions' => array_keys( wp_get_post_revisions( $legal->ID ) ) ];
@@ -256,8 +256,8 @@ try {
         $after_counts = [];
         foreach ( [ 'page', 'fp_service', 'fp_information' ] as $type ) { $after_counts[$type] = (array) wp_count_posts( $type ); }
         fpqa_check( $before_counts === $after_counts, 'Second bootstrap creates no duplicate pages, services or information' );
-        fpqa_check( 'QA non écrasé' === get_post_meta( $information_id, 'temporary_message', true ), 'Second bootstrap preserves Christophe’s modified field content' );
-        fpqa_check( 'QA prestation modifiée par Christophe.' === get_post_field( 'post_content', $service_id ), 'Second bootstrap preserves edited service prose' );
+        fpqa_check( 'Zone QA non écrasée' === get_post_meta( $information_id, 'confirmed_area', true ), 'Second bootstrap preserves Christophe Feret’s modified field content' );
+        fpqa_check( 'QA prestation modifiée par Christophe Feret.' === get_post_field( 'post_content', $service_id ), 'Second bootstrap preserves edited service prose' );
         fpqa_check( [ $image1, $image2 ] === fp_gallery( $project ), 'Second bootstrap preserves existing project galleries' );
     } else { fpqa_check( false, 'Bootstrap is available for its actual idempotence check' ); }
 } catch ( Throwable $error ) {

@@ -6,7 +6,7 @@
 
 **La direction visuelle est convaincante et le parcours de contact fonctionne dans les cas contrôlés. La priorité est de rendre la demande plus immédiate et l’offre plus concrète.** Une refonte graphique complète n’est pas justifiée. Les principaux investissements utiles sont la hiérarchie mobile, les preuves authentiques et les contenus métier validés.
 
-Un défaut de mise en page est confirmé à 320 px : la FAQ provoque un défilement horizontal. Le formulaire commence trop bas sur mobile et tablette. Les contenus expliquent soigneusement comment préparer une demande, mais donnent encore peu de raisons concrètes de choisir Christophe.
+Un défaut de mise en page est confirmé à 320 px : la FAQ provoque un défilement horizontal. Le formulaire commence trop bas sur mobile et tablette. Les contenus expliquent soigneusement comment préparer une demande, mais donnent encore peu de raisons concrètes de choisir Christophe Feret.
 
 L’ouverture publique reste soumise aux validations déjà prévues dans le brief. La prévisualisation, ses avertissements et ses textes préparatoires ne doivent pas être assimilés à une version de production défectueuse.
 
@@ -17,10 +17,10 @@ Source : `docs/brief.md`, complétée par `README.md`, `docs/publication.md`, `d
 | Objectif | Diagnostic | Priorité |
 | --- | --- | --- |
 | Obtenir des demandes de devis pertinentes | Champs adaptés et prestation présélectionnée depuis la fiche ; accès au premier champ trop tardif | Haute |
-| Faciliter le contact direct avec Christophe | Nom explicite, liens téléphone et alternative au formulaire présents | Conserver |
+| Faciliter le contact direct avec Christophe Feret | Nom explicite, liens téléphone et alternative au formulaire présents | Conserver |
 | Rassurer sur le métier et l’implantation | Métier et Écouen immédiatement identifiables ; preuves de réalisations absentes dans l’état observé | Haute, éditoriale |
 | Qualifier la zone et les travaux acceptés | Prudence cohérente avec les faits non confirmés ; qualification encore reportée sur le contact | Haute, métier |
-| Donner de l’autonomie à Christophe | Trois rubriques et guide adaptés ; utilisabilité réelle de l’administration non vérifiée ici | À valider |
+| Donner de l’autonomie à Christophe Feret | Trois rubriques et guide adaptés ; utilisabilité réelle de l’administration non vérifiée ici | À valider |
 | Garder un site sobre, accessible et maintenable | Bonne base sémantique, composants simples ; défaut de reflow à 320 px | Correction ciblée |
 
 ## Périmètre et méthode
@@ -34,7 +34,7 @@ Lecture du thème, du formulaire, des règles de visibilité et des écrans mét
 - Inspection des trois autres fiches prestation, de la galerie vide, des mentions, de la confidentialité, de l’accès manuel au remerciement et d’une page inexistante à 768 px.
 - Parcours peinture intérieure → « Présenter mon projet » → formulaire : présélection correcte de la prestation.
 - Lien d’évitement au clavier : focus sur `#contenu`. Menu mobile : ouverture avec Entrée, tabulation vers Prestations, fermeture avec Échap et retour du focus sur Menu. Ouverture d’une réponse de FAQ.
-- Soumission locale volontairement invalide, sans téléphone ni email : erreur explicite, saisie conservée, focus sur `#form-errors`. Aucun message envoyé à Christophe.
+- Soumission locale volontairement invalide, sans téléphone ni email : erreur explicite, saisie conservée, focus sur `#form-errors`. Aucun message envoyé à Christophe Feret.
 - Inspection visuelle des premiers écrans ordinateur, mobile et tablette. Aucun message d’erreur dans le relevé console effectué en fin de parcours.
 
 **Limites :** pas d’envoi valide effectué pendant cet audit, pas de test de livraison email réelle, pas d’administration authentifiée ni de publication de chantier, pas de lecteur d’écran, de téléphone physique ou de comparaison Safari/Firefox. Pas de Lighthouse ni d’audit automatisé complet d’accessibilité. La suite Playwright du dépôt n’a pas été lancée : les contrôles ci-dessus sont distincts. Les résultats d’intégration de `docs/recette.md` sont historiques, non réexécutés ici. Aucune certification WCAG/RGAA ni performance réelle de production n’est déduite de ces observations.
@@ -81,11 +81,11 @@ Références : `wp-content/themes/feret-peinture/front-page.php:9` et `:10` ; `s
 
 ### 4. P1 éditorial : Les prestations restent surtout des instructions de prise de contact
 
-**Constat observé.** Les quatre fiches détaillent les informations à fournir. La peinture extérieure demande de préciser les surfaces sans indiquer clairement quels éléments Christophe accepte effectivement de peindre. Les sols restent formulés de manière large. La préparation, la protection et les finitions sont presque uniquement présentées comme des points à confirmer.
+**Constat observé.** Les quatre fiches détaillent les informations à fournir. La peinture extérieure demande de préciser les surfaces sans indiquer clairement quels éléments Christophe Feret accepte effectivement de peindre. Les sols restent formulés de manière large. La préparation, la protection et les finitions sont presque uniquement présentées comme des points à confirmer.
 
 **Impact probable.** Le site prépare des messages, mais aide moins à décider si l’entreprise correspond au besoin. Il peut attirer des demandes hors périmètre.
 
-**Correction.** Faire valider, pour chaque famille, les travaux acceptés, les exclusions utiles et la méthode réellement pratiquée. Commencer la fiche par « ce que Christophe réalise », puis conserver les conseils pour le devis. Ne pas ajouter de promesses de gratuité, délai, garantie ou qualification sans validation.
+**Correction.** Faire valider, pour chaque famille, les travaux acceptés, les exclusions utiles et la méthode réellement pratiquée. Commencer la fiche par « ce que Christophe Feret réalise », puis conserver les conseils pour le devis. Ne pas ajouter de promesses de gratuité, délai, garantie ou qualification sans validation.
 
 **Acceptation.** Un lecteur peut déterminer en moins d’une minute si son besoin appartient à la prestation, sans devoir appeler pour comprendre le périmètre de base.
 
@@ -105,7 +105,7 @@ Référence : `wp-content/themes/feret-peinture/front-page.php:2` et sections su
 
 **Constat observé.** Le lien de l’accueil mène à `/zone-intervention/`, sans champ de commune sur cette page. Un deuxième clic est nécessaire pour rejoindre le devis. Aucune liste de communes confirmées n’est affichée actuellement.
 
-**Correction.** Renommer le lien « Voir la zone d’intervention » si sa destination reste informative ; sinon mener directement au formulaire. Renseigner ensuite les communes réellement acceptées et garder une possibilité de questionner Christophe pour les autres lieux.
+**Correction.** Renommer le lien « Voir la zone d’intervention » si sa destination reste informative ; sinon mener directement au formulaire. Renseigner ensuite les communes réellement acceptées et garder une possibilité de questionner Christophe Feret pour les autres lieux.
 
 **Acceptation.** Le libellé annonce correctement l’action et aucune couverture géographique n’est inventée.
 
@@ -147,7 +147,7 @@ Références : `wp-content/themes/feret-peinture/assets/site.js:29` ; `wp-conten
 
 **Constat statique, branche de succès non exécutée.** Le texte est « Votre demande a été transmise au service d’envoi », suivi d’une invitation à téléphoner pour vérifier la réception. C’est prudent techniquement, mais peu naturel pour un particulier et susceptible de susciter des appels de vérification.
 
-**Correction.** Après validation de la délivrabilité, employer une confirmation simple correspondant exactement au statut connu, par exemple « Merci. Votre demande a été envoyée. » Puis indiquer la suite réellement convenue avec Christophe, sans délai inventé ni affirmation de lecture du message. Le téléphone reste une alternative, pas une étape imposée.
+**Correction.** Après validation de la délivrabilité, employer une confirmation simple correspondant exactement au statut connu, par exemple « Merci. Votre demande a été envoyée. » Puis indiquer la suite réellement convenue avec Christophe Feret, sans délai inventé ni affirmation de lecture du message. Le téléphone reste une alternative, pas une étape imposée.
 
 Référence : `wp-content/themes/feret-peinture/page.php:14`.
 
@@ -181,11 +181,11 @@ Les champs mobiles inspectés sont à 16 px. Labels explicites, vrais liens et b
 
 À compléter : contrôle de tous les états au lecteur d’écran, zoom réel, reflow étendu, focus des liens sur chaque fond, messages dynamiques, contenus longs, images réelles et textes alternatifs. Les tests à largeur réduite ne remplacent pas un test de zoom sur navigateur et téléphone réels.
 
-## Autonomie de Christophe
+## Autonomie de Christophe Feret
 
 La séparation « Mes chantiers / Mes prestations / Mes informations », les libellés métier, les notices et le guide constituent une bonne base. La gestion des droits photographiques et l’absence d’accès aux réglages techniques répondent au besoin.
 
-Cette partie est une revue du code et du guide, pas une recette de l’interface connectée. Avant validation, faire réaliser à Christophe un scénario complet : ajouter une photo depuis son téléphone, décrire le chantier, choisir la prestation, prévisualiser, publier, modifier puis repasser en brouillon. Vérifier qu’il comprend pourquoi une réalisation peut rester invisible ; contrôler le réordonnancement des photos au clavier et au tactile, les erreurs d’import et la récupération d’un brouillon. Le HEIC n’étant pas garanti, tester ses photos habituelles plutôt que présumer un parcours fluide.
+Cette partie est une revue du code et du guide, pas une recette de l’interface connectée. Avant validation, faire réaliser à Christophe Feret un scénario complet : ajouter une photo depuis son téléphone, décrire le chantier, choisir la prestation, prévisualiser, publier, modifier puis repasser en brouillon. Vérifier qu’il comprend pourquoi une réalisation peut rester invisible ; contrôler le réordonnancement des photos au clavier et au tactile, les erreurs d’import et la récupération d’un brouillon. Le HEIC n’étant pas garanti, tester ses photos habituelles plutôt que présumer un parcours fluide.
 
 ## Performance, acquisition et mesure
 
@@ -202,9 +202,9 @@ Les événements locaux existants ne constituent pas un tableau de bord persista
 | 1 | Corriger la FAQ à 320 px et ajouter ce cas à la recette | Aliant | Aucun débordement, titre correctement séparé |
 | 2 | Rapprocher le formulaire du début de page ; compacter le mobile | Aliant | Premier champ visible plus tôt, clavier et zoom utilisables |
 | 3 | Unifier la présélection des CTA, le groupe de coordonnées et l’état d’envoi | Aliant | Parcours cohérent, saisie conservée en erreur |
-| 4 | Valider offre, zone et quelques preuves authentiques | Christophe avec Aliant | Contenus concrets, droits confirmés, aucune promesse ajoutée sans accord |
-| 5 | Clarifier confirmation, navigation et lien de zone | Aliant avec Christophe | Libellés conformes aux actions et suite du contact compréhensible |
-| 6 | Réaliser la recette d’administration et les tests finaux | Christophe et Aliant | Scénario autonome, accessibilité et performances vérifiées |
+| 4 | Valider offre, zone et quelques preuves authentiques | Christophe Feret avec Aliant | Contenus concrets, droits confirmés, aucune promesse ajoutée sans accord |
+| 5 | Clarifier confirmation, navigation et lien de zone | Aliant avec Christophe Feret | Libellés conformes aux actions et suite du contact compréhensible |
+| 6 | Réaliser la recette d’administration et les tests finaux | Christophe Feret et Aliant | Scénario autonome, accessibilité et performances vérifiées |
 | 7 | Lever les conditions d’ouverture déjà documentées | Responsables du brief | Coordonnées, textes définitifs, livraison email et publication validés |
 
 ## Pièces de contrôle

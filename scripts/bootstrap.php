@@ -34,8 +34,8 @@ function fp_seed_post( string $seed_key, array $post ): array {
 $pages = [
     'accueil' => 'Peintre en bâtiment à Écouen',
     'entreprise' => 'Christophe Feret - Peintre à Écouen',
-    'zone-intervention' => 'Votre projet et sa localisation',
-    'contact' => 'Prendre rendez-vous',
+    'zone-intervention' => 'Zone d’intervention',
+    'contact' => 'Demander un rendez-vous',
     'mentions-legales' => 'Mentions légales',
     'confidentialite' => 'Confidentialité',
     'merci' => 'Votre demande de rendez-vous',
@@ -57,8 +57,8 @@ if ( $new ) {
     pods( 'fp_information', $information_id )->save( [
         'phone_mobile' => '', 'phone_landline' => '',
         'public_email' => '',
-        'presentation' => 'Christophe Feret est peintre en bâtiment à Écouen, dans le Val-d’Oise.',
-        'confirmed_area' => '', 'temporary_message' => '',
+        'presentation' => 'Christophe Feret est votre contact pour présenter vos travaux et convenir d’un rendez-vous sur place.',
+        'confirmed_area' => '',
     ] );
 }
 
@@ -95,4 +95,4 @@ if ( filter_var( getenv( 'FP_IMPORT_DEMO' ), FILTER_VALIDATE_BOOLEAN ) ) {
 }
 
 flush_rewrite_rules();
-WP_CLI::success( 'Bootstrap terminé : contenu existant conservé, Pods configurés et rôle Christophe installé. Site prêt à prévisualiser ; validations de publication toujours requises.' );
+WP_CLI::success( 'Bootstrap terminé : contenu existant conservé, Pods configurés et rôle Christophe Feret installé. Site prêt à prévisualiser ; validations de publication toujours requises.' );

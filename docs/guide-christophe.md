@@ -8,7 +8,7 @@ Ce guide concerne le compte **christophe**. Aliant vous remet l'adresse de conne
 | --- | --- |
 | **Mes chantiers** | Ajouter une réalisation, modifier ses photos et son texte, la publier ou la retirer. |
 | **Mes prestations** | Modifier les textes et images des prestations, les afficher ou les masquer. |
-| **Mes informations** | Mettre à jour vos coordonnées publiques, votre présentation, les communes acceptées et un message temporaire. |
+| **Mes informations** | Mettre à jour vos coordonnées publiques, votre présentation et les communes acceptées. |
 
 Les réglages techniques sont gérés par Aliant. Vous n'avez rien à installer ou à mettre à jour.
 
@@ -51,7 +51,6 @@ Ouvrez **Mes informations**. Les champs sont :
 - **Email affiché sur le site** : facultatif ; indiquez une adresse que vous consultez.
 - **Présentation de l'entreprise** : un texte court sur votre activité.
 - **Communes desservies** : une commune par ligne ; uniquement celles que vous acceptez réellement.
-- **Message temporaire** : une information courte, à supprimer lorsqu'elle n'est plus d'actualité.
 
 Cliquez sur **Mettre à jour**, puis vérifiez le site. Pour changer la boîte qui reçoit les demandes de devis, contactez Aliant.
 
@@ -69,11 +68,21 @@ Pour les demandes relatives aux données personnelles, notez la date de récepti
 
 Les factures et pièces comptables sont à conserver dix ans depuis la clôture de l’exercice. Pour les autres pièces des travaux, distinguez suivi actif et archives nécessaires aux garanties ou litiges ; ne supprimez pas automatiquement tout le dossier à l’échéance des demandes sans suite.
 
-Vous répondez vous-même aux demandes d’accès, de correction ou de suppression des données personnelles. Cette responsabilité est confirmée. La procédure pratique reste à formaliser ; une demande de suppression doit être examinée en tenant compte des obligations de conservation applicables aux documents concernés.
+Vous répondez vous-même aux demandes d’accès, de correction ou de suppression des données personnelles. Avant une suppression, distinguez les demandes sans suite des pièces de contrats, garanties, factures ou litiges à conserver.
 
-Les devis signés et factures des dossiers devenus clients sont conservés dans votre messagerie et dans un dossier uniquement sur votre ordinateur, sans synchronisation cloud ni sauvegarde séparée du dossier local. Les règles de conservation et de suppression à finaliser devront couvrir ces deux emplacements. Les sauvegardes éventuelles du fournisseur de messagerie sont un sujet distinct.
+Les devis signés et factures des dossiers devenus clients sont conservés dans votre messagerie et dans un dossier uniquement sur votre ordinateur, sans synchronisation cloud ni sauvegarde séparée du dossier local. Vérifiez ces deux emplacements. Les copies résiduelles de la messagerie suivent le délai confirmé de sept jours maximum après suppression ; elles ne remplacent pas votre traitement de la demande.
 
-Vous êtes responsable de supprimer de la boîte de réception les demandes restées sans suite au plus tard trois ans après le dernier échange avec la personne. Cette responsabilité et cette durée sont validées. Les dossiers devenus clients suivent des règles distinctes ; la conservation des sauvegardes reste à organiser avec Aliant.
+Pour chaque demande sans suite, notez la date du dernier échange et son échéance maximale de suppression, trois ans plus tard. Vous pouvez supprimer plus tôt ce qui n’est plus utile. Une fois par mois, contrôlez les échéances à venir et supprimez les éléments arrivés à échéance dans les dossiers de messagerie concernés : réception, envoyés, archives et corbeille. Recherchez aussi les copies téléchargées sur l’ordinateur. Ne videz pas indistinctement la corbeille si elle contient des documents à conserver.
+
+Pour une demande d’accès, de correction ou d’effacement :
+
+1. Notez sa réception, la demande formulée et la date limite de réponse.
+2. Retrouvez les échanges et fichiers concernés dans la messagerie et sur l’ordinateur, sans demander davantage de données que nécessaire.
+3. Corrigez ou supprimez les éléments concernés, ou identifiez précisément les pièces dont la conservation reste nécessaire.
+4. Répondez à la personne en expliquant ce qui a été fait et ce qui doit être conservé. Si une intervention sur le site est nécessaire, contactez Aliant avec le minimum d’informations utiles.
+5. Conservez une trace minimale du traitement : date, action et réponse, sans recopier tout le dossier supprimé. Faites préciser avec Aliant la durée utile de cette trace selon le cas.
+
+Ces étapes décrivent l’organisation à appliquer ; elles n’attestent pas qu’un tri ou une suppression a déjà eu lieu.
 
 Les demandes arrivent dans la boîte email configurée par Aliant. La confirmation d’envoi ne garantit pas leur réception : Aliant la vérifie avant l’ouverture du site. Si une demande semble manquer, signalez l’heure approximative et le problème à Aliant sans publier les coordonnées du visiteur.
 

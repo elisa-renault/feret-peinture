@@ -1,6 +1,6 @@
 # Vérification des prestations avec les documents sources
 
-Vérification du 16 septembre 2026 des quatre fiches de `config/pods/services.php` avec le fonds privé « Documents Christophe ». Selon la précision d’Elisa, un devis confirme une prestation proposée au même titre qu’une facture. La distinction devis/facture ne concerne que la présentation éventuelle d’un chantier comme réalisé.
+Vérification du 16 septembre 2026 des quatre fiches de `config/pods/services.php` avec le fonds privé « Documents Christophe Feret ». Selon la précision d’Elisa, un devis confirme une prestation proposée au même titre qu’une facture. La distinction devis/facture ne concerne que la présentation éventuelle d’un chantier comme réalisé.
 
 ## Résultat
 

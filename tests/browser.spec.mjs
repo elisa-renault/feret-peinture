@@ -1,12 +1,14 @@
 /**
  * Real browser checks to run against an installed local preview.
- * Not executed in the authoring session: its browser security policy blocked local pages.
  * Run: FP_BASE_URL=http://localhost:8080 npx playwright test tests/browser.spec.mjs
- * The preview must have seeded services and Mailpit configuration, without demo projects.
+ * The preview must have seeded services and Mailpit configuration.
  */
 import { test, expect } from '@playwright/test';
 
 const baseURL = (process.env.FP_BASE_URL || 'http://localhost:8080').replace(/\/$/, '');
+if (!['localhost', '127.0.0.1'].includes(new URL(baseURL).hostname)) {
+  throw new Error('Browser acceptance tests require local WordPress and Mailpit.');
+}
 const widths = [320, 360, 390, 768, 1024, 1440];
 
 async function checkStructure(page, width) {
@@ -35,8 +37,16 @@ for (const width of widths) {
     await page.evaluate(() => document.fonts.ready);
     await checkStructure(page, width);
     await expect(page.locator('h1')).toHaveText('Peintre en bâtiment à Écouen.');
-    await expect(page.locator('a[href^="tel:"]')).toHaveCount(0);
-    await expect(page.locator('.faq-grid h2')).toHaveText(/Quelques\s+réponses utiles\./);
+    const phoneLinks = page.locator('a[href^="tel:"]');
+    // A fresh bootstrap leaves contacts empty; a populated preview uses only a mobile.
+    if (process.env.FP_TEST_MOBILE) {
+      await expect(phoneLinks.first()).toHaveAttribute('href', process.env.FP_TEST_MOBILE);
+    }
+    for (const link of await phoneLinks.all()) {
+      await expect(link).toHaveAttribute('href', /^tel:\+33[67]\d{8}$/);
+    }
+    await expect(page.locator('.faq-grid h2')).toHaveText(/Avant votre demande\s+de rendez-vous\./);
+    await expect(page.locator('.preview-strip, .temporary-message, .validation-note')).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath(`accueil-${width}.png`), fullPage: true });
 
     await page.keyboard.press('Tab');
@@ -65,25 +75,28 @@ for (const width of widths) {
     await firstService.click();
     await page.waitForURL(serviceURL);
     await checkStructure(page, width);
-    await expect(page.locator('.service-content h2')).toHaveCount(3);
+    await expect(page.locator('.service-content h2').first()).toHaveText('Préparer les surfaces avant de peindre');
+    await expect(page.locator('.service-content h2').last()).toHaveText('Pour préparer votre demande');
     await page.screenshot({ path: testInfo.outputPath(`prestation-${width}.png`), fullPage: true });
     await page.locator('.project-aside .button').click();
-    await page.waitForURL(/\/devis\/\?prestation=/);
+    await page.waitForURL(/\/contact\/\?prestation=/);
     await checkStructure(page, width);
     const serviceSlug = new URL(page.url()).searchParams.get('prestation');
-    await expect(page.locator('#quote-type')).toHaveValue(serviceSlug);
+    expect(serviceSlug).toBe(new URL(serviceURL).pathname.split('/').filter(Boolean).at(-1));
+    // The simplified form intentionally has no service or period selector.
+    await expect(page.locator('#quote-type, #quote-period')).toHaveCount(0);
+    await expect(page.locator('#quote-name')).toHaveAttribute('required', '');
+    await expect(page.locator('#quote-town')).toHaveAttribute('required', '');
+    await expect(page.locator('#quote-description')).toHaveAttribute('required', '');
     await expect(page.locator('#quote-phone')).toHaveAttribute('aria-describedby', 'contact-hint');
     await expect(page.locator('#quote-email')).toHaveAttribute('aria-describedby', 'contact-hint');
-    if (width <= 390) {
-      await expect(page.locator('#quote-name')).toBeInViewport();
-    }
     await expect(page.locator('[data-quote-form]')).toHaveCount(1);
     await expect(page.locator('input[type="file"]')).toHaveCount(0);
     await expect(page.locator('input[type="hidden"]').first()).not.toBeVisible();
     await page.locator('#quote-description').focus();
     await expect(page.locator('#quote-description')).toBeFocused();
     await expect(page.locator('#quote-description')).toBeInViewport();
-    await page.screenshot({ path: testInfo.outputPath(`devis-${width}.png`), fullPage: true });
+    await page.screenshot({ path: testInfo.outputPath(`contact-${width}.png`), fullPage: true });
     expect(consoleErrors).toEqual([]);
   });
 }

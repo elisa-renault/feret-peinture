@@ -1,5 +1,7 @@
 # Déploiement privé du 16 septembre 2026
 
+État actuel : site ouvert au public, formulaire actif et protection HTTP retirée. Voir [le suivi de publication](publication.md). Les constats de prévisualisation ci-dessous sont historiques.
+
 Le site est installé sur le VPS `elsia-netcup` (`2.56.96.197`) à l'adresse `https://feret-peinture.fr`. HTTP et www redirigent vers cette adresse. Le certificat couvre les deux noms et son renouvellement automatique recharge Nginx.
 
 ## Accès temporaire

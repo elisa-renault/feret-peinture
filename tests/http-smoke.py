@@ -60,7 +60,7 @@ def fetch(path, data=None):
     except urllib.error.HTTPError as response:
         return response.code, response.read().decode("utf-8"), dict(response.headers), response.url
 
-paths = ["/", "/prestations/", "/prestations/peinture-interieure/", "/prestations/peinture-exterieure/", "/prestations/revetements-muraux/", "/prestations/revetements-sols/", "/entreprise/", "/zone-intervention/", "/contact/", "/mentions-legales/", "/confidentialite/", "/merci/"]
+paths = ["/", "/prestations/", "/prestations/peinture-interieure/", "/prestations/peinture-exterieure/", "/prestations/revetements-muraux/", "/prestations/revetements-sols/", "/entreprise/", "/zone-intervention/", "/contact/", "/mentions-legales/", "/merci/"]
 pages = {}
 for path in paths:
     status, body, headers, url = fetch(path)
@@ -76,11 +76,13 @@ for path in paths:
     check(all(urllib.parse.urlsplit(urllib.parse.urljoin(BASE, src)).netloc == urllib.parse.urlsplit(BASE).netloc for src in page.scripts), f"{path} loads no third-party JavaScript")
 check(len({p.title for p in pages.values()}) == len(paths), "Page titles are distinct")
 check(len({p.description[0] for p in pages.values()}) == len(paths), "Page descriptions are distinct")
+status, body, _, url = fetch("/confidentialite/")
+check(status == 200 and url == BASE + "/mentions-legales/#confidentialite", "Legacy privacy page redirects to the merged privacy section")
 status, body, _, _ = fetch("/page-inexistante-recette/")
 check(status == 404 and Page(body).h1 == 1, "Useful 404 page returns 404 with H1")
 status, body, _, _ = fetch("/merci/?sent=1")
 check("data-form-success" not in body, "A manual query string cannot simulate successful submission")
-check("Prendre rendez-vous" in fetch("/")[1], "Appointment contact is the primary action")
+check("Demander un rendez-vous" in fetch("/")[1], "Appointment contact is the primary action")
 
 seen = set(paths)
 for page in pages.values():

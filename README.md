@@ -4,7 +4,7 @@ Les [corrections de l’audit UI / UX](docs/corrections-ui-ux-2026-09-16.md) son
 
 Site vitrine français pour Christophe Feret à Écouen : thème classique sur mesure, Pods gratuit et petit plugin métier. Le parcours principal mène à une demande de rendez-vous sur place avant devis ; les appels disposent de liens `tel:`. Aucun service analytique externe n’est activé.
 
-**Prévisualisation privée déployée sur le VPS le 16 septembre 2026.** `https://feret-peinture.fr` est protégé temporairement par mot de passe, en HTTPS et sans indexation. Le domaine www redirige vers cette adresse. Voir [le déploiement privé](docs/deploiement-prive-vps.md) pour les accès, l'exploitation et le retrait ultérieur de la protection. L'ouverture publique reste conditionnée à la validation des informations, des pages légales et de la livraison des emails.
+**Site ouvert au public le 16 septembre 2026.** [feret-peinture.fr](https://feret-peinture.fr) est accessible sans mot de passe, en HTTPS, avec formulaire actif et indexation autorisée. Voir [le suivi de publication](docs/publication.md) pour les contrôles et la sauvegarde de bascule.
 
 ## Démarrer
 
@@ -24,7 +24,7 @@ Le fichier privé `.env` contient les mots de passe générés pour `aliant` et 
 
 Relancer l’installation conserve les contenus, les réglages éditoriaux et les comptes déjà présents. Arrêter avec `docker compose down` conserve les volumes. Ne pas ajouter `--volumes` : cette option détruirait les données locales.
 
-## Ce que Christophe peut modifier
+## Ce que Christophe Feret peut modifier
 
 Son compte ouvre « Mes chantiers ». Il dispose de trois rubriques :
 
@@ -32,9 +32,9 @@ Son compte ouvre « Mes chantiers ». Il dispose de trois rubriques :
 | --- | --- |
 | Mes chantiers | Créer, modifier, publier, mettre à la corbeille et récupérer une fiche ; commune, prestation, description, photo principale, galerie ordonnée, avant/après facultatif, mise en avant et autorisation des photos. |
 | Mes prestations | Modifier les textes et l’image des quatre familles prévues ; les masquer. La structure reste gérée par Aliant. |
-| Mes informations | Modifier les téléphones, l’email public, la présentation, les communes confirmées et le message temporaire. Les changements alimentent les pages et les liens. |
+| Mes informations | Modifier les téléphones, l’email public, la présentation et les communes confirmées. Les changements alimentent les pages et les liens. |
 
-Le rôle n’a pas `manage_options`, ni accès aux extensions, thèmes, utilisateurs, pages légales ou réglages SMTP. Les autorisations sont vérifiées côté serveur. Le [guide Christophe](docs/guide-christophe.md) explique brouillons, photos, aperçu et récupération.
+Le rôle n’a pas `manage_options`, ni accès aux extensions, thèmes, utilisateurs, pages légales ou réglages SMTP. Les autorisations sont vérifiées côté serveur. Le [guide Christophe Feret](docs/guide-christophe.md) explique brouillons, photos, aperçu et récupération.
 
 Les réalisations n’apparaissent que lorsqu’elles possèdent une photo principale et une autorisation de publication. Une galerie vide est masquée. Aucun chantier fictif n’est installé par défaut. Pour créer volontairement un brouillon de démonstration local :
 
@@ -92,7 +92,7 @@ Un succès correspond à l’acceptation par le transport SMTP. Il ne certifie p
 | --- | --- |
 | `FP_QUOTE_TO`, `FP_MAIL_FROM` | Destinataire consulté et expéditeur autorisé. |
 | `FP_SMTP_HOST`, `FP_SMTP_PORT`, `FP_SMTP_SECURE` | Transport SMTP ; `tls` ou `ssl` selon le fournisseur. |
-| `FP_SMTP_USER`, `FP_SMTP_PASS` | Identifiants SMTP, hors dépôt et hors interface Christophe. |
+| `FP_SMTP_USER`, `FP_SMTP_PASS` | Identifiants SMTP, hors dépôt et hors interface Christophe Feret. |
 | `FP_CONTACT_APPROVED`, `FP_SERVICES_APPROVED` | Validation des coordonnées et prestations. |
 | `FP_LEGAL_APPROVED`, `FP_PRIVACY_APPROVED` | Validation des informations légales et du traitement des données. |
 | `FP_PRIVACY_RETENTION` | Texte approuvé précisant la durée de conservation et son point de départ. |
@@ -104,7 +104,7 @@ Les paramètres peuvent être des constantes dans `wp-config.php` privé ou des 
 
 ## Avant publication
 
-Suivre [docs/publication.md](docs/publication.md) et [docs/maintenance.md](docs/maintenance.md) : validations factuelles, mentions complètes, SMTP et livraison, sauvegarde/restauration base **et** médias, recette visuelle, staging protégé, HTTPS sans www. L’hébergement final doit exécuter PHP/MariaDB ; GitHub Pages ne convient pas.
+Suivre [docs/publication.md](docs/publication.md) et [docs/maintenance.md](docs/maintenance.md) : validations factuelles, mentions complètes, SMTP et livraison, recette visuelle, staging protégé, HTTPS sans www. La décision actuelle ne prévoit pas de sauvegarde automatique : GitHub ne couvre que le code et les brouillons conservés localement ne couvrent pas les contenus déjà publiés. L’hébergement final doit exécuter PHP/MariaDB ; GitHub Pages ne convient pas.
 
 Après autorisation et validation, régler les URL publiques et `wp option update blog_public 1`. Le staging conserve son authentification et son noindex ; la page de remerciement reste non indexable. Aucun branchement aux comptes Twenty/PostHog d’Aliant n’est prévu.
 

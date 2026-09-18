@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Feret Peinture - métier
- * Description: Contenus Pods, accès Christophe, garde-fous de publication et demandes de devis.
+ * Description: Contenus Pods, accès Christophe Feret, garde-fous de publication et demandes de devis.
  * Version: 1.0.0
  * Requires at least: 6.8
  * Requires PHP: 8.2

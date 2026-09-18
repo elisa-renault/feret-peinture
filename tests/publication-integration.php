@@ -28,7 +28,7 @@ try {
     foreach ( array_slice( $flag_names, 0, 6 ) as $flag ) { putenv( $flag . '=1' ); }
     putenv( 'FP_PRIVACY_RETENTION=Texte synthétique de recette, jamais publié.' );
     putenv( 'FP_BUSINESS_ADDRESS_JSON=' . wp_json_encode( array( 'streetAddress' => '10 avenue de Recette', 'postalCode' => '95440', 'addressLocality' => 'Écouen', 'addressCountry' => 'FR' ) ) );
-    foreach ( array( 'mentions-legales', 'confidentialite' ) as $slug ) {
+    foreach ( array( 'mentions-legales' ) as $slug ) {
         $page = get_page_by_path( $slug );
         $backup[ $page->ID ] = array( 'content' => $page->post_content, 'status' => $page->post_status, 'approval' => get_post_meta( $page->ID, '_fp_legal_approved', true ) );
         wp_update_post( array( 'ID' => $page->ID, 'post_status' => 'publish', 'post_content' => '<p>RECETTE SYNTHÉTIQUE : document fictif temporaire. 10 avenue de Recette. ' . str_repeat( 'Texte synthétique uniquement pour valider le contrôle technique. ', 4 ) . '</p>[fp_contact_details]' ) );
@@ -39,6 +39,16 @@ try {
     add_filter( 'pre_option_siteurl', $test_domain );
     $assert( ! fp_launch_errors(), 'All independent approvals and completed legal fixtures pass the launch gate' );
     $assert( apply_filters( 'wp_sitemaps_enabled', true ), 'Sitemap enabled only after approvals and public indexing' );
+    $sitemap_query = new WP_Query();
+    $sitemap_query->set( 'sitemap', 'index' );
+    $sitemap_query->is_404 = true;
+    $assert( true === apply_filters( 'pre_handle_404', false, $sitemap_query ) && ! $sitemap_query->is_404, 'Approved native sitemap clears the virtual-route 404' );
+    $sitemap_query->set( 'sitemap', 'unknown-provider' );
+    $assert( false === apply_filters( 'pre_handle_404', false, $sitemap_query ), 'Unknown sitemap provider keeps normal 404 handling' );
+    $sitemap_query->set( 'sitemap', 'index' );
+    update_option( 'blog_public', 0 );
+    $assert( false === apply_filters( 'pre_handle_404', false, $sitemap_query ), 'Disabled indexing does not bypass sitemap 404 handling' );
+    update_option( 'blog_public', 1 );
     $robots = apply_filters( 'wp_robots', array() );
     $assert( empty( $robots['noindex'] ), 'Approved public configuration has no forced noindex' );
     ob_start();

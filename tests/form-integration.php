@@ -30,7 +30,7 @@ fp_render_quote_form();
 $missing_contact_html = ob_get_clean();
 unset( $GLOBALS['fp_quote_result'] );
 $assert( str_contains( $missing_contact_html, 'id="error-contact"' ) && ! str_contains( $missing_contact_html, 'form-error-summary' ), 'Missing contact error appears once near the contact group' );
-$assert( 2 === substr_count( $missing_contact_html, 'aria-invalid="true" aria-describedby="error-contact"' ), 'Both contact fields reference the shared error' );
+$assert( 2 === substr_count( $missing_contact_html, 'aria-invalid="true" aria-describedby="contact-hint error-contact"' ), 'Both contact fields reference the shared error' );
 $assert( str_contains( $missing_contact_html, 'value="Recette locale"' ), 'Rendered contact error keeps the entered name' );
 $assert( str_contains( $missing_contact_html, 'role="status" aria-live="polite"' ), 'Submission has a live status region' );
 $assert( isset( fp_quote_validate( array_merge( $base, array( 'email' => 'invalid' ) ) )['errors']['email'] ), 'Malformed email rejected' );

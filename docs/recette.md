@@ -27,7 +27,7 @@ Docker n’est pas disponible dans cette session. Ses fichiers et scripts ont é
 | `tests/form-integration.php` | 27 assertions réussies | Validation, nonce, jeton signé, quota, SMTP réel vers Mailpit, panne SMTP, absence de configuration, conservation de saisie. |
 | `tests/publication-integration.php` | 12 assertions réussies | Configuration approuvée simulée : JSON-LD unique et parsable, contacts cohérents, origine de production, adresse visible, indexation et sitemap. |
 | `tests/http-smoke.py` | 107 contrôles réussis | Douze pages, titres et descriptions uniques, canonicals, noindex local, 404, liens téléphone, vrais POST invalides/spam/valide et remerciement signé. |
-| `tests/admin-http.py` | 32 contrôles HTTP natifs réussis | Connexion Christophe, neuf refus d’accès direct, trois rubriques, coordonnées, upload PNG, brouillon, publication, modification, corbeille et restauration. |
+| `tests/admin-http.py` | 32 contrôles HTTP natifs réussis | Connexion Christophe Feret, neuf refus d’accès direct, trois rubriques, coordonnées, upload PNG, brouillon, publication, modification, corbeille et restauration. |
 
 Les commandes de reproduction sont dans le README et les scripts de test. Les vérifications de l’administration utilisent les formulaires, cookies et nonces réels de WordPress ; les valeurs des champs Pods initialisés par JavaScript sont lues dans les données JSON produites par Pods. Ce contrôle HTTP ne remplace pas une vérification visuelle du formulaire hydraté dans un navigateur.
 
@@ -35,7 +35,7 @@ Les suites doivent être lancées sur une base jetable. Le quota est partagé pa
 
 ## Ce qui a été vérifié précisément
 
-- Le rôle Christophe ne reçoit pas `manage_options`, ni les capacités de gérer utilisateurs, extensions, thèmes, pages ou articles WordPress génériques. Les réglages et secrets SMTP ne font pas partie de ses champs.
+- Le rôle Christophe Feret ne reçoit pas `manage_options`, ni les capacités de gérer utilisateurs, extensions, thèmes, pages ou articles WordPress génériques. Les réglages et secrets SMTP ne font pas partie de ses champs.
 - Les changements de coordonnées alimentent le téléphone affiché et l’URI `tel:`. Le shortcode `[fp_contact_details]` évite de recopier manuellement les coordonnées dans les pages juridiques.
 - Une révision WordPress restaure réellement le titre, le texte, les champs simples Pods, la prestation associée, la photo principale, les deux photos avant/après, les identifiants et l’ordre de la galerie. La corbeille conserve ces relations. Les fichiers effacés de la médiathèque nécessitent la sauvegarde des médias : une révision ne les recrée pas.
 - Un JPEG de 3 200 × 1 600 pixels est réduit à 2 200 × 1 100 ; les formats dérivés sont générés. Un JPEG portant une orientation EXIF 6 est effectivement tourné de 90 × 60 à 60 × 90. Ces tests portent sur GD installé ; aucun support HEIC/AVIF n’est annoncé.
@@ -48,7 +48,7 @@ Les suites doivent être lancées sur une base jetable. Le quota est partagé pa
 
 La recette a notamment corrigé la restauration de la relation Pods vers une prestation, l’exposition d’un endpoint Pods au rôle métier, la validation trop tardive de l’expéditeur email local et la collision du champ public `name` avec une variable de routage réservée de WordPress. Les noms HTML du formulaire sont maintenant préfixés `fp_`.
 
-L’accès natif aux prestations et informations a également été corrigé : WordPress supprimait leur sous-menu unique puis évaluait l’accès comme celui des articles classiques. Un lien utile « Voir sur le site » conserve le rattachement natif des écrans, sans ajouter de capacité au rôle Christophe. Les neuf écrans interdits renvoient toujours HTTP 403. Le téléphone modifié pour le test, le chantier et l’image de recette ont été restaurés ou nettoyés après le passage réussi.
+L’accès natif aux prestations et informations a également été corrigé : WordPress supprimait leur sous-menu unique puis évaluait l’accès comme celui des articles classiques. Un lien utile « Voir sur le site » conserve le rattachement natif des écrans, sans ajouter de capacité au rôle Christophe Feret. Les neuf écrans interdits renvoient toujours HTTP 403. Le téléphone modifié pour le test, le chantier et l’image de recette ont été restaurés ou nettoyés après le passage réussi.
 
 L’URL de l’installation native avait conservé `/wordpress` : ses options `home` et `siteurl` ont été corrigées pour la recette. Les douze pages produisent ensuite les canonicals attendues. Le script Compose installe explicitement l’URL locale fournie.
 

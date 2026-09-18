@@ -1,5 +1,7 @@
 # Zone d’intervention : traduction éditoriale
 
+Décision actuelle d’Elisa, 16 septembre 2026 : ne pas afficher la limite de deux heures sur la page zone. Conserver les secteurs possibles et la confirmation selon la commune. Cette décision remplace les indications d’affichage historiques ci-dessous.
+
 La limite validée par Elisa reste de deux heures de trajet depuis Écouen. Elle ne définit ni un rayon kilométrique, ni la couverture intégrale de plusieurs départements. Aucune isochrone exhaustive avec trafic n’a été calculée.
 
 Repères routiers consultés le 16 septembre 2026 :
