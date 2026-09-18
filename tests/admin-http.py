@@ -195,9 +195,11 @@ def main():
         check(login_ok, "Christophe Feret authenticates through native wp-login and receives a session cookie")
         if not login_ok:
             raise RuntimeError("Native login failed; stopping authenticated write checks.")
-        for path in ("options-general.php", "plugins.php", "users.php", "themes.php", "edit.php", "edit.php?post_type=page", "post-new.php?post_type=fp_service", "post-new.php?post_type=fp_information", "admin.php?page=pods"):
+        for path in ("options-general.php", "plugins.php", "users.php", "themes.php", "edit.php", "edit.php?post_type=page", "post-new.php?post_type=fp_information", "admin.php?page=pods"):
             status, _, _ = request("/wp-admin/" + path)
             check(status == 403, "Direct restricted admin URL returns 403: " + path)
+        status, service_new, _ = request("/wp-admin/post-new.php?post_type=fp_service")
+        check(status == 200 and "feret/service-content" in service_new and "feret/service-note" in service_new, "Christophe Feret can open a new locked service")
         status, panel, _ = request("/wp-admin/admin.php?page=fp-site-information")
         panel_values = information_panel_values(panel) if status == 200 else None
         information_restore = panel_values.copy() if panel_values else None

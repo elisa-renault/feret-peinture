@@ -13,9 +13,11 @@ function fp_install_roles(): void {
             $caps[$prefix . $type . 's'] = true;
         }
     }
-    $caps['create_fp_projects'] = true;
-    foreach ( [ 'delete_', 'delete_others_', 'delete_published_', 'delete_private_' ] as $prefix ) {
-        $caps[$prefix . 'fp_projects'] = true;
+    foreach ( [ 'fp_project', 'fp_service' ] as $type ) {
+        $caps['create_' . $type . 's'] = true;
+        foreach ( [ 'delete_', 'delete_others_', 'delete_published_', 'delete_private_' ] as $prefix ) {
+            $caps[$prefix . $type . 's'] = true;
+        }
     }
     if ( ! get_role( 'fp_christophe' ) ) { add_role( 'fp_christophe', 'Christophe Feret - contenus du site', $caps ); }
     $role = get_role( 'fp_christophe' );
@@ -52,7 +54,7 @@ add_filter( 'map_meta_cap', static function ( $caps, $cap, $user_id, $args ) {
         }
         if ( ! isset( fp_schema()[$post->post_type] ) ) { return [ 'do_not_allow' ]; }
         if ( 'fp_information' === $post->post_type && $post->ID !== fp_information_id() ) { return [ 'do_not_allow' ]; }
-        if ( 'delete_post' === $cap && 'fp_project' !== $post->post_type ) { return [ 'do_not_allow' ]; }
+        if ( 'delete_post' === $cap && ! in_array( $post->post_type, [ 'fp_project', 'fp_service' ], true ) ) { return [ 'do_not_allow' ]; }
     }
     return $caps;
 }, 30, 4 );
@@ -63,10 +65,12 @@ add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
     if ( $original && in_array( $original->post_type, [ 'fp_service', 'fp_information' ], true ) ) {
         $data['post_type'] = $original->post_type;
         $data['post_name'] = $original->post_name;
-        $data['post_title'] = $original->post_title;
         $data['post_parent'] = 0;
         $data['menu_order'] = $original->menu_order;
-        if ( 'fp_information' === $original->post_type ) { $data['post_status'] = $original->post_status; }
+        if ( 'fp_information' === $original->post_type ) {
+            $data['post_title'] = $original->post_title;
+            $data['post_status'] = $original->post_status;
+        }
     }
     return $data;
 }, 20, 2 );
@@ -181,7 +185,7 @@ add_action( 'admin_init', static function () {
     }
     if ( in_array( $pagenow, [ 'edit.php', 'post-new.php' ], true ) ) {
         $type = sanitize_key( $_GET['post_type'] ?? 'post' );
-        if ( ! isset( fp_schema()[$type] ) || ( 'post-new.php' === $pagenow && 'fp_project' !== $type ) ) {
+        if ( ! isset( fp_schema()[$type] ) || ( 'post-new.php' === $pagenow && ! in_array( $type, [ 'fp_project', 'fp_service' ], true ) ) ) {
             wp_die( 'Cet écran est réservé à Aliant.', 'Accès réservé', [ 'response' => 403 ] );
         }
         if ( 'edit.php' === $pagenow && 'fp_information' === $type && fp_information_id() ) {

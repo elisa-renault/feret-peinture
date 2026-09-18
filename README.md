@@ -31,7 +31,7 @@ Son compte ouvre « Mes chantiers ». Il dispose de trois rubriques :
 | Rubrique | Actions |
 | --- | --- |
 | Mes chantiers | Créer, modifier, publier, mettre à la corbeille et récupérer une fiche ; commune, prestation, description, photo principale, galerie ordonnée, avant/après facultatif, mise en avant et autorisation des photos. |
-| Mes prestations | Modifier les textes dans deux blocs sur mesure verrouillés, l’image, puis masquer ou afficher les quatre familles prévues. |
+| Mes prestations | Ajouter, modifier ou supprimer une prestation, avec deux blocs sur mesure verrouillés pour le texte et une image facultative. |
 | Mes informations | Une page dédiée pour modifier les téléphones, l’email public, la présentation et la zone d’intervention. Les changements alimentent les pages et les liens. |
 
 Le rôle n’a pas `manage_options`, ni accès aux extensions, thèmes, utilisateurs, pages légales ou réglages SMTP. Les autorisations sont vérifiées côté serveur. Le [guide Christophe Feret](docs/guide-christophe.md) explique brouillons, photos, aperçu et récupération.

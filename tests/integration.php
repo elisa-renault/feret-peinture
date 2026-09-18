@@ -124,19 +124,28 @@ try {
     }
 
     wp_set_current_user( $editor );
-    foreach ( [ 'manage_options', 'activate_plugins', 'install_plugins', 'update_plugins', 'edit_plugins', 'edit_theme_options', 'switch_themes', 'list_users', 'create_users', 'edit_users', 'promote_users', 'delete_users', 'edit_posts', 'publish_posts', 'delete_posts', 'edit_pages', 'publish_pages', 'delete_pages', 'pods', 'pods_admin', 'unfiltered_html', 'unfiltered_upload', 'create_fp_services', 'create_fp_informations', 'delete_fp_services', 'delete_fp_informations' ] as $cap ) {
+    foreach ( [ 'manage_options', 'activate_plugins', 'install_plugins', 'update_plugins', 'edit_plugins', 'edit_theme_options', 'switch_themes', 'list_users', 'create_users', 'edit_users', 'promote_users', 'delete_users', 'edit_posts', 'publish_posts', 'delete_posts', 'edit_pages', 'publish_pages', 'delete_pages', 'pods', 'pods_admin', 'unfiltered_html', 'unfiltered_upload', 'create_fp_informations', 'delete_fp_informations' ] as $cap ) {
         fpqa_check( ! current_user_can( $cap ), 'Christophe Feret cannot ' . $cap );
     }
-    foreach ( [ 'read', 'upload_files', 'create_fp_projects', 'publish_fp_projects' ] as $cap ) {
+    foreach ( [ 'read', 'upload_files', 'create_fp_projects', 'publish_fp_projects', 'create_fp_services', 'publish_fp_services', 'delete_fp_services', 'delete_others_fp_services' ] as $cap ) {
         fpqa_check( current_user_can( $cap ), 'Christophe Feret can ' . $cap );
     }
     fpqa_check( current_user_can( 'edit_post', $information_id ), 'Christophe Feret can edit the actual information singleton' );
     fpqa_check( ! current_user_can( 'edit_post', $extra_information ), 'Christophe Feret cannot edit a second information record by ID' );
     fpqa_check( ! current_user_can( 'delete_post', $information_id ), 'Christophe Feret cannot delete the information singleton' );
     fpqa_check( current_user_can( 'edit_post', $service_id ), 'Christophe Feret can edit a seeded service' );
-    fpqa_check( ! current_user_can( 'delete_post', $service_id ), 'Christophe Feret cannot delete a seeded service by ID' );
+    fpqa_check( current_user_can( 'delete_post', $service_id ), 'Christophe Feret can delete a seeded service by ID' );
+    $created_service = wp_insert_post( [ 'post_type' => 'fp_service', 'post_title' => 'QA prestation ajoutée', 'post_content' => fp_service_blocks_from_html( '<p>Nouvelle prestation de test.</p>' ), 'post_status' => 'publish', 'post_author' => $editor ], true );
+    if ( is_wp_error( $created_service ) ) { throw new RuntimeException( 'Cannot create test service.' ); }
+    $created_service = (int) $created_service;
+    $posts_to_delete[] = $created_service;
+    fpqa_check( current_user_can( 'edit_post', $created_service ) && current_user_can( 'delete_post', $created_service ), 'Christophe Feret can add and delete a service with locked blocks' );
+    wp_trash_post( $created_service );
+    fpqa_check( 'trash' === get_post_status( $created_service ), 'Christophe Feret can move a service to the trash' );
+    wp_untrash_post( $created_service );
+    fpqa_check( 'trash' !== get_post_status( $created_service ), 'Christophe Feret can restore a deleted service' );
     wp_update_post( [ 'ID' => $service_id, 'post_title' => 'Forbidden renamed family', 'post_name' => 'forbidden-family-slug', 'post_content' => 'QA prestation modifiée par Christophe Feret.' ] );
-    fpqa_check( $service_original['post_title'] === get_the_title( $service_id ) && $service_original['post_name'] === get_post_field( 'post_name', $service_id ), 'Service family title and slug resist forged structural changes' );
+    fpqa_check( 'Forbidden renamed family' === get_the_title( $service_id ) && $service_original['post_name'] === get_post_field( 'post_name', $service_id ), 'Christophe Feret can rename a service without changing its published URL' );
     fpqa_check( 'QA prestation modifiée par Christophe Feret.' === get_post_field( 'post_content', $service_id ), 'Christophe Feret actually changes service editorial text' );
     pods( 'fp_service', $service_id )->save( [ 'visible' => 0 ] );
     fpqa_check( ! in_array( $service_id, fpqa_ids( fp_services() ), true ), 'A service hidden by Christophe Feret disappears from listings' );

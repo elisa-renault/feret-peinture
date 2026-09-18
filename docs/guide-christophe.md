@@ -7,7 +7,7 @@ Ce guide concerne le compte **christophe**. Aliant vous remet l'adresse de conne
 | Rubrique | Ce que vous pouvez faire |
 | --- | --- |
 | **Mes chantiers** | Ajouter une réalisation, modifier ses photos et son texte, la publier ou la retirer. |
-| **Mes prestations** | Modifier les textes dans deux blocs sur mesure verrouillés, les images, puis afficher ou masquer la prestation. |
+| **Mes prestations** | Ajouter, modifier ou supprimer une prestation avec des blocs sur mesure verrouillés, puis la publier ou la masquer. |
 | **Mes informations** | Mettre à jour vos coordonnées publiques, votre présentation et les communes acceptées dans une page simplifiée. |
 
 Les réglages techniques sont gérés par Aliant. Vous n'avez rien à installer ou à mettre à jour.
@@ -38,7 +38,7 @@ Ouvrez le site d'administration dans Safari ou Chrome, entrez dans **Mes chantie
 
 ## Modifier une prestation
 
-Dans **Mes prestations**, ouvrez la prestation concernée. Vous disposez de deux blocs sur mesure : **Texte de prestation** et **Note pratique**. Vous pouvez modifier leurs textes, mais pas les déplacer, les supprimer ou en ajouter d’autres : la structure de la page reste donc fiable. Laissez la note pratique vide si elle n’est pas utile. Cliquez sur **Mettre à jour**. La case **Afficher cette prestation** permet de masquer une prestation sans effacer son contenu. Pour ajouter ou renommer une prestation, contactez Aliant.
+Dans **Mes prestations**, cliquez sur **Ajouter** pour créer une nouvelle prestation, ou ouvrez une prestation existante. Donnez-lui un titre clair, ajoutez une image si elle aide à comprendre le service, puis renseignez les deux blocs sur mesure : **Texte de prestation** et **Note pratique**. Vous pouvez modifier leurs textes, mais pas les déplacer, les supprimer ou en ajouter d’autres : la structure de la page reste donc fiable. Laissez la note pratique vide si elle n’est pas utile. Cliquez sur **Publier** ou **Mettre à jour**. La case **Afficher cette prestation** permet de masquer une prestation sans l’effacer. Pour supprimer une prestation, placez-la dans la corbeille depuis sa liste ; vous pourrez la rétablir si nécessaire.
 
 Décrivez uniquement les travaux que vous acceptez. Faites valider tout nouvel engagement avant de l'afficher : gratuité du devis, délai de réponse, garantie, qualification ou prestation supplémentaire.
 
