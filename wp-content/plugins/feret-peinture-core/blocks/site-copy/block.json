@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "feret/site-copy",
+  "version": "1.0.0",
+  "title": "Texte du site",
+  "category": "text",
+  "icon": "edit",
+  "description": "Un texte éditorial placé à un endroit précis du site.",
+  "attributes": {
+    "key": { "type": "string" },
+    "label": { "type": "string" },
+    "content": { "type": "string" }
+  },
+  "supports": { "html": false, "multiple": false },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
+}

@@ -6,6 +6,10 @@ if (!defined('ABSPATH')) { exit; }
 
 require_once __DIR__ . '/inc/service-copy.php';
 
+function fp_theme_copy($page, $key, $default) {
+    return function_exists('fp_site_copy') ? fp_site_copy($page, $key, $default) : $default;
+}
+
 add_action('after_setup_theme', function () {
 
     add_theme_support('title-tag');

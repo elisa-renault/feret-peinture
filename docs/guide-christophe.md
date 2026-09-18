@@ -2,13 +2,14 @@
 
 Ce guide concerne le compte **christophe**. Aliant vous remet l'adresse de connexion, votre mot de passe personnel et une adresse de récupération fonctionnelle. L'accès se fait depuis un ordinateur ou le navigateur de votre téléphone. En prévisualisation, Aliant fournit aussi l'accès au site de test.
 
-## Vos trois rubriques
+## Vos quatre rubriques
 
 | Rubrique | Ce que vous pouvez faire |
 | --- | --- |
 | **Mes chantiers** | Ajouter une réalisation, modifier ses photos et son texte, la publier ou la retirer. |
 | **Mes prestations** | Ajouter, modifier ou supprimer une prestation avec des blocs sur mesure verrouillés, puis la publier ou la masquer. |
 | **Mes informations** | Mettre à jour vos coordonnées publiques, votre présentation et les communes acceptées dans une page simplifiée. |
+| **Textes du site** | Adapter les textes guidés de l’accueil, de l’entreprise, de la zone d’intervention et du contact. |
 
 Les réglages techniques sont gérés par Aliant. Vous n'avez rien à installer ou à mettre à jour.
 
@@ -57,6 +58,14 @@ Cliquez sur **Mettre à jour**, puis vérifiez le site. Pour changer la boîte q
 ### Blocs verrouillés des prestations
 
 Les prestations utilisent des blocs sur mesure verrouillés. Les chantiers restent dans leur interface photos dédiée, et les informations récurrentes dans leur page simplifiée : ces deux écrans sont plus adaptés que des blocs à leurs usages respectifs.
+
+## Modifier les textes du site
+
+Ouvrez **Textes du site**, puis choisissez la page concernée : **Accueil**, **Entreprise**, **Zone d’intervention** ou **Contact**. Chaque texte apparaît dans son propre bloc avec un intitulé clair. Modifiez le contenu du bloc, puis cliquez sur **Mettre à jour** et vérifiez la page publique.
+
+Vous pouvez réécrire les titres, introductions, paragraphes, étapes et questions-réponses proposés. Les blocs restent dans leur emplacement : la structure, les boutons, le formulaire, la navigation, les liens, les coordonnées légales et les pages légales ne peuvent pas être modifiés depuis cet écran. Pour ajouter une nouvelle prestation, utilisez **Mes prestations**.
+
+Utilisez **Aperçu** avant d’enregistrer une modification importante. Les révisions WordPress permettent de comparer ou restaurer une version enregistrée si nécessaire. Conservez aussi votre brouillon sur votre ordinateur jusqu’à publication.
 
 ## Retirer ou récupérer un contenu
 

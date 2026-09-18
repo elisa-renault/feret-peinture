@@ -26,15 +26,16 @@ Relancer l’installation conserve les contenus, les réglages éditoriaux et le
 
 ## Ce que Christophe Feret peut modifier
 
-Son compte ouvre « Mes chantiers ». Il dispose de trois rubriques :
+Son compte ouvre « Mes chantiers ». Il dispose de quatre rubriques :
 
 | Rubrique | Actions |
 | --- | --- |
 | Mes chantiers | Créer, modifier, publier, mettre à la corbeille et récupérer une fiche ; commune, prestation, description, photo principale, galerie ordonnée, avant/après facultatif, mise en avant et autorisation des photos. |
 | Mes prestations | Ajouter, modifier ou supprimer une prestation, avec deux blocs sur mesure verrouillés pour le texte et une image facultative. |
 | Mes informations | Une page dédiée pour modifier les téléphones, l’email public, la présentation et la zone d’intervention. Les changements alimentent les pages et les liens. |
+| Textes du site | Modifier les textes guidés de l’accueil, de l’entreprise, de la zone d’intervention et du contact, sans pouvoir déplacer les éléments de la mise en page. |
 
-Le rôle n’a pas `manage_options`, ni accès aux extensions, thèmes, utilisateurs, pages légales ou réglages SMTP. Les autorisations sont vérifiées côté serveur. Le [guide Christophe Feret](docs/guide-christophe.md) explique brouillons, photos, aperçu et récupération.
+Le rôle n’a pas `manage_options`, ni accès aux extensions, thèmes, utilisateurs, navigation, pages légales ou réglages SMTP. Les autorisations sont vérifiées côté serveur. Le [guide Christophe Feret](docs/guide-christophe.md) explique brouillons, photos, aperçu et récupération.
 
 Les réalisations n’apparaissent que lorsqu’elles possèdent une photo principale et une autorisation de publication. Une galerie vide est masquée. Aucun chantier fictif n’est installé par défaut. Pour créer volontairement un brouillon de démonstration local :
 

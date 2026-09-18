@@ -19,6 +19,7 @@ function fp_install_roles(): void {
             $caps[$prefix . $type . 's'] = true;
         }
     }
+    $caps['edit_site_texts'] = true;
     if ( ! get_role( 'fp_christophe' ) ) { add_role( 'fp_christophe', 'Christophe Feret - contenus du site', $caps ); }
     $role = get_role( 'fp_christophe' );
     foreach ( array_keys( $role->capabilities ) as $cap ) {
@@ -52,6 +53,9 @@ add_filter( 'map_meta_cap', static function ( $caps, $cap, $user_id, $args ) {
         if ( 'attachment' === $post->post_type ) {
             return ( 'read_post' === $cap || (int) $post->post_author === (int) $user_id ) ? [ 'upload_files' ] : [ 'do_not_allow' ];
         }
+        if ( fp_is_editable_page( $post ) ) {
+            return 'delete_post' === $cap ? [ 'do_not_allow' ] : [ 'read' ];
+        }
         if ( ! isset( fp_schema()[$post->post_type] ) ) { return [ 'do_not_allow' ]; }
         if ( 'fp_information' === $post->post_type && $post->ID !== fp_information_id() ) { return [ 'do_not_allow' ]; }
         if ( 'delete_post' === $cap && ! in_array( $post->post_type, [ 'fp_project', 'fp_service' ], true ) ) { return [ 'do_not_allow' ]; }
@@ -62,12 +66,12 @@ add_filter( 'map_meta_cap', static function ( $caps, $cap, $user_id, $args ) {
 add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
     if ( ! fp_is_christophe() || empty( $postarr['ID'] ) ) { return $data; }
     $original = get_post( (int) $postarr['ID'] );
-    if ( $original && in_array( $original->post_type, [ 'fp_service', 'fp_information' ], true ) ) {
+    if ( $original && ( in_array( $original->post_type, [ 'fp_service', 'fp_information' ], true ) || fp_is_editable_page( $original ) ) ) {
         $data['post_type'] = $original->post_type;
         $data['post_name'] = $original->post_name;
         $data['post_parent'] = 0;
         $data['menu_order'] = $original->menu_order;
-        if ( 'fp_information' === $original->post_type ) {
+        if ( 'fp_information' === $original->post_type || fp_is_editable_page( $original ) ) {
             $data['post_title'] = $original->post_title;
             $data['post_status'] = $original->post_status;
         }
@@ -77,6 +81,22 @@ add_filter( 'wp_insert_post_data', static function ( $data, $postarr ) {
 
 function fp_information_panel_fields(): array {
     return [ 'phone_mobile', 'phone_landline', 'public_email', 'presentation', 'confirmed_area' ];
+}
+
+function fp_register_site_texts_panel(): void {
+    add_menu_page( 'Textes du site', 'Textes du site', 'edit_site_texts', 'fp-site-texts', 'fp_render_site_texts_panel', 'dashicons-edit-page', 6 );
+}
+add_action( 'admin_menu', 'fp_register_site_texts_panel', 20 );
+
+function fp_render_site_texts_panel(): void {
+    if ( ! current_user_can( 'edit_site_texts' ) ) { wp_die( 'Vous ne pouvez pas modifier ces textes.', 'Accès réservé', [ 'response' => 403 ] ); }
+    ?>
+    <div class="wrap"><h1>Textes du site</h1><p>Choisissez une page. Les textes sont guidés, mais vous pouvez les adapter librement. La navigation, le formulaire et les mentions légales restent protégés.</p><ul class="ul-disc">
+    <?php foreach ( fp_editable_page_definitions() as $slug => $fields ) : $page = get_page_by_path( $slug ); if ( ! $page || ! current_user_can( 'edit_post', $page->ID ) ) { continue; } ?>
+        <li><a href="<?php echo esc_url( get_edit_post_link( $page->ID, '' ) ); ?>"><?php echo esc_html( get_the_title( $page ) ); ?></a> : <?php echo esc_html( count( $fields ) ); ?> textes modifiables.</li>
+    <?php endforeach; ?>
+    </ul></div>
+    <?php
 }
 
 function fp_information_panel_url( array $args = [] ): string {
@@ -163,7 +183,7 @@ add_action( 'admin_post_fp_save_site_information', static function () {
 add_action( 'admin_menu', static function () {
     if ( ! fp_is_christophe() ) { return; }
     global $menu;
-    $allowed = [ 'edit.php?post_type=fp_project', 'edit.php?post_type=fp_service', 'fp-site-information' ];
+    $allowed = [ 'edit.php?post_type=fp_project', 'edit.php?post_type=fp_service', 'fp-site-information', 'fp-site-texts' ];
     foreach ( $menu as $item ) {
         if ( ! in_array( $item[2], $allowed, true ) ) { remove_menu_page( $item[2] ); }
     }
@@ -192,7 +212,7 @@ add_action( 'admin_init', static function () {
             wp_safe_redirect( admin_url( 'post.php?post=' . fp_information_id() . '&action=edit' ) ); exit;
         }
     }
-    if ( 'admin.php' === $pagenow && 'fp-site-information' !== ( $_GET['page'] ?? '' ) ) {
+    if ( 'admin.php' === $pagenow && ! in_array( $_GET['page'] ?? '', [ 'fp-site-information', 'fp-site-texts' ], true ) ) {
         wp_die( 'Cet écran est réservé à Aliant.', 'Accès réservé', [ 'response' => 403 ] );
     }
 } );
@@ -202,7 +222,7 @@ add_filter( 'login_redirect', static function ( $url, $requested, $user ) {
 }, 10, 3 );
 add_filter( 'show_admin_bar', static fn( $show ) => fp_is_christophe() ? false : $show );
 add_filter( 'use_block_editor_for_post_type', static function ( $use, $type ) {
-    if ( 'fp_service' === $type ) { return true; }
+    if ( in_array( $type, [ 'fp_service', 'page' ], true ) ) { return true; }
     return isset( fp_schema()[$type] ) ? false : $use;
 }, 10, 2 );
 add_filter( 'post_row_actions', static function ( $actions, $post ) {

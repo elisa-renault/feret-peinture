@@ -127,7 +127,7 @@ try {
     foreach ( [ 'manage_options', 'activate_plugins', 'install_plugins', 'update_plugins', 'edit_plugins', 'edit_theme_options', 'switch_themes', 'list_users', 'create_users', 'edit_users', 'promote_users', 'delete_users', 'edit_posts', 'publish_posts', 'delete_posts', 'edit_pages', 'publish_pages', 'delete_pages', 'pods', 'pods_admin', 'unfiltered_html', 'unfiltered_upload', 'create_fp_informations', 'delete_fp_informations' ] as $cap ) {
         fpqa_check( ! current_user_can( $cap ), 'Christophe Feret cannot ' . $cap );
     }
-    foreach ( [ 'read', 'upload_files', 'create_fp_projects', 'publish_fp_projects', 'create_fp_services', 'publish_fp_services', 'delete_fp_services', 'delete_others_fp_services' ] as $cap ) {
+    foreach ( [ 'read', 'upload_files', 'edit_site_texts', 'create_fp_projects', 'publish_fp_projects', 'create_fp_services', 'publish_fp_services', 'delete_fp_services', 'delete_others_fp_services' ] as $cap ) {
         fpqa_check( current_user_can( $cap ), 'Christophe Feret can ' . $cap );
     }
     fpqa_check( current_user_can( 'edit_post', $information_id ), 'Christophe Feret can edit the actual information singleton' );
@@ -150,6 +150,24 @@ try {
     pods( 'fp_service', $service_id )->save( [ 'visible' => 0 ] );
     fpqa_check( ! in_array( $service_id, fpqa_ids( fp_services() ), true ), 'A service hidden by Christophe Feret disappears from listings' );
     pods( 'fp_service', $service_id )->save( [ 'visible' => 1 ] );
+    foreach ( fp_editable_page_slugs() as $editable_slug ) {
+        $editable_page = get_page_by_path( $editable_slug );
+        fpqa_check( $editable_page && current_user_can( 'edit_post', $editable_page->ID ) && ! current_user_can( 'delete_post', $editable_page->ID ), "Christophe Feret can edit, but not delete, the guided {$editable_slug} page" );
+    }
+    $home_page = get_page_by_path( 'accueil' );
+    $home_original_content = $home_page ? $home_page->post_content : '';
+    fpqa_check( has_block( 'feret/site-copy', $home_page ), 'Accueil uses the registered locked site-copy blocks' );
+    $home_blocks = $home_page ? parse_blocks( $home_original_content ) : [];
+    fpqa_check( ! empty( $home_blocks ) && ! array_filter( $home_blocks, static fn( $block ) => 'feret/site-copy' !== $block['blockName'] || empty( $block['attrs']['lock']['move'] ) || empty( $block['attrs']['lock']['remove'] ) ), 'Accueil text block order and structure are locked' );
+    if ( $home_page ) {
+        $updated_home_content = str_replace( 'Peintre en bâtiment à Écouen.', 'Titre d’accueil QA.', $home_original_content );
+        wp_update_post( [ 'ID' => $home_page->ID, 'post_content' => $updated_home_content ] );
+        fpqa_check( 'Titre d’accueil QA.' === fp_site_copy( 'accueil', 'hero_title' ), 'Christophe Feret can change the accueil headline through a guided block' );
+        fpqa_check( 'Titre d’accueil QA.' === fp_theme_copy( 'accueil', 'hero_title', '' ), 'The accueil theme renders the guided block text' );
+        wp_update_post( [ 'ID' => $home_page->ID, 'post_content' => $home_original_content ] );
+    }
+    $legal_page = get_page_by_path( 'mentions-legales' );
+    fpqa_check( $legal_page && ! current_user_can( 'edit_post', $legal_page->ID ), 'Christophe Feret cannot edit the legal pages by ID' );
     fpqa_check( ! current_user_can( 'edit_post', $page ) && ! current_user_can( 'edit_post', $ordinary ), 'Core page/post ID edit attempts are denied' );
     fpqa_check( ! current_user_can( 'edit_user', $admin_id ), 'Christophe Feret cannot edit the administrator by ID' );
     fpqa_check( ! current_user_can( 'delete_user', $admin_id ), 'Christophe Feret cannot delete the administrator by ID' );
